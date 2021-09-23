@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@smile-config/cli": ["packages/cli/src/index.ts"]
+      "@smile-config/cli": ["packages/cli/bin/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

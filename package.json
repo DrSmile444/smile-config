@@ -1,10 +1,10 @@
 {
-  "name": "smile-config",
+  "name": "@smile-config/root",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "start:cli": "",
-    "build": "nx build cli",
+    "build:cli": "nx build cli && chmod +x ./dist/packages/cli/bin/index.js",
     "link:cli": "cd ./dist/packages/cli && npm link"
   },
   "private": true,
