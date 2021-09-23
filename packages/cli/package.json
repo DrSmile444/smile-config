@@ -1,0 +1,8 @@
+{
+  "name": "@smile-config/cli",
+  "version": "0.0.1",
+  "bin": "./bin/index.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  }
+}
