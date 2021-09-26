@@ -1,6 +1,6 @@
-import { ConfigItemModule } from '../../../src/interfaces';
+import { AbstractConfigItemModule } from '../../../src/interfaces';
 
-export class StylelintModule implements ConfigItemModule {
+export class StylelintModule implements AbstractConfigItemModule {
   name = 'stylelint';
 
   includeToLintScript = [

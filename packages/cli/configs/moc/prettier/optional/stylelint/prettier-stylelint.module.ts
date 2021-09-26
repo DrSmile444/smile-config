@@ -1,5 +1,5 @@
-import { ConfigItemModule } from '../../../../../src/interfaces';
+import { AbstractConfigItemModule } from '../../../../../src/interfaces';
 
-export class PrettierStylelintModule implements ConfigItemModule {
+export class PrettierStylelintModule implements AbstractConfigItemModule {
   name = 'stylelint';
 }

@@ -1,10 +1,14 @@
+export interface AbstractConfigModule<T extends AbstractConfigItemModule = any> {
+  modules: T[];
+}
+
 export interface LintItem {
   command: string;
   order: number;
 }
 
-export interface ConfigItemModule {
+export interface AbstractConfigItemModule<T extends AbstractConfigItemModule = any> {
   name: string;
   includeToLintScript?: LintItem[];
-  optional?: ConfigItemModule[];
+  optional?: T[];
 }

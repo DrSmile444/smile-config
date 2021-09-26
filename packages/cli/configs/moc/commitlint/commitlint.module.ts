@@ -1,5 +1,5 @@
-import { ConfigItemModule } from '../../../src/interfaces';
+import { AbstractConfigItemModule } from '../../../src/interfaces';
 
-export class CommitLintModule implements ConfigItemModule {
+export class CommitLintModule implements AbstractConfigItemModule {
   name = 'commitlint';
 }

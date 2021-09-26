@@ -1,5 +1,5 @@
-import { ConfigItemModule } from '../../../src/interfaces';
+import { AbstractConfigItemModule } from '../../../src/interfaces';
 
-export class HuskyModule implements ConfigItemModule {
+export class HuskyModule implements AbstractConfigItemModule {
   name = 'husky';
 }

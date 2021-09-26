@@ -1,5 +1,5 @@
-import { ConfigItemModule } from '../../../src/interfaces';
+import { AbstractConfigItemModule } from '../../../src/interfaces';
 
-export class SmileTrackModule implements ConfigItemModule {
+export class SmileTrackModule implements AbstractConfigItemModule {
   name = 'smile-track';
 }

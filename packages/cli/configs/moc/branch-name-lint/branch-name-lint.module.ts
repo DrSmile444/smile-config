@@ -1,6 +1,6 @@
-import { ConfigItemModule } from '../../../src/interfaces';
+import { AbstractConfigItemModule } from '../../../src/interfaces';
 
-export class BranchNameLintModule implements ConfigItemModule {
+export class BranchNameLintModule implements AbstractConfigItemModule {
   name = 'branch-name-lint';
   includeToLintScript = [
     {

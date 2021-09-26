@@ -1,5 +1,5 @@
-import { ConfigItemModule } from '../../../src/interfaces';
+import { AbstractConfigItemModule } from '../../../src/interfaces';
 
-export class LintStagedModule implements ConfigItemModule {
+export class LintStagedModule implements AbstractConfigItemModule {
   name = 'lint-staged';
 }
