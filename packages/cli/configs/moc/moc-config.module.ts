@@ -1,4 +1,4 @@
-import { AbstractConfigModule } from '../../src/interfaces';
+import { AbstractConfigModule } from '@smile-config/cli/interfaces';
 
 import { modules } from './modules';
 
