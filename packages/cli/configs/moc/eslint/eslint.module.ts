@@ -1,5 +1,5 @@
 import { ConfigItemModule } from '../../../src/interfaces';
-import { EslintTypescriptModule } from './optional/typescript/module';
+import { EslintTypescriptModule } from './optional/typescript/eslint-typescript.module';
 
 export class EslintModule implements ConfigItemModule {
   name = 'eslint';
