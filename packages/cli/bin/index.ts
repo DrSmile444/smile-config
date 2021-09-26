@@ -1,2 +1,4 @@
 #!/usr/bin/env node
-export * from './lib/cli';
+import { builtInConfigs } from '../src';
+
+console.log(builtInConfigs)
