@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "lint:branch-name": "branch-name-lint ./.branchlintrc.json"
+  },
+  "devDependencies": {
+    "branch-name-lint": "^2.1.1"
+  }
+}
