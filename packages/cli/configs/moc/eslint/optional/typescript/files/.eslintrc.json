@@ -1,0 +1,103 @@
+{
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parserOptions": {
+        "project": ["tsconfig.json"],
+        "createDefaultProgram": true
+      },
+      "plugins": ["@typescript-eslint/tslint"],
+      "rules": {
+        "@typescript-eslint/array-type": [
+          "error",
+          {
+            "default": "array"
+          }
+        ],
+        "@typescript-eslint/consistent-type-definitions": "error",
+        "@typescript-eslint/dot-notation": "off",
+        "@typescript-eslint/explicit-member-accessibility": [
+          "off",
+          {
+            "accessibility": "explicit"
+          }
+        ],
+        "indent": "off",
+        "indent-legacy": "off",
+        "@typescript-eslint/indent": ["error", 2],
+        "@typescript-eslint/member-delimiter-style": [
+          "error",
+          {
+            "multiline": {
+              "delimiter": "semi",
+              "requireLast": true
+            },
+            "singleline": {
+              "delimiter": "semi",
+              "requireLast": false
+            }
+          }
+        ],
+        "@typescript-eslint/member-ordering": "error",
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "interface",
+            "format": ["PascalCase"],
+            "custom": {
+              "regex": "^I[A-Z]",
+              "match": false
+            }
+          },
+          {
+            "selector": "property",
+            "format": ["strictCamelCase", "snake_case", "UPPER_CASE"]
+          }
+        ],
+        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/no-empty-interface": "error",
+        "@typescript-eslint/no-misused-new": "error",
+        "@typescript-eslint/no-non-null-assertion": "error",
+        "@typescript-eslint/no-unused-expressions": "error",
+        "@typescript-eslint/no-use-before-define": "error",
+        "@typescript-eslint/prefer-function-type": "error",
+        "@typescript-eslint/quotes": ["error", "single"],
+        "@typescript-eslint/semi": ["error", "always"],
+        "@typescript-eslint/type-annotation-spacing": "error",
+        "@typescript-eslint/unified-signatures": "error",
+        "@typescript-eslint/tslint/config": [
+          "error",
+          {
+            "rules": {
+              "ordered-imports": {
+                "options": {
+                  "grouped-imports": true,
+                  "groups": [
+                    {
+                      "name": "angular imports",
+                      "match": "^@angular",
+                      "order": 0
+                    },
+                    {
+                      "name": "relative imports",
+                      "match": "^\\.",
+                      "order": 60
+                    },
+                    {
+                      "name": "other lib imports",
+                      "match": "",
+                      "order": 0
+                    }
+                  ]
+                }
+              },
+              "import-spacing": true,
+              "no-restricted-globals": [true, "name", "length", "event", "isNaN", "isFinite"],
+              "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-separator", "check-type"]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
