@@ -1,4 +1,4 @@
-import { AbstractConfigItemModule } from '../../../src/interfaces';
+import { AbstractConfigItemModule } from '../../../../src/interfaces';
 import { PrettierEslintModule } from './optional/eslint/prettier-eslint.module';
 import { PrettierStylelintModule } from './optional/stylelint/prettier-stylelint.module';
 

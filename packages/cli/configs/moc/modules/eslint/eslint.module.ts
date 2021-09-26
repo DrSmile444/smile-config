@@ -1,5 +1,5 @@
-import { AbstractConfigItemModule } from '../../../src/interfaces';
 import { EslintTypescriptModule } from './optional/typescript/eslint-typescript.module';
+import { AbstractConfigItemModule } from '../../../../src/interfaces';
 
 export class EslintModule implements AbstractConfigItemModule {
   name = 'eslint';
