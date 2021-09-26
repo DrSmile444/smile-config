@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "lint:commit-name": "commitlint --edit"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "^13.1.0",
+    "commitlint": "^13.1.0"
+  }
+}
