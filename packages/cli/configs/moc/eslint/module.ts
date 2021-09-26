@@ -7,4 +7,11 @@ export class EslintModule implements ConfigItemModule {
   optional = [
     EslintTypescriptModule,
   ];
+
+  includeToLintScript = [
+    {
+      command: 'lint:js',
+      order: 10,
+    }
+  ];
 }
