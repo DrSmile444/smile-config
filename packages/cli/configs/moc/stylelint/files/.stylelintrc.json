@@ -1,0 +1,9 @@
+{
+  "extends": ["stylelint-config-standard", "stylelint-config-idiomatic-order"],
+  "ignoreFiles": ["node_modules/**", "dist/**"],
+  "rules": {
+    "selector-type-no-unknown": true,
+    "no-empty-source": null,
+    "selector-pseudo-element-no-unknown": true
+  }
+}
