@@ -2,6 +2,6 @@ import { AbstractConfigModule } from '../../src/interfaces';
 
 import { modules } from './modules';
 
-export class ConfigModule implements AbstractConfigModule {
+export class MocConfigModule implements AbstractConfigModule {
   modules = modules;
 }
