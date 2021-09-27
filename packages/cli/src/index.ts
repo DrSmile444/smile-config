@@ -1,5 +1,6 @@
 import { MocConfigModule } from '../configs/moc';
 
 export const builtInConfigs = [
-  MocConfigModule,
+  new MocConfigModule(),
+  new MocConfigModule(),
 ];

@@ -1,4 +1,6 @@
 export interface AbstractConfigModule<T extends AbstractConfigItemModule = any> {
+  name: string;
+  url: string;
   modules: T[];
 }
 
