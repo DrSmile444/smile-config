@@ -8,7 +8,7 @@ import { PrettierModule } from './prettier/prettier.module';
 import { SmileTrackModule } from './smile-track/smile-track.module';
 import { StylelintModule } from './stylelint/stylelint.module';
 
-export const modules = [
+export const mocModules = [
   BranchNameLintModule,
   CommitLintModule,
   EditorConfigModule,

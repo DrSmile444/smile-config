@@ -1,5 +1,10 @@
 import { AbstractConfigItemModule } from '@smile-config/cli/interfaces';
+import { BaseConfigItemModule } from '../../../../src/base';
 
-export class LintStagedModule implements AbstractConfigItemModule {
+export class LintStagedModule extends BaseConfigItemModule implements AbstractConfigItemModule {
   name = 'lint-staged';
+
+  constructor() {
+    super(__dirname);
+  }
 }

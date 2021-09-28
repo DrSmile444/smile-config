@@ -19,4 +19,5 @@ import { builtInConfigs } from '../src';
   }
 
   console.log(config);
+  console.log(JSON.stringify(config.choices[0], null ,2))
 })();

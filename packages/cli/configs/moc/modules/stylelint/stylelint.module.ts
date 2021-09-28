@@ -1,6 +1,7 @@
 import { AbstractConfigItemModule } from '@smile-config/cli/interfaces';
+import { BaseConfigItemModule } from '../../../../src/base';
 
-export class StylelintModule implements AbstractConfigItemModule {
+export class StylelintModule extends BaseConfigItemModule implements AbstractConfigItemModule {
   name = 'stylelint';
 
   includeToLintScript = [
@@ -9,4 +10,8 @@ export class StylelintModule implements AbstractConfigItemModule {
       order: 5,
     }
   ];
+
+  constructor() {
+    super(__dirname);
+  }
 }
