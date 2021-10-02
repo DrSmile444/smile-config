@@ -1,6 +1,7 @@
 export interface AbstractConfigModule<T extends AbstractConfigItemModule = any> {
   name: string;
   url: string;
+  required: string[];
   modules: T[];
   choices: ChoiceConfig<AbstractConfigModule>[];
 }

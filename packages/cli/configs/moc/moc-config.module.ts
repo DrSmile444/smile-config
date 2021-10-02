@@ -22,6 +22,10 @@ export class MocConfigModule implements AbstractConfigModule {
 
   modules = mocModules;
 
+  required = [
+    'package.json',
+  ];
+
   choices: ChoiceConfig<MocConfigModule>[] = [
     {
       useClass: MocConfigModule,
@@ -42,7 +46,7 @@ export class MocConfigModule implements AbstractConfigModule {
         HuskyModule,
         LintStagedModule,
         SmileTrackModule,
-      ]
-    }
-  ]
+      ],
+    },
+  ];
 }
