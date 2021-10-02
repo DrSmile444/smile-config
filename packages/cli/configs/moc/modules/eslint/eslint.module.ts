@@ -17,9 +17,7 @@ export class EslintModule extends BaseConfigItemModule implements AbstractConfig
     }
   ];
 
-  constructor(
-    public modules: any[],
-  ) {
+  constructor() {
     super(__dirname);
   }
 }
