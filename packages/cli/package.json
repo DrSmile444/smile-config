@@ -5,6 +5,6 @@
     "smile-config": "./bin/index.js"
   },
   "scripts": {
-    "start": "nodemon ./bin/index.ts"
+    "start": "nodemon ./bin/index.ts -e ts"
   }
 }

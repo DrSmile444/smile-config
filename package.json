@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start:cli": "",
+    "start:cli": "npm --prefix ./packages/cli run start",
     "build:cli": "nx build cli && chmod +x ./dist/packages/cli/bin/index.js",
     "link:cli": "cd ./dist/packages/cli && npm link"
   },
