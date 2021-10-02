@@ -14,5 +14,3 @@ export class BranchNameLintModule extends BaseConfigItemModule implements Abstra
     super(__dirname);
   }
 }
-
-console.log(new BranchNameLintModule());

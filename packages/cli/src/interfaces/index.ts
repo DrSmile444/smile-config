@@ -8,6 +8,10 @@ export interface AbstractConfigModule<T extends AbstractConfigItemModule = any> 
 
 export type Newable<T> = { new(...args: any[]): T; };
 
+export declare interface Type<T> extends Function {
+  new (...args: any[]): T;
+}
+
 export interface LintItem {
   command: string;
   order: number;
@@ -28,7 +32,7 @@ export enum ChoiceType {
 export interface ChoiceConfig<T extends AbstractConfigModule = any> {
   useClass: Newable<T>;
   type: ChoiceType;
-  modules: T['modules'] | ChoiceItemConfig<any> | any;
+  modules: (Newable<AbstractConfigItemModule> | ChoiceItemConfig<AbstractConfigItemModule>)[];
 }
 
 export interface ChoiceItemConfig<T extends AbstractConfigItemModule> {

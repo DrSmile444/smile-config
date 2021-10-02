@@ -17,7 +17,4 @@ import { builtInConfigs } from '../src';
       })),
     }).then((value: Record<any, any>) => builtInConfigs[+value.configIndex]);
   }
-
-  console.log(config);
-  console.log(JSON.stringify(config.choices[0], null ,2))
 })();
