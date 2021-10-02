@@ -48,5 +48,25 @@ export class MocConfigModule implements AbstractConfigModule {
         SmileTrackModule,
       ],
     },
+    {
+      useClass: MocConfigModule,
+      type: ChoiceType.NODE_RECOMMENDED,
+      modules: [
+        BranchNameLintModule,
+        CommitLintModule,
+        EditorConfigModule,
+        {
+          useClass: EslintModule,
+          modules: [EslintTypescriptModule],
+        },
+        {
+          useClass: PrettierModule,
+          modules: [PrettierEslintModule],
+        },
+        HuskyModule,
+        LintStagedModule,
+        SmileTrackModule,
+      ],
+    },
   ];
 }

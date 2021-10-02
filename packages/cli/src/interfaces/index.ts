@@ -26,6 +26,7 @@ export interface AbstractConfigItemModule<T extends AbstractConfigItemModule = a
 
 export enum ChoiceType {
   RECOMMENDED = 'recommended',
+  NODE_RECOMMENDED = 'node:recommended',
   CUSTOM = 'custom'
 }
 

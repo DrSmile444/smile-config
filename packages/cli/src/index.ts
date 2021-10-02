@@ -5,4 +5,4 @@ export const builtInConfigs = [
   new MocConfigModule(),
 ];
 
-configService.applyConfig(new MocConfigModule().choices[0])
+configService.applyConfig(new MocConfigModule().choices[1]);
