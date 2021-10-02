@@ -1,0 +1,28 @@
+{
+  "env": {
+    "es2021": false,
+    "node": true
+  },
+  "extends": ["rule-b-extends"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "plugins": [
+        "rule-b-plugin"
+      ],
+      "rules": {
+        "rule-a": "replaced-by-b",
+        "rule-b": "origin"
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "plugins": [
+        "rule-b-ts-plugin"
+      ],
+      "rules": {
+        "rule-b-ts": "origin"
+      }
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "env": {
+    "commonjs": true,
+    "es2021": false,
+    "node": true
+  },
+  "extends": [
+    "../../.eslintrc.json",
+    "rule-b-extends"
+  ],
+  "ignorePatterns": [
+    "!**/*"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts",
+        "*.tsx",
+        "*.js",
+        "*.jsx"
+      ],
+      "plugins": [
+        "rule-a-plugin",
+        "rule-b-plugin"
+      ],
+      "rules": {
+        "rule-a": "replaced-by-b",
+        "rule-a-2": "replaced-by-c",
+        "rule-b": "origin"
+      }
+    },
+    {
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "plugins": [
+        "rule-b-ts-plugin",
+        "rule-c-ts-plugin"
+      ],
+      "rules": {
+        "rule-b-ts": "origin",
+        "rule-c-ts": "origin"
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "rule-a-2": "replaced-by-c"
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "plugins": [
+        "rule-c-ts-plugin"
+      ],
+      "rules": {
+        "rule-c-ts": "origin"
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "env": {
+    "commonjs": true,
+    "es2021": true
+  },
+  "extends": ["../../.eslintrc.json"],
+  "ignorePatterns": ["!**/*"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "plugins": [
+        "rule-a-plugin"
+      ],
+      "rules": {
+        "rule-a": "origin",
+        "rule-a-2": "origin"
+      }
+    }
+  ]
+}
