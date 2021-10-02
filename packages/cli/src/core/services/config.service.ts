@@ -2,23 +2,31 @@ import {
   AbstractConfigItemModule,
   AbstractConfigModule,
   ChoiceConfig,
-  ChoiceItemConfig, ChoiceModule,
+  ChoiceItemConfig,
+  ChoiceModule,
   LintItem,
-  Newable
+  Newable,
 } from '@smile-config/cli/interfaces';
+import { exec, execSync, spawn } from 'child_process';
+import * as fs from 'fs';
+import { mergeFiles, mergeObjects } from 'json-merger';
 
 import { NoPackageJsonError, NoRequiredFileError } from '../errors';
+import {
+  EslintMerger,
+  StylelintMerger,
+  VscodeExtensionMerger,
+  VscodeExtensions,
+} from '../mergers';
+import { reduceArray } from '../utils';
 import { FileType, FolderService } from './folder.service';
-import { mergeFiles } from 'json-merger';
-import * as fs from 'fs';
-import { EslintMerger, StylelintMerger, VscodeExtensionMerger, VscodeExtensions } from '../mergers';
 
 export class ConfigService {
   constructor(
     private eslintMergerService: EslintMerger,
     private folderService: FolderService,
     private stylelintMerger: StylelintMerger,
-    private vscodeExtensionMerger: VscodeExtensionMerger,
+    private vscodeExtensionMerger: VscodeExtensionMerger
   ) {}
 
   applyConfig<T extends AbstractConfigModule>(config: ChoiceConfig<T>) {
@@ -35,18 +43,40 @@ export class ConfigService {
     /**
      * Validating config required files
      * */
-    const missingRequiredFile = configModule.required.find((requiredFile) => !folderFiles.includes(requiredFile));
+    const missingRequiredFile = configModule.required.find(
+      (requiredFile) => !folderFiles.includes(requiredFile)
+    );
 
     if (missingRequiredFile) {
       throw new NoRequiredFileError(missingRequiredFile);
     }
 
+    this.modifyPackageJson({
+      scripts: { lint: 'echo "Error: no test specified" && exit 1' },
+    });
+
     /**
      * Iterating though modules
      * */
-    const lintScriptItems = config.modules
+    const lintScript = `npm run ${config.modules
       .map((module) => this.processModule(module))
-      .filter((scripts) => scripts.length);
+      .filter((scripts) => scripts.length)
+      .reduce(reduceArray)
+      .sort((a, b) => a.order - b.order)
+      .map((lintItem) => lintItem.command)
+      .join(' && npm run ')}`;
+
+    this.modifyPackageJson({ scripts: { lint: lintScript } });
+
+    console.info('Installing modules...');
+    execSync('npm i', { stdio: 'inherit' });
+  }
+
+  modifyPackageJson(json: Record<any, any>) {
+    const packageJson = JSON.parse(fs.readFileSync('package.json').toString());
+    const newPackageJson = mergeObjects([packageJson, json]);
+
+    fs.writeFileSync('package.json', JSON.stringify(newPackageJson, null, 2));
   }
 
   processModule(module: ChoiceModule) {
@@ -82,38 +112,66 @@ export class ConfigService {
 
       if (this.folderService.isNestedFile(moduleFileName)) {
         let folderPath = '';
-        moduleFileName.split('/').slice(0, -1).forEach((folder) => {
-          folderPath += folder + '/';
+        moduleFileName
+          .split('/')
+          .slice(0, -1)
+          .forEach((folder) => {
+            folderPath += `${folder}/`;
 
-          if (!fs.existsSync(folderPath)) {
-            fs.mkdirSync(folderPath);
-          }
-        });
+            if (!fs.existsSync(folderPath)) {
+              fs.mkdirSync(folderPath);
+            }
+          });
       }
 
       switch (this.folderService.getFileType(moduleFileName)) {
         case FileType.JSON: {
           if (moduleFileName === '.eslintrc.json') {
-            const { sourceFile, targetFile } = this.getMergeFiles(moduleFileName, moduleFile);
+            const { sourceFile, targetFile } = this.getMergeFiles(
+              moduleFileName,
+              moduleFile
+            );
 
-            const newEslintConfig = this.eslintMergerService.mergeConfigs(targetFile, sourceFile);
-            fs.writeFileSync(moduleFileName, JSON.stringify(newEslintConfig, null, 2));
+            const newEslintConfig = this.eslintMergerService.mergeConfigs(
+              targetFile,
+              sourceFile
+            );
+            fs.writeFileSync(
+              moduleFileName,
+              JSON.stringify(newEslintConfig, null, 2)
+            );
             break;
           }
 
           if (moduleFileName === '.vscode/extensions.json') {
-            const { sourceFile, targetFile } = this.getMergeFiles<VscodeExtensions>(moduleFileName, moduleFile);
+            const { sourceFile, targetFile } =
+              this.getMergeFiles<VscodeExtensions>(moduleFileName, moduleFile);
 
-            const newExtensions = this.vscodeExtensionMerger.mergeExtensions(targetFile, sourceFile);
-            fs.writeFileSync(moduleFileName, JSON.stringify(newExtensions, null, 2));
+            const newExtensions = this.vscodeExtensionMerger.mergeExtensions(
+              targetFile,
+              sourceFile
+            );
+            fs.writeFileSync(
+              moduleFileName,
+              JSON.stringify(newExtensions, null, 2)
+            );
             break;
           }
 
           if (moduleFileName === '.stylelintrc.json') {
-            const { sourceFile, targetFile } = this.getMergeFiles(moduleFileName, moduleFile);
+            const { sourceFile, targetFile } = this.getMergeFiles(
+              moduleFileName,
+              moduleFile
+            );
 
-            const newStylelintConfig = this.stylelintMerger.mergeStyle(targetFile, sourceFile);
-            fs.writeFileSync(moduleFileName, JSON.stringify(newStylelintConfig, null, 2));
+            const newStylelintConfig = this.stylelintMerger.mergeStyle(
+              targetFile,
+              sourceFile
+            );
+            fs.writeFileSync(
+              moduleFileName,
+              JSON.stringify(newStylelintConfig, null, 2)
+            );
             break;
           }
 
@@ -122,7 +180,10 @@ export class ConfigService {
           }
 
           const result = mergeFiles([moduleFileName, moduleFile]);
-          fs.writeFileSync(moduleFileName, JSON.stringify(result, null, 2) + '\n');
+          fs.writeFileSync(
+            moduleFileName,
+            `${JSON.stringify(result, null, 2)}\n`
+          );
           break;
         }
 
@@ -134,24 +195,34 @@ export class ConfigService {
         }
 
         default:
-          throw new Error('Unknown File: ' + moduleFile);
+          throw new Error(`Unknown File: ${moduleFile}`);
       }
     });
 
-    additionalModules.forEach((module) => lintScriptItems.push(...this.processModule(module)));
+    additionalModules.forEach((module) =>
+      lintScriptItems.push(...this.processModule(module))
+    );
 
     return lintScriptItems;
   }
 
-  getMergeFiles<T>(target: string, source: string): { targetFile: T, sourceFile: T } {
+  getMergeFiles<T>(
+    target: string,
+    source: string
+  ): { targetFile: T; sourceFile: T } {
     const isEslintFileExists = fs.existsSync(target);
 
-    const targetFile = isEslintFileExists ? JSON.parse(fs.readFileSync(target).toString()) as Record<any, any> : null;
-    const sourceFile = JSON.parse(fs.readFileSync(source).toString()) as Record<any, any>;
+    const targetFile = isEslintFileExists
+      ? (JSON.parse(fs.readFileSync(target).toString()) as Record<any, any>)
+      : null;
+    const sourceFile = JSON.parse(fs.readFileSync(source).toString()) as Record<
+    any,
+    any
+    >;
 
     return {
       targetFile,
       sourceFile,
-    }
+    };
   }
 }
