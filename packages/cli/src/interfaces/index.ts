@@ -29,10 +29,12 @@ export enum ChoiceType {
   CUSTOM = 'custom'
 }
 
+export type ChoiceModule = Newable<AbstractConfigItemModule> | ChoiceItemConfig<AbstractConfigItemModule>;
+
 export interface ChoiceConfig<T extends AbstractConfigModule = any> {
   useClass: Newable<T>;
   type: ChoiceType;
-  modules: (Newable<AbstractConfigItemModule> | ChoiceItemConfig<AbstractConfigItemModule>)[];
+  modules: ChoiceModule[];
 }
 
 export interface ChoiceItemConfig<T extends AbstractConfigItemModule> {
