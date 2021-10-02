@@ -70,6 +70,10 @@ export class ConfigService {
 
     console.info('Installing modules...');
     execSync('npm i', { stdio: 'inherit' });
+
+    console.info('\n');
+    console.info('Installing git hooks');
+    execSync('husky install', { stdio: 'inherit' });
   }
 
   modifyPackageJson(json: Record<any, any>) {
