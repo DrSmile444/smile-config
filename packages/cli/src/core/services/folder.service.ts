@@ -3,7 +3,8 @@ import * as fs from 'fs';
 export enum FileType {
   JSON = 'json',
   JS = 'js',
-  EDITORCONFIG = 'editorconfig'
+  EDITORCONFIG = 'editorconfig',
+  NO_EXTENSION = 'no_extension',
 }
 
 export class FolderService {
@@ -20,7 +21,10 @@ export class FolderService {
   }
 
   getFileType(path: string): FileType | string {
-    return path.split('.').splice(-1)[0];
+    const file = path.split('/').splice(-1)[0];
+    const type = path.split('/').splice(-1)[0].split('.').splice(-1)[0];
+
+    return type === file ? FileType.NO_EXTENSION : type;
   }
 
   copyFile(destination: string, origin: string) {

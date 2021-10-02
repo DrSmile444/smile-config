@@ -73,43 +73,46 @@ export class ConfigService {
         const moduleFileName = this.folderService.getFileName(moduleFile);
 
         if (this.folderService.isNestedFile(moduleFileName)) {
-          console.log('yes', moduleFileName);
+          let folderPath = '';
+          moduleFileName.split('/').slice(0, -1).forEach((folder) => {
+            folderPath += folder + '/';
 
-        } else {
-          console.log('not', moduleFile);
+            if (!fs.existsSync(folderPath)) {
+              fs.mkdirSync(folderPath);
+            }
+          });
+        }
 
-          switch (this.folderService.getFileType(moduleFileName)) {
-            case FileType.JSON: {
-              if (moduleFileName === '.eslintrc.json') {
-                const isEslintFileExists = fs.existsSync(moduleFileName);
-                const eslintTarget = isEslintFileExists ? JSON.parse(fs.readFileSync(moduleFileName).toString()) : null;
-                const eslintSource = JSON.parse(fs.readFileSync(moduleFile).toString());
+        switch (this.folderService.getFileType(moduleFileName)) {
+          case FileType.JSON: {
+            if (moduleFileName === '.eslintrc.json') {
+              const isEslintFileExists = fs.existsSync(moduleFileName);
+              const eslintTarget = isEslintFileExists ? JSON.parse(fs.readFileSync(moduleFileName).toString()) : null;
+              const eslintSource = JSON.parse(fs.readFileSync(moduleFile).toString());
 
-                const newEslintConfig = this.eslintMergerService.mergeConfigs(eslintTarget, eslintSource);
-                fs.writeFileSync(moduleFileName, JSON.stringify(newEslintConfig, null, 2));
-                break;
-              }
-
-              if (!fs.existsSync(moduleFileName)) {
-                fs.writeFileSync(moduleFileName, '{}');
-              }
-
-              const result = mergeFiles([moduleFileName, moduleFile]);
-              console.log(result);
-
-              fs.writeFileSync(moduleFileName, JSON.stringify(result, null, 2) + '\n');
+              const newEslintConfig = this.eslintMergerService.mergeConfigs(eslintTarget, eslintSource);
+              fs.writeFileSync(moduleFileName, JSON.stringify(newEslintConfig, null, 2));
               break;
             }
 
-            case FileType.JS:
-            case FileType.EDITORCONFIG: {
-              this.folderService.copyFile(moduleFileName, moduleFile);
-              break;
+            if (!fs.existsSync(moduleFileName)) {
+              fs.writeFileSync(moduleFileName, '{}');
             }
 
-            default:
-              throw new Error('Unknown File: ' + moduleFile);
+            const result = mergeFiles([moduleFileName, moduleFile]);
+            fs.writeFileSync(moduleFileName, JSON.stringify(result, null, 2) + '\n');
+            break;
           }
+
+          case FileType.JS:
+          case FileType.NO_EXTENSION:
+          case FileType.EDITORCONFIG: {
+            this.folderService.copyFile(moduleFileName, moduleFile);
+            break;
+          }
+
+          default:
+            throw new Error('Unknown File: ' + moduleFile);
         }
       });
     });
