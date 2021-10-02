@@ -11,29 +11,37 @@ export class EslintMerger {
     }
 
     const defaultMerge: Linter.Config = mergeObjects([target, source]);
-    defaultMerge.extends = mergeArray(target.extends, source.extends);
-    defaultMerge.ignorePatterns = mergeArray(target.ignorePatterns, source.ignorePatterns);
 
-    const leftOverrides = JSON.parse(JSON.stringify(source.overrides)) as Linter.ConfigOverride[];
+    if (target.extends && source.extends) {
+      defaultMerge.extends = mergeArray(target.extends, source.extends);
+    }
 
-    defaultMerge.overrides = [
-      ...target.overrides.map((targetOverride) => {
-        const foundSourceOverrideIndex = leftOverrides.findIndex((sourceOverride) => deepEqual(coerceArray(targetOverride.files).slice().sort(), coerceArray(sourceOverride.files).slice().sort()))
+    if (target.ignorePatterns && source.ignorePatterns) {
+      defaultMerge.ignorePatterns = mergeArray(target.ignorePatterns, source.ignorePatterns);
+    }
 
-        if (foundSourceOverrideIndex !== -1) {
-          const foundSourceOverride = leftOverrides[foundSourceOverrideIndex];
-          const mergedOverride = mergeObjects([targetOverride, foundSourceOverride]) as Linter.ConfigOverride;
-          mergedOverride.plugins = mergeArray(targetOverride.plugins, foundSourceOverride.plugins);
+    if (target.overrides && source.overrides) {
+      const leftOverrides = JSON.parse(JSON.stringify(source.overrides)) as Linter.ConfigOverride[];
 
-          leftOverrides.splice(foundSourceOverrideIndex, 1);
+      defaultMerge.overrides = [
+        ...target.overrides.map((targetOverride) => {
+          const foundSourceOverrideIndex = leftOverrides.findIndex((sourceOverride) => deepEqual(coerceArray(targetOverride.files).slice().sort(), coerceArray(sourceOverride.files).slice().sort()))
 
-          return mergedOverride;
-        }
+          if (foundSourceOverrideIndex !== -1) {
+            const foundSourceOverride = leftOverrides[foundSourceOverrideIndex];
+            const mergedOverride = mergeObjects([targetOverride, foundSourceOverride]) as Linter.ConfigOverride;
+            mergedOverride.plugins = mergeArray(targetOverride.plugins, foundSourceOverride.plugins);
 
-        return targetOverride;
-      }),
-      ...leftOverrides,
-    ];
+            leftOverrides.splice(foundSourceOverrideIndex, 1);
+
+            return mergedOverride;
+          }
+
+          return targetOverride;
+        }),
+        ...leftOverrides,
+      ];
+    }
 
     return defaultMerge;
   }

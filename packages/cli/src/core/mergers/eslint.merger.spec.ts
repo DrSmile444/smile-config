@@ -18,8 +18,6 @@ describe('EslintMerger', () => {
     const result1 = eslintMerger.mergeConfigs(targetA, sourceB);
     const result2 = eslintMerger.mergeConfigs(result1, sourceC);
 
-    console.log(JSON.stringify(result2, null, 2));
-
     expect(result1).toMatchSnapshot();
     expect(result2).toStrictEqual(expected);
   });
@@ -30,5 +28,10 @@ describe('EslintMerger', () => {
 
     const result = eslintMerger.mergeConfigs(targetFilePath, sourceFilePath);
     expect(result).toMatchSnapshot();
+  });
+
+  it('should not crash on empty overrides', () => {
+    const result = eslintMerger.mergeConfigs({ a: 1, c: 1 }, { a: 2, b: 2 });
+    expect(result).toStrictEqual({ a: 2, b: 2, c: 1 });
   });
 });
