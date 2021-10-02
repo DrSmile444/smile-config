@@ -6,7 +6,7 @@ import { BaseConfigItemModule } from '../../../../src/base';
 export class EslintModule extends BaseConfigItemModule implements AbstractConfigItemModule {
   name = 'eslint';
 
-  optional = [
+  addons = [
     EslintTypescriptModule,
   ];
 

@@ -23,9 +23,11 @@ export const mocModules = [
 export * from './branch-name-lint/branch-name-lint.module';
 export * from './commitlint/commitlint.module';
 export * from './editorconfig/editorconfig.module';
+export * from './eslint';
 export * from './eslint/eslint.module';
 export * from './husky/husky.module';
 export * from './lint-staged/lint-staged.module';
+export * from './prettier';
 export * from './prettier/prettier.module';
 export * from './smile-track/smile-track.module';
 export * from './stylelint/stylelint.module';

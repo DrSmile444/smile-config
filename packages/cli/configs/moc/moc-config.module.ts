@@ -1,20 +1,20 @@
-import { AbstractConfigModule, ChoiceType } from '../../src/interfaces';
+import { AbstractConfigModule, ChoiceConfig, ChoiceType } from '../../src/interfaces';
 
 import {
   BranchNameLintModule,
   CommitLintModule,
   EditorConfigModule,
   EslintModule,
+  EslintTypescriptModule,
   HuskyModule,
   LintStagedModule,
   mocModules,
+  PrettierEslintModule,
   PrettierModule,
+  PrettierStylelintModule,
   SmileTrackModule,
   StylelintModule,
 } from './modules';
-import { EslintTypescriptModule } from './modules/eslint/optional/typescript/eslint-typescript.module';
-import { PrettierEslintModule } from './modules/prettier/optional/eslint/prettier-eslint.module';
-import { PrettierStylelintModule } from './modules/prettier/optional/stylelint/prettier-stylelint.module';
 
 export class MocConfigModule implements AbstractConfigModule {
   name = 'MOC Global';
@@ -22,25 +22,26 @@ export class MocConfigModule implements AbstractConfigModule {
 
   modules = mocModules;
 
-  choices = [
+  choices: ChoiceConfig<MocConfigModule>[] = [
     {
       useClass: MocConfigModule,
       type: ChoiceType.RECOMMENDED,
       modules: [
-        new BranchNameLintModule(),
-        new CommitLintModule(),
-        new EditorConfigModule(),
-        new EslintModule([
-          new EslintTypescriptModule(),
-        ]),
-        new StylelintModule(),
-        new PrettierModule([
-          new PrettierEslintModule(),
-          new PrettierStylelintModule(),
-        ]),
-        new HuskyModule(),
-        new LintStagedModule(),
-        new SmileTrackModule(),
+        BranchNameLintModule,
+        CommitLintModule,
+        EditorConfigModule,
+        {
+          useClass: EslintModule,
+          modules: [EslintTypescriptModule],
+        },
+        StylelintModule,
+        {
+          useClass: PrettierModule,
+          modules: [PrettierEslintModule, PrettierStylelintModule],
+        },
+        HuskyModule,
+        LintStagedModule,
+        SmileTrackModule,
       ]
     }
   ]
