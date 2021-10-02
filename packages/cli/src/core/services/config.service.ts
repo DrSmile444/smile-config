@@ -6,7 +6,7 @@ import {
   ChoiceModule,
   LintItem,
   Newable,
-} from '@smile-config/cli/interfaces';
+} from '../../interfaces';
 import { exec, execSync, spawn } from 'child_process';
 import * as fs from 'fs';
 import { mergeFiles, mergeObjects } from 'json-merger';
@@ -208,11 +208,11 @@ export class ConfigService {
 
             if (!this.checkInstalledPackage('husky')) {
               console.info('Installing husky');
-              execSync('npm i husky', { stdio: 'inherit' });
+              execSync('npx husky-init', { stdio: 'inherit' });
             }
 
             console.info('Installing git hook:', hookName);
-            execSync(`npx husky add ${hookName} "echo "Error: no ${hookName} specified" && exit 1"`, { stdio: 'inherit' });
+            execSync(`husky add .husky/${hookName} 'echo "Error: no ${hookName} specified" && exit 1'`, { stdio: 'inherit' });
           }
 
           this.folderService.copyFile(moduleFileName, moduleFile);
