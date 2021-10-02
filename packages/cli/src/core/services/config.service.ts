@@ -4,11 +4,11 @@ import {
   ChoiceConfig,
   ChoiceItemConfig,
   LintItem,
-  Newable
+  Newable,
 } from '@smile-config/cli/interfaces';
 
 import { NoPackageJsonError, NoRequiredFileError } from '../errors';
-import { FolderService } from './folder.service';
+import { FileType, FolderService } from './folder.service';
 import { mergeFiles } from 'json-merger';
 import * as fs from 'fs';
 
@@ -16,6 +16,8 @@ export class ConfigService {
   constructor(private folderService: FolderService) {}
 
   applyConfig<T extends AbstractConfigModule>(config: ChoiceConfig<T>) {
+    console.info('Working directory:', process.cwd());
+
     const folderFiles = this.folderService.readFolder();
 
     if (!folderFiles.includes('package.json')) {
@@ -27,7 +29,7 @@ export class ConfigService {
     /**
      * Validating config required files
      * */
-    const missingRequiredFile = configModule.required.find((requiredFile) => !folderFiles.includes(requiredFile))
+    const missingRequiredFile = configModule.required.find((requiredFile) => !folderFiles.includes(requiredFile));
 
     if (missingRequiredFile) {
       throw new NoRequiredFileError(missingRequiredFile);
@@ -73,16 +75,29 @@ export class ConfigService {
           console.log('yes', moduleFileName);
 
         } else {
-          if (!fs.existsSync(moduleFileName)) {
-            fs.writeFileSync(moduleFileName, '{}');
+          switch (this.folderService.getFileType(moduleFileName)) {
+            case FileType.JSON: {
+              if (!fs.existsSync(moduleFileName)) {
+                fs.writeFileSync(moduleFileName, '{}');
+              }
+
+              const result = mergeFiles([moduleFileName, moduleFile]);
+              console.log(result);
+
+              fs.writeFileSync(moduleFileName, JSON.stringify(result, null, 2) + '\n');
+              console.log('not', moduleFileName);
+              break;
+            }
+
+            case FileType.JS:
+            case FileType.EDITORCONFIG: {
+              this.folderService.copyFile(moduleFileName, moduleFile);
+              break;
+            }
+
+            default:
+              throw new Error('Unknown File: ' + moduleFile);
           }
-
-          const result = mergeFiles([moduleFileName, moduleFile]);
-          console.log(result);
-
-          fs.writeFileSync(moduleFileName, JSON.stringify(result, null, 2) + '\n');
-          console.log('not', moduleFileName);
-          process.exit(0);
         }
       });
     });
