@@ -8,14 +8,20 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["packages/cli/**/*.ts"]
+            "lintFilePatterns": [
+              "packages/cli/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/packages/cli"],
+          "outputs": [
+            "coverage/packages/cli"
+          ],
           "options": {
             "jestConfig": "packages/cli/jest.config.js",
             "passWithNoTests": true
@@ -23,13 +29,17 @@
         },
         "build": {
           "executor": "@nrwl/node:package",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/packages/cli",
             "tsConfig": "packages/cli/tsconfig.lib.json",
             "packageJson": "packages/cli/package.json",
             "main": "packages/cli/bin/index.ts",
-            "assets": ["packages/cli/*.md"]
+            "assets": [
+              "packages/cli/*.md"
+            ]
           }
         }
       }

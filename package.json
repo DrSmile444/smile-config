@@ -5,6 +5,7 @@
   "scripts": {
     "start:cli": "npm --prefix ./packages/cli run start",
     "build:cli": "nx build cli && chmod +x ./dist/packages/cli/bin/index.js",
+    "postbuild:cli": "cp -R ./packages/cli/configs/ ./dist/packages/cli/configs",
     "link:cli": "cd ./dist/packages/cli && npm link"
   },
   "private": true,
