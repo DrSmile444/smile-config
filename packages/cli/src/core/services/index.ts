@@ -1,10 +1,9 @@
 import { ConfigService } from './config.service';
 import { FolderService } from './folder.service';
-import { EslintMergerService } from './eslint-merger.service';
+import { eslintMerger, vscodeExtensionMerger } from '../mergers';
 
 export const folderService = new FolderService();
-export const eslintMergerService = new EslintMergerService();
-export const configService = new ConfigService(folderService, eslintMergerService);
+export const configService = new ConfigService(eslintMerger, folderService, vscodeExtensionMerger);
 
 export * from './config.service';
 export * from './folder.service';

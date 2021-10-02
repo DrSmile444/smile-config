@@ -11,10 +11,14 @@ import { NoPackageJsonError, NoRequiredFileError } from '../errors';
 import { FileType, FolderService } from './folder.service';
 import { mergeFiles } from 'json-merger';
 import * as fs from 'fs';
-import { EslintMergerService } from './eslint-merger.service';
+import { EslintMerger, VscodeExtensionMerger, VscodeExtensions } from '../mergers';
 
 export class ConfigService {
-  constructor(private folderService: FolderService, private eslintMergerService: EslintMergerService) {}
+  constructor(
+    private eslintMergerService: EslintMerger,
+    private folderService: FolderService,
+    private vscodeExtensionMerger: VscodeExtensionMerger,
+  ) {}
 
   applyConfig<T extends AbstractConfigModule>(config: ChoiceConfig<T>) {
     console.info('Working directory:', process.cwd());
@@ -64,8 +68,6 @@ export class ConfigService {
         lintScriptItems.push(...resolvedModule.includeToLintScript);
       }
 
-      console.log(resolvedModule.files);
-
       /**
        * Working with files
        * */
@@ -86,12 +88,18 @@ export class ConfigService {
         switch (this.folderService.getFileType(moduleFileName)) {
           case FileType.JSON: {
             if (moduleFileName === '.eslintrc.json') {
-              const isEslintFileExists = fs.existsSync(moduleFileName);
-              const eslintTarget = isEslintFileExists ? JSON.parse(fs.readFileSync(moduleFileName).toString()) : null;
-              const eslintSource = JSON.parse(fs.readFileSync(moduleFile).toString());
+              const { sourceFile, targetFile } = this.getMergeFiles(moduleFileName, moduleFile);
 
-              const newEslintConfig = this.eslintMergerService.mergeConfigs(eslintTarget, eslintSource);
+              const newEslintConfig = this.eslintMergerService.mergeConfigs(targetFile, sourceFile);
               fs.writeFileSync(moduleFileName, JSON.stringify(newEslintConfig, null, 2));
+              break;
+            }
+
+            if (moduleFileName === '.vscode/extensions.json') {
+              const { sourceFile, targetFile } = this.getMergeFiles<VscodeExtensions>(moduleFileName, moduleFile);
+
+              const newExtensions = this.vscodeExtensionMerger.mergeExtensions(targetFile, sourceFile);
+              fs.writeFileSync(moduleFileName, JSON.stringify(newExtensions, null, 2));
               break;
             }
 
@@ -116,5 +124,17 @@ export class ConfigService {
         }
       });
     });
+  }
+
+  getMergeFiles<T>(target: string, source: string): { targetFile: T, sourceFile: T } {
+    const isEslintFileExists = fs.existsSync(target);
+
+    const targetFile = isEslintFileExists ? JSON.parse(fs.readFileSync(target).toString()) as Record<any, any> : null;
+    const sourceFile = JSON.parse(fs.readFileSync(source).toString()) as Record<any, any>;
+
+    return {
+      targetFile,
+      sourceFile,
+    }
   }
 }
