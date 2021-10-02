@@ -83,6 +83,13 @@ export class ConfigService {
     fs.writeFileSync('package.json', JSON.stringify(newPackageJson, null, 2));
   }
 
+  checkInstalledPackage(packageName: string) {
+    const packageJson = JSON.parse(fs.readFileSync('package.json').toString());
+
+    return (!!packageJson.dependencies && !!packageJson.dependencies[packageName]) ||
+      (!!packageJson.devDependencies && !!packageJson.devDependencies[packageName]);
+  }
+
   processModule(module: ChoiceModule) {
     const lintScriptItems: LintItem[] = [];
 
@@ -194,6 +201,20 @@ export class ConfigService {
         case FileType.JS:
         case FileType.NO_EXTENSION:
         case FileType.EDITORCONFIG: {
+          if (moduleFileName.includes('.husky/')) {
+            const hookName = moduleFileName.replace('.husky/', '');
+
+            console.log(hookName);
+
+            if (!this.checkInstalledPackage('husky')) {
+              console.info('Installing husky');
+              execSync('npm i husky', { stdio: 'inherit' });
+            }
+
+            console.info('Installing git hook:', hookName);
+            execSync(`npx husky add ${hookName} "echo "Error: no ${hookName} specified" && exit 1"`, { stdio: 'inherit' });
+          }
+
           this.folderService.copyFile(moduleFileName, moduleFile);
           break;
         }
