@@ -51,8 +51,9 @@ export class ConfigService {
       throw new NoRequiredFileError(missingRequiredFile);
     }
 
+    // TODO check is husky selected
     this.modifyPackageJson({
-      scripts: { lint: 'echo "Error: no test specified" && exit 1' },
+      scripts: { prepare: "husky install", lint: 'echo "Error: no test specified" && exit 1' },
     });
 
     /**
