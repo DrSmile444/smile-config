@@ -1,1 +1,1 @@
-export * from './optional';
+export * from './addons';

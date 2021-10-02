@@ -1,7 +1,7 @@
 import { AbstractConfigItemModule } from '@smile-config/cli/interfaces';
 
-import { EslintTypescriptModule } from './optional/typescript/eslint-typescript.module';
 import { BaseConfigItemModule } from '../../../../src/base';
+import { EslintTypescriptModule } from './addons';
 
 export class EslintModule extends BaseConfigItemModule implements AbstractConfigItemModule {
   name = 'eslint';
