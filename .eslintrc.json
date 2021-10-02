@@ -1,7 +1,8 @@
 {
   "root": true,
   "ignorePatterns": [
-    "**/*"
+    "!**/*",
+    "node_modules"
   ],
   "plugins": [
     "prettier"
