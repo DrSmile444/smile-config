@@ -10,15 +10,28 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@smile-config/cli": ["packages/cli/bin/index.ts"],
-      "@smile-config/cli/interfaces": ["packages/cli/src/interfaces"],
-      "@smile-config/cli/interfaces/*": ["packages/cli/src/interfaces/*"]
+      "@smile-config/cli": [
+        "packages/cli/bin/index.ts"
+      ],
+      "@smile-config/cli/interfaces": [
+        "packages/cli/src/interfaces"
+      ],
+      "@smile-config/cli/interfaces/*": [
+        "packages/cli/src/interfaces/*"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

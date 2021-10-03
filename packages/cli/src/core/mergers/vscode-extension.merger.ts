@@ -1,20 +1,23 @@
+import { mergeArray } from '../utils';
+
 export interface VscodeExtensions {
   recommendations: string[];
 }
 
 export class VscodeExtensionMerger {
-  mergeExtensions(target: VscodeExtensions | null, source: VscodeExtensions): VscodeExtensions {
-    const mergeArray = <T extends string>(aArray?: T[], bArray?: T[]): T[] => {
-      const result = [...(aArray || []), ...(bArray || [])];
-
-      return [...new Set(result)]
-    };
+  mergeExtensions(
+    target: VscodeExtensions | null,
+    source: VscodeExtensions
+  ): VscodeExtensions {
     if (target === null) {
       return source;
     }
 
     return {
-      recommendations: mergeArray(target.recommendations, source.recommendations),
+      recommendations: mergeArray(
+        target.recommendations,
+        source.recommendations
+      ),
     };
   }
 }

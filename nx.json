@@ -14,7 +14,7 @@
   },
   "projects": {
     "cli": {
-      "tags": []
+      "tags": ["scope:cli"]
     }
   }
 }

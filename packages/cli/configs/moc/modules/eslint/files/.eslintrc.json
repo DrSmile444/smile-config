@@ -13,6 +13,9 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
+        "class-methods-use-this": "off",
+        "import/prefer-default-export": "off",
+        "import/extensions": ["error", "never", { "json": "always" }],
         "quotes": ["error", "single"],
         "operator-linebreak": "error",
         "no-unneeded-ternary": "error",

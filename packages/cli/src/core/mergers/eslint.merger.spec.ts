@@ -1,19 +1,28 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-var-requires,global-require,@typescript-eslint/no-require-imports */
+import type { Linter } from 'eslint';
 import * as fs from 'fs';
 
-import { EslintModule, EslintTypescriptModule } from '../../../configs/moc/modules';
+import {
+  EslintModule,
+  EslintTypescriptModule,
+} from '../../../configs/moc/modules';
 import { EslintMerger } from './eslint.merger';
 
 export const eslintMerger = new EslintMerger();
 
-const readJsonFile = (path) => JSON.parse(fs.readFileSync(path).toString())
+const readJsonFile = (path?: string): Linter.Config | null =>
+  path ? (JSON.parse(fs.readFileSync(path).toString()) as Linter.Config) : null;
 
 describe('EslintMerger', () => {
   it('should merge mock eslint config', () => {
-    const targetA = require('./__mocks__/mock-a.eslintrc.json');
-    const sourceB = require('./__mocks__/mock-b.eslintrc.json');
-    const sourceC = require('./__mocks__/mock-c.eslintrc.json');
-    const expected = require('./__mocks__/mock-result.eslintrc.json');
+    const targetA =
+      require('./__mocks__/mock-a.eslintrc.json') as Linter.Config;
+    const sourceB =
+      require('./__mocks__/mock-b.eslintrc.json') as Linter.Config;
+    const sourceC =
+      require('./__mocks__/mock-c.eslintrc.json') as Linter.Config;
+    const expected =
+      require('./__mocks__/mock-result.eslintrc.json') as Linter.Config;
 
     const result1 = eslintMerger.mergeConfigs(targetA, sourceB);
     const result2 = eslintMerger.mergeConfigs(result1, sourceC);
@@ -23,15 +32,38 @@ describe('EslintMerger', () => {
   });
 
   it('should merge real eslint config', () => {
-    const targetFilePath = readJsonFile((new EslintModule()).files.find((file) => file.includes('.eslintrc.json')));
-    const sourceFilePath = readJsonFile((new EslintTypescriptModule()).files.find((file) => file.includes('.eslintrc.json')));
+    const targetFilePath = readJsonFile(
+      new EslintModule().files.find((file) => file.includes('.eslintrc.json'))
+    );
+    const sourceFilePath = readJsonFile(
+      new EslintTypescriptModule().files.find((file) =>
+        file.includes('.eslintrc.json')
+      )
+    );
 
-    const result = eslintMerger.mergeConfigs(targetFilePath, sourceFilePath);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const result = eslintMerger.mergeConfigs(targetFilePath, sourceFilePath!);
     expect(result).toMatchSnapshot();
   });
 
   it('should not crash on empty overrides', () => {
-    const result = eslintMerger.mergeConfigs({ a: 1, c: 1 }, { a: 2, b: 2 });
-    expect(result).toStrictEqual({ a: 2, b: 2, c: 1 });
+    const result = eslintMerger.mergeConfigs(
+      { root: true, reportUnusedDisableDirectives: true },
+      { root: false, noInlineConfig: true }
+    );
+
+    expect(result).toStrictEqual({
+      root: false,
+      reportUnusedDisableDirectives: true,
+      noInlineConfig: true,
+    });
+  });
+
+  it('should merge plugins', () => {
+    const result = eslintMerger.mergeConfigs(
+      { plugins: ['eslint'] },
+      { plugins: ['smile-config'] }
+    );
+    expect(result).toStrictEqual({ plugins: ['eslint', 'smile-config'] });
   });
 });

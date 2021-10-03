@@ -79,6 +79,7 @@ Object {
           "error",
           "1tbs",
         ],
+        "class-methods-use-this": "off",
         "comma-dangle": Array [
           "error",
           "always-multiline",
@@ -94,6 +95,14 @@ Object {
         "guard-for-in": "error",
         "id-blacklist": "off",
         "id-match": "off",
+        "import/extensions": Array [
+          "error",
+          "never",
+          Object {
+            "json": "always",
+          },
+        ],
+        "import/prefer-default-export": "off",
         "max-len": Array [
           "error",
           Object {
@@ -239,13 +248,19 @@ Object {
             "selector": "property",
           },
         ],
+        "@typescript-eslint/no-duplicate-imports": Array [
+          "error",
+        ],
         "@typescript-eslint/no-empty-function": "off",
         "@typescript-eslint/no-empty-interface": "error",
         "@typescript-eslint/no-misused-new": "error",
         "@typescript-eslint/no-non-null-assertion": "error",
+        "@typescript-eslint/no-shadow": "error",
+        "@typescript-eslint/no-type-alias": "off",
         "@typescript-eslint/no-unused-expressions": "error",
         "@typescript-eslint/no-use-before-define": "error",
         "@typescript-eslint/prefer-function-type": "error",
+        "@typescript-eslint/prefer-readonly-parameter-types": "off",
         "@typescript-eslint/quotes": Array [
           "error",
           "single",
@@ -254,6 +269,7 @@ Object {
           "error",
           "always",
         ],
+        "@typescript-eslint/strict-boolean-expressions": "off",
         "@typescript-eslint/tslint/config": Array [
           "error",
           Object {
@@ -304,9 +320,24 @@ Object {
         "@typescript-eslint/unified-signatures": "error",
         "indent": "off",
         "indent-legacy": "off",
+        "no-duplicate-imports": "off",
+        "no-shadow": "off",
       },
     },
   ],
   "root": true,
+  "settings": Object {
+    "import/resolver": Object {
+      "node": Object {
+        "extensions": Array [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx",
+        ],
+      },
+      "typescript": Object {},
+    },
+  },
 }
 `;

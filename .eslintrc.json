@@ -5,8 +5,23 @@
     "node_modules"
   ],
   "plugins": [
-    "prettier"
+    "@nrwl/nx",
+    "prettier",
+    "@typescript-eslint"
   ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      },
+      "typescript": {}
+    }
+  },
   "overrides": [
     {
       "files": [
@@ -16,11 +31,19 @@
         "*.jsx"
       ],
       "rules": {
+        "import/extensions": [
+          "error",
+          "never",
+          {
+            "json": "always"
+          }
+        ],
         "@nrwl/nx/enforce-module-boundaries": [
           "error",
           {
             "enforceBuildableLibDependency": true,
             "allow": [],
+            "allowCircularSelfDependency": true,
             "depConstraints": [
               {
                 "sourceTag": "*",
@@ -129,7 +152,9 @@
             ]
           }
         ],
-        "valid-typeof": "error"
+        "valid-typeof": "error",
+        "import/prefer-default-export": "off",
+        "class-methods-use-this": "off"
       },
       "plugins": []
     },
@@ -214,6 +239,8 @@
         ],
         "@typescript-eslint/type-annotation-spacing": "error",
         "@typescript-eslint/unified-signatures": "error",
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": "error",
         "@typescript-eslint/tslint/config": [
           "error",
           {
@@ -259,6 +286,20 @@
               ]
             }
           }
+        ],
+        "@typescript-eslint/no-type-alias": "off",
+        "no-duplicate-imports": "off",
+        "@typescript-eslint/no-duplicate-imports": [
+          "error"
+        ],
+        "@typescript-eslint/prefer-readonly-parameter-types": "off",
+        "@typescript-eslint/strict-boolean-expressions": "off",
+        "@typescript-eslint/lines-between-class-members": [
+          "error",
+          "always",
+          {
+            "exceptAfterSingleLine": true
+          }
         ]
       },
       "parserOptions": {
@@ -289,7 +330,9 @@
   },
   "extends": [
     "airbnb-base",
-    "prettier"
+    "prettier",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/all"
   ],
   "rules": {
     "prettier/prettier": "error"

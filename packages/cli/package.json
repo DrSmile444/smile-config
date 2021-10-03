@@ -6,5 +6,9 @@
   },
   "scripts": {
     "start": "nodemon ./bin/index.ts -e ts"
+  },
+  "dependencies": {
+    "inquirer": "^8.1.5",
+    "json-merger": "^1.1.6"
   }
 }
