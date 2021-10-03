@@ -26,7 +26,7 @@
 
 # misc
 /.sass-cache
-.eslintcache
+/.eslintcache
 /connect.lock
 /coverage
 /libpeerconnection.log
@@ -38,3 +38,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Smile Track
+/.smile-track

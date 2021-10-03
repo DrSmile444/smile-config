@@ -17,7 +17,7 @@ export class EslintModule
       npmRun: ['lint:js'],
       order: 10,
       additionalCommands: {
-        'lint:js': 'eslint .',
+        'lint:js': 'eslint . --cache',
         'lint:js:fix': 'npm run lint:js -- --fix',
       },
       when: (packages) => !!packages && !packages['@nrwl/cli'],

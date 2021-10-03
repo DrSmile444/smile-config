@@ -4,9 +4,10 @@ import * as fs from 'fs';
 import { FIRST_INDEX, ONE_ITEM_LENGTH, SPLICE_LAST_ELEMENT } from '../../const';
 
 export enum FileType {
-  JSON = 'json',
-  JS = 'js',
   EDITORCONFIG = 'editorconfig',
+  GIT_IGNORE = 'gitignore',
+  JS = 'js',
+  JSON = 'json',
   NO_EXTENSION = 'no_extension',
 }
 
