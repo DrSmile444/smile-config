@@ -9,13 +9,14 @@
     "postbuild:cli": "cp -R ./packages/cli/configs/ ./dist/packages/cli/configs",
     "link:cli": "cd ./dist/packages/cli && npm link",
     "prepare": "husky install",
-    "lint": "npm run lint:branch-name && npm run lint:workspace && npm run affected:lint",
+    "lint": "npm-run-all --parallel lint:branch-name lint:workspace affected:lint",
     "lint:branch-name": "branch-name-lint ./.branchlintrc.json",
     "lint:commit-name": "commitlint --edit",
     "lint:workspace": "nx workspace-lint",
     "affected:lint": "nx affected:lint --parallel --maxParallel=5 --cache",
     "affected:lint:fix": "nx affected:lint --parallel --maxParallel=5 --cache --fix",
-    "generate-uml": "LEVEL=info npx arkit"
+    "generate-uml": "LEVEL=info npx arkit",
+    "track-time": "smile-track"
   },
   "private": true,
   "devDependencies": {
@@ -48,6 +49,7 @@
     "jest": "27.0.3",
     "lint-staged": "^11.1.2",
     "nodemon": "^2.0.13",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.3.1",
     "smile-track": "^0.17.0",
     "stylelint": "^13.13.1",

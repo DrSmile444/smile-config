@@ -68,14 +68,19 @@ export class ConfigService {
     this.modifyPackageJson({
       scripts: {
         prepare: 'husky install',
-        lint: 'echo "Error: no test specified" && exit 1',
+        lint: 'echo "Error: no lint specified" && exit 1',
+      },
+      devDependencies: {
+        // TODO add when will be deployed to npm
+        // 'smile-config': '',
+        'npm-run-all': '^4.1.5',
       },
     });
 
     /**
      * Iterating though modules
      * */
-    const lintScript = `npm run ${config.modules
+    const lintScript = `npm-run-all --parallel ${config.modules
       .map((module) => this.processModule(module))
       .filter((scripts) => scripts.length)
       .reduce(reduceArray)
@@ -110,7 +115,7 @@ export class ConfigService {
       .filter(Boolean)
       .map((lintItem: BaseLintItem) => lintItem.npmRun)
       .reduce(reduceArray)
-      .join(' && npm run ')}`;
+      .join(' ')}`;
 
     this.modifyPackageJson({ scripts: { lint: lintScript } });
 
