@@ -1,0 +1,65 @@
+{
+  "$schema": "https://arkit.pro/schema.json",
+  "excludePatterns": ["test/**", "tests/**", "**/*.test.*", "**/*.spec.*", "node_modules/eslint"],
+  "components": [
+    {
+      "type": "Dependency",
+      "patterns": ["node_modules/*"]
+    },
+    {
+      "type": "Error",
+      "patterns": ["**/*.error.ts"]
+    },
+    {
+      "type": "Service",
+      "patterns": ["**/*.service.ts"]
+    },
+    {
+      "type": "Merger",
+      "patterns": ["**/*.merger.ts"]
+    },
+    {
+      "type": "Config Module",
+      "patterns": ["**/configs/**/*.ts"]
+    },
+    {
+      "type": "Component",
+      "patterns": ["**/*.ts", "**/*.tsx"]
+    }
+  ],
+  "output": [
+    {
+      "path": "arkit.svg",
+      "groups": [
+        {
+          "first": true,
+          "components": ["Component"]
+        },
+        {
+          "type": "Dependencies",
+          "components": ["Dependency"]
+        },
+        {
+          "type": "Mergers",
+          "components": ["Merger"]
+        },
+        {
+          "type": "Services",
+          "components": ["Service"]
+        },
+        {
+          "type": "Errors",
+          "components": ["Error"]
+        },
+        {
+          "type": "Configs",
+          "components": ["Config"]
+        },
+        {
+          "type": "Config Modules",
+          "components": ["Config Module"]
+        }
+      ]
+    }
+  ]
+}
