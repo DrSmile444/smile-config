@@ -20,6 +20,7 @@ import type {
 } from '../../interfaces';
 import { NoPackageJsonError, NoRequiredFileError } from '../errors';
 import type {
+  CombineMerger,
   EslintMerger,
   StylelintMerger,
   VscodeExtensionMerger,
@@ -31,6 +32,7 @@ import { FileType } from './folder.service';
 
 export class ConfigService {
   constructor(
+    private readonly combineMerger: CombineMerger,
     private readonly eslintMergerService: EslintMerger,
     private readonly folderService: FolderService,
     private readonly stylelintMerger: StylelintMerger,
@@ -262,6 +264,7 @@ export class ConfigService {
         }
 
         case FileType.JS:
+        case FileType.GIT_IGNORE:
         case FileType.NO_EXTENSION:
         case FileType.EDITORCONFIG: {
           if (moduleFileName.includes('.husky/')) {
@@ -277,6 +280,20 @@ export class ConfigService {
               `husky add .husky/${hookName} 'echo "Error: no ${hookName} specified" && exit 1'`,
               { stdio: 'inherit' }
             );
+          }
+
+          if (moduleFileName.includes('.gitignore')) {
+            const { sourceFile, targetFile } = this.getPlainMergeFiles(
+              moduleFileName,
+              moduleFile
+            );
+
+            const newGitIgnore = this.combineMerger.mergeFiles(
+              targetFile,
+              sourceFile
+            );
+            fs.writeFileSync(moduleFileName, newGitIgnore);
+            break;
           }
 
           this.folderService.copyFile(moduleFileName, moduleFile);
@@ -299,12 +316,29 @@ export class ConfigService {
     target: string,
     source: string
   ): { targetFile: T | null; sourceFile: T } {
-    const isEslintFileExists = fs.existsSync(target);
+    const isTargetFileExists = fs.existsSync(target);
 
-    const targetFile = isEslintFileExists
+    const targetFile = isTargetFileExists
       ? (JSON.parse(fs.readFileSync(target).toString()) as T)
       : null;
     const sourceFile = JSON.parse(fs.readFileSync(source).toString()) as T;
+
+    return {
+      targetFile,
+      sourceFile,
+    };
+  }
+
+  getPlainMergeFiles(
+    target: string,
+    source: string
+  ): { targetFile: string | null; sourceFile: string } {
+    const isTargetFileExists = fs.existsSync(target);
+
+    const targetFile = isTargetFileExists
+      ? fs.readFileSync(target).toString()
+      : null;
+    const sourceFile = fs.readFileSync(source).toString();
 
     return {
       targetFile,

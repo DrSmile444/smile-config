@@ -1,4 +1,5 @@
 import {
+  combineMerger,
   eslintMerger,
   stylelintMerger,
   vscodeExtensionMerger,
@@ -8,6 +9,7 @@ import { FolderService } from './folder.service';
 
 export const folderService = new FolderService();
 export const configService = new ConfigService(
+  combineMerger,
   eslintMerger,
   folderService,
   stylelintMerger,

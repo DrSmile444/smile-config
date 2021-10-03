@@ -1,0 +1,7 @@
+# compiled output
+/dist
+/tmp
+/out-tsc
+combine-a
+
+combine-b
