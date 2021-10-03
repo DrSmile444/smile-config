@@ -1,35 +1,43 @@
-import {
+import { execSync } from 'child_process';
+import type { Linter } from 'eslint';
+import * as fs from 'fs';
+import { mergeFiles, mergeObjects } from 'json-merger';
+import type { Configuration } from 'stylelint';
+import type { PackageJson } from 'type-fest';
+
+import { JSON_STRINGIFY_SPACES, SLICE_EXCLUDE_LAST_ELEMENT } from '../../const';
+import type {
   AbstractConfigItemModule,
   AbstractConfigModule,
+  AppObject,
   ChoiceConfig,
   ChoiceItemConfig,
   ChoiceModule,
   LintItem,
   Newable,
 } from '../../interfaces';
-import { exec, execSync, spawn } from 'child_process';
-import * as fs from 'fs';
-import { mergeFiles, mergeObjects } from 'json-merger';
-
 import { NoPackageJsonError, NoRequiredFileError } from '../errors';
-import {
+import type {
   EslintMerger,
   StylelintMerger,
   VscodeExtensionMerger,
   VscodeExtensions,
 } from '../mergers';
 import { reduceArray } from '../utils';
-import { FileType, FolderService } from './folder.service';
+import type { FolderService } from './folder.service';
+import { FileType } from './folder.service';
 
 export class ConfigService {
   constructor(
-    private eslintMergerService: EslintMerger,
-    private folderService: FolderService,
-    private stylelintMerger: StylelintMerger,
-    private vscodeExtensionMerger: VscodeExtensionMerger
+    private readonly eslintMergerService: EslintMerger,
+    private readonly folderService: FolderService,
+    private readonly stylelintMerger: StylelintMerger,
+    private readonly vscodeExtensionMerger: VscodeExtensionMerger
   ) {}
 
-  applyConfig<T extends AbstractConfigModule>(config: ChoiceConfig<T>) {
+  applyConfig<T extends AbstractConfigModule>(
+    config: Readonly<ChoiceConfig<T>>
+  ) {
     console.info('Working directory:', process.cwd());
 
     const folderFiles = this.folderService.readFolder();
@@ -38,7 +46,8 @@ export class ConfigService {
       throw new NoPackageJsonError();
     }
 
-    const configModule = new config.useClass();
+    const ConfigClass = config.useClass;
+    const configModule = new ConfigClass();
 
     /**
      * Validating config required files
@@ -47,13 +56,16 @@ export class ConfigService {
       (requiredFile) => !folderFiles.includes(requiredFile)
     );
 
-    if (missingRequiredFile) {
+    if (missingRequiredFile !== undefined) {
       throw new NoRequiredFileError(missingRequiredFile);
     }
 
     // TODO check is husky selected
     this.modifyPackageJson({
-      scripts: { prepare: "husky install", lint: 'echo "Error: no test specified" && exit 1' },
+      scripts: {
+        prepare: 'husky install',
+        lint: 'echo "Error: no test specified" && exit 1',
+      },
     });
 
     /**
@@ -77,36 +89,50 @@ export class ConfigService {
     execSync('husky install', { stdio: 'inherit' });
   }
 
-  modifyPackageJson(json: Record<any, any>) {
-    const packageJson = JSON.parse(fs.readFileSync('package.json').toString());
-    const newPackageJson = mergeObjects([packageJson, json]);
+  modifyPackageJson(json: PackageJson) {
+    const packageJson = JSON.parse(
+      fs.readFileSync('package.json').toString()
+    ) as PackageJson;
+    const newPackageJson = mergeObjects([packageJson, json]) as PackageJson;
 
-    fs.writeFileSync('package.json', JSON.stringify(newPackageJson, null, 2));
+    fs.writeFileSync(
+      'package.json',
+      JSON.stringify(newPackageJson, null, JSON_STRINGIFY_SPACES)
+    );
   }
 
   checkInstalledPackage(packageName: string) {
-    const packageJson = JSON.parse(fs.readFileSync('package.json').toString());
+    const packageJson = JSON.parse(
+      fs.readFileSync('package.json').toString()
+    ) as PackageJson;
 
-    return (!!packageJson.dependencies && !!packageJson.dependencies[packageName]) ||
-      (!!packageJson.devDependencies && !!packageJson.devDependencies[packageName]);
+    return (
+      (!!packageJson.dependencies && !!packageJson.dependencies[packageName]) ||
+      (!!packageJson.devDependencies &&
+        !!packageJson.devDependencies[packageName])
+    );
   }
 
   processModule(module: ChoiceModule) {
     const lintScriptItems: LintItem[] = [];
 
+    // eslint-disable-next-line @typescript-eslint/init-declarations
     let resolvedModule: AbstractConfigItemModule;
     let additionalModules: Newable<AbstractConfigItemModule>[] = [];
 
     /**
      * Resolving providers
      * */
-    if ((module as ChoiceItemConfig<any>).useClass) {
-      const classProvider = module as ChoiceItemConfig<any>;
-      resolvedModule = new classProvider.useClass();
-      additionalModules = classProvider.modules || [];
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if ((module as ChoiceItemConfig<AbstractConfigItemModule>).useClass) {
+      const classProvider =
+        module as ChoiceItemConfig<AbstractConfigItemModule>;
+      const ConfigClass = classProvider.useClass;
+      resolvedModule = new ConfigClass();
+      additionalModules = classProvider.modules;
     } else {
-      const existingProvider = module as Newable<AbstractConfigItemModule>;
-      resolvedModule = new existingProvider();
+      const ExistingProvider = module as Newable<AbstractConfigItemModule>;
+      resolvedModule = new ExistingProvider();
     }
 
     /**
@@ -124,9 +150,11 @@ export class ConfigService {
 
       if (this.folderService.isNestedFile(moduleFileName)) {
         let folderPath = '';
+        const SLICE_START = 0;
+
         moduleFileName
           .split('/')
-          .slice(0, -1)
+          .slice(SLICE_START, SLICE_EXCLUDE_LAST_ELEMENT)
           .forEach((folder) => {
             folderPath += `${folder}/`;
 
@@ -139,18 +167,17 @@ export class ConfigService {
       switch (this.folderService.getFileType(moduleFileName)) {
         case FileType.JSON: {
           if (moduleFileName === '.eslintrc.json') {
-            const { sourceFile, targetFile } = this.getMergeFiles(
-              moduleFileName,
-              moduleFile
-            );
+            const { sourceFile, targetFile } =
+              this.getMergeFiles<Linter.Config>(moduleFileName, moduleFile);
 
             const newEslintConfig = this.eslintMergerService.mergeConfigs(
               targetFile,
               sourceFile
             );
+
             fs.writeFileSync(
               moduleFileName,
-              JSON.stringify(newEslintConfig, null, 2)
+              JSON.stringify(newEslintConfig, null, JSON_STRINGIFY_SPACES)
             );
             break;
           }
@@ -165,16 +192,14 @@ export class ConfigService {
             );
             fs.writeFileSync(
               moduleFileName,
-              JSON.stringify(newExtensions, null, 2)
+              JSON.stringify(newExtensions, null, JSON_STRINGIFY_SPACES)
             );
             break;
           }
 
           if (moduleFileName === '.stylelintrc.json') {
-            const { sourceFile, targetFile } = this.getMergeFiles(
-              moduleFileName,
-              moduleFile
-            );
+            const { sourceFile, targetFile } =
+              this.getMergeFiles<Configuration>(moduleFileName, moduleFile);
 
             const newStylelintConfig = this.stylelintMerger.mergeStyle(
               targetFile,
@@ -182,7 +207,7 @@ export class ConfigService {
             );
             fs.writeFileSync(
               moduleFileName,
-              JSON.stringify(newStylelintConfig, null, 2)
+              JSON.stringify(newStylelintConfig, null, JSON_STRINGIFY_SPACES)
             );
             break;
           }
@@ -191,10 +216,10 @@ export class ConfigService {
             fs.writeFileSync(moduleFileName, '{}');
           }
 
-          const result = mergeFiles([moduleFileName, moduleFile]);
+          const result = mergeFiles([moduleFileName, moduleFile]) as AppObject;
           fs.writeFileSync(
             moduleFileName,
-            `${JSON.stringify(result, null, 2)}\n`
+            `${JSON.stringify(result, null, JSON_STRINGIFY_SPACES)}\n`
           );
           break;
         }
@@ -205,15 +230,16 @@ export class ConfigService {
           if (moduleFileName.includes('.husky/')) {
             const hookName = moduleFileName.replace('.husky/', '');
 
-            console.log(hookName);
-
             if (!this.checkInstalledPackage('husky')) {
               console.info('Installing husky');
               execSync('npx husky-init', { stdio: 'inherit' });
             }
 
             console.info('Installing git hook:', hookName);
-            execSync(`husky add .husky/${hookName} 'echo "Error: no ${hookName} specified" && exit 1'`, { stdio: 'inherit' });
+            execSync(
+              `husky add .husky/${hookName} 'echo "Error: no ${hookName} specified" && exit 1'`,
+              { stdio: 'inherit' }
+            );
           }
 
           this.folderService.copyFile(moduleFileName, moduleFile);
@@ -225,8 +251,8 @@ export class ConfigService {
       }
     });
 
-    additionalModules.forEach((module) =>
-      lintScriptItems.push(...this.processModule(module))
+    additionalModules.forEach((additionalModule) =>
+      lintScriptItems.push(...this.processModule(additionalModule))
     );
 
     return lintScriptItems;
@@ -235,16 +261,13 @@ export class ConfigService {
   getMergeFiles<T>(
     target: string,
     source: string
-  ): { targetFile: T; sourceFile: T } {
+  ): { targetFile: T | null; sourceFile: T } {
     const isEslintFileExists = fs.existsSync(target);
 
     const targetFile = isEslintFileExists
-      ? (JSON.parse(fs.readFileSync(target).toString()) as Record<any, any>)
+      ? (JSON.parse(fs.readFileSync(target).toString()) as T)
       : null;
-    const sourceFile = JSON.parse(fs.readFileSync(source).toString()) as Record<
-    any,
-    any
-    >;
+    const sourceFile = JSON.parse(fs.readFileSync(source).toString()) as T;
 
     return {
       targetFile,

@@ -2,7 +2,7 @@
   "extends": "@nrwl/workspace/presets/npm.json",
   "npmScope": "smile-config",
   "affected": {
-    "defaultBase": "master"
+    "defaultBase": "main"
   },
   "tasksRunnerOptions": {
     "default": {
@@ -14,7 +14,7 @@
   },
   "projects": {
     "cli": {
-      "tags": []
+      "tags": ["scope:cli"]
     }
   }
 }

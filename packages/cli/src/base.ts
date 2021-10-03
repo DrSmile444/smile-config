@@ -4,7 +4,7 @@ import * as path from 'path';
 export class BaseConfigItemModule {
   files: string[] = [];
 
-  constructor(private dirName: string) {
+  constructor(private readonly dirName: string) {
     this.files = this.getFiles(path.join(dirName, './files'));
   }
 
@@ -15,6 +15,6 @@ export class BaseConfigItemModule {
       return dirent.isDirectory() ? this.getFiles(res) : res;
     });
 
-    return Array.prototype.concat(...files);
+    return Array.prototype.concat(...files) as string[];
   }
 }

@@ -1,13 +1,43 @@
 {
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      },
+      "typescript": {}
+    }
+  },
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx"],
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
       "parserOptions": {
-        "project": ["tsconfig.json"],
+        "project": [
+          "tsconfig.json"
+        ],
         "createDefaultProgram": true
       },
-      "plugins": ["@typescript-eslint/tslint"],
+      "plugins": [
+        "@typescript-eslint/tslint"
+      ],
       "rules": {
+        "@typescript-eslint/lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+        "@typescript-eslint/strict-boolean-expressions": "off",
+        "no-duplicate-imports": "off",
+        "@typescript-eslint/no-duplicate-imports": [
+          "error"
+        ],
+        "@typescript-eslint/no-type-alias": "off",
+        "@typescript-eslint/prefer-readonly-parameter-types": "off",
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": "error",
         "@typescript-eslint/array-type": [
           "error",
           {
@@ -24,7 +54,10 @@
         ],
         "indent": "off",
         "indent-legacy": "off",
-        "@typescript-eslint/indent": ["error", 2],
+        "@typescript-eslint/indent": [
+          "error",
+          2
+        ],
         "@typescript-eslint/member-delimiter-style": [
           "error",
           {
@@ -43,7 +76,9 @@
           "error",
           {
             "selector": "interface",
-            "format": ["PascalCase"],
+            "format": [
+              "PascalCase"
+            ],
             "custom": {
               "regex": "^I[A-Z]",
               "match": false
@@ -51,7 +86,11 @@
           },
           {
             "selector": "property",
-            "format": ["strictCamelCase", "snake_case", "UPPER_CASE"]
+            "format": [
+              "strictCamelCase",
+              "snake_case",
+              "UPPER_CASE"
+            ]
           }
         ],
         "@typescript-eslint/no-empty-function": "off",
@@ -61,8 +100,14 @@
         "@typescript-eslint/no-unused-expressions": "error",
         "@typescript-eslint/no-use-before-define": "error",
         "@typescript-eslint/prefer-function-type": "error",
-        "@typescript-eslint/quotes": ["error", "single"],
-        "@typescript-eslint/semi": ["error", "always"],
+        "@typescript-eslint/quotes": [
+          "error",
+          "single"
+        ],
+        "@typescript-eslint/semi": [
+          "error",
+          "always"
+        ],
         "@typescript-eslint/type-annotation-spacing": "error",
         "@typescript-eslint/unified-signatures": "error",
         "@typescript-eslint/tslint/config": [
@@ -92,8 +137,22 @@
                 }
               },
               "import-spacing": true,
-              "no-restricted-globals": [true, "name", "length", "event", "isNaN", "isFinite"],
-              "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-separator", "check-type"]
+              "no-restricted-globals": [
+                true,
+                "name",
+                "length",
+                "event",
+                "isNaN",
+                "isFinite"
+              ],
+              "whitespace": [
+                true,
+                "check-branch",
+                "check-decl",
+                "check-operator",
+                "check-separator",
+                "check-type"
+              ]
             }
           }
         ]

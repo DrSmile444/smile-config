@@ -1,5 +1,5 @@
-import { AbstractConfigModule, ChoiceConfig, ChoiceType } from '../../src/interfaces';
-
+import type { AbstractConfigModule, ChoiceConfig } from '../../src/interfaces';
+import { ChoiceType } from '../../src/interfaces';
 import {
   BranchNameLintModule,
   CommitLintModule,
@@ -22,9 +22,7 @@ export class MocConfigModule implements AbstractConfigModule {
 
   modules = mocModules;
 
-  required = [
-    'package.json',
-  ];
+  required = ['package.json'];
 
   choices: ChoiceConfig<MocConfigModule>[] = [
     {
