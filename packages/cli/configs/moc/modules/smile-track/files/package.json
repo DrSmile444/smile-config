@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "track-time": "smile-track"
+  },
   "devDependencies": {
     "smile-track": "^0.17.0"
   }
