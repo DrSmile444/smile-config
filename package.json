@@ -14,7 +14,8 @@
     "lint:commit-name": "commitlint --edit",
     "lint:workspace": "nx workspace-lint",
     "affected:lint": "nx affected:lint --parallel --maxParallel=5 --cache",
-    "affected:lint:fix": "nx affected:lint --parallel --maxParallel=5 --cache --fix"
+    "affected:lint:fix": "nx affected:lint --parallel --maxParallel=5 --cache --fix",
+    "generate-uml": "LEVEL=info npx arkit -e \"node_modules\""
   },
   "private": true,
   "devDependencies": {
