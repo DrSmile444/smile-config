@@ -12,7 +12,7 @@ export class StylelintModule
   name = 'stylelint';
   includeToLintScript: LintItem[] = [
     {
-      npmRun: 'lint:styles',
+      npmRun: ['lint:styles'],
       order: 5,
     },
   ];

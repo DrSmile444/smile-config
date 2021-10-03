@@ -14,7 +14,7 @@ export class EslintModule
   addons = [EslintTypescriptModule];
   includeToLintScript: LintItem[] = [
     {
-      npmRun: 'lint:js',
+      npmRun: ['lint:js'],
       order: 10,
       additionalCommands: {
         'lint:js': 'eslint .',
@@ -22,9 +22,10 @@ export class EslintModule
       },
       when: (packages) => !!packages && !packages['@nrwl/cli'],
       instead: {
-        npmRun: 'affected:lint',
+        npmRun: ['lint:workspace', 'affected:lint'],
         order: 10,
         additionalCommands: {
+          'lint:workspace': 'nx workspace-lint',
           'affected:lint':
             'nx affected:lint --parallel --maxParallel=5 --cache',
           'affected:lint:fix':

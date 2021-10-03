@@ -107,6 +107,7 @@ export class ConfigService {
       })
       .filter(Boolean)
       .map((lintItem: BaseLintItem) => lintItem.npmRun)
+      .reduce(reduceArray)
       .join(' && npm run ')}`;
 
     this.modifyPackageJson({ scripts: { lint: lintScript } });

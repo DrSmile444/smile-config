@@ -4,7 +4,7 @@ export type Newable<T> = new (...args: any[]) => T;
 export type AppObject<T = any> = Record<any, T>;
 
 export interface BaseLintItem {
-  npmRun: string;
+  npmRun: string[];
   additionalCommands?: Record<string, string>;
   order: number;
 }

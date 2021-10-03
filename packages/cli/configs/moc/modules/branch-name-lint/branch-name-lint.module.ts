@@ -12,7 +12,7 @@ export class BranchNameLintModule
   name = 'branch-name-lint';
   includeToLintScript: LintItem[] = [
     {
-      npmRun: 'lint:branch-name',
+      npmRun: ['lint:branch-name'],
       order: 0,
     },
   ];
