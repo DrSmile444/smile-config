@@ -10,9 +10,11 @@ import type {
   AbstractConfigItemModule,
   AbstractConfigModule,
   AppObject,
+  BaseLintItem,
   ChoiceConfig,
   ChoiceItemConfig,
   ChoiceModule,
+  ConditionLintItem,
   LintItem,
   Newable,
 } from '../../interfaces';
@@ -76,7 +78,35 @@ export class ConfigService {
       .filter((scripts) => scripts.length)
       .reduce(reduceArray)
       .sort((a, b) => a.order - b.order)
-      .map((lintItem) => lintItem.command)
+      .map((lintItem: LintItem): BaseLintItem | boolean => {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if ((lintItem as ConditionLintItem).when) {
+          const conditionalLintItem = lintItem as ConditionLintItem;
+          const isAvailable = conditionalLintItem.when(
+            this.getPackageJson().devDependencies
+          );
+
+          if (isAvailable) {
+            this.modifyPackageJson({
+              scripts: conditionalLintItem.additionalCommands,
+            });
+            return conditionalLintItem;
+          }
+
+          if (conditionalLintItem.instead) {
+            this.modifyPackageJson({
+              scripts: conditionalLintItem.instead.additionalCommands,
+            });
+            return conditionalLintItem.instead;
+          }
+
+          return false;
+        }
+
+        return lintItem;
+      })
+      .filter(Boolean)
+      .map((lintItem: BaseLintItem) => lintItem.npmRun)
       .join(' && npm run ')}`;
 
     this.modifyPackageJson({ scripts: { lint: lintScript } });
@@ -89,10 +119,18 @@ export class ConfigService {
     execSync('husky install', { stdio: 'inherit' });
   }
 
-  modifyPackageJson(json: PackageJson) {
-    const packageJson = JSON.parse(
+  getPackageJson(): PackageJson {
+    return JSON.parse(
       fs.readFileSync('package.json').toString()
     ) as PackageJson;
+  }
+
+  modifyPackageJson(json?: PackageJson) {
+    if (!json) {
+      return;
+    }
+
+    const packageJson = this.getPackageJson();
     const newPackageJson = mergeObjects([packageJson, json]) as PackageJson;
 
     fs.writeFileSync(
@@ -102,9 +140,7 @@ export class ConfigService {
   }
 
   checkInstalledPackage(packageName: string) {
-    const packageJson = JSON.parse(
-      fs.readFileSync('package.json').toString()
-    ) as PackageJson;
+    const packageJson = this.getPackageJson();
 
     return (
       (!!packageJson.dependencies && !!packageJson.dependencies[packageName]) ||

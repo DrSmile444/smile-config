@@ -1,8 +1,4 @@
 {
-  "scripts": {
-    "lint:js": "eslint .",
-    "lint:js:fix": "npm run lint:js -- --fix"
-  },
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",

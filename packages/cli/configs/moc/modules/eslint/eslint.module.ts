@@ -1,4 +1,7 @@
-import type { AbstractConfigItemModule } from '@smile-config/cli/interfaces';
+import type {
+  AbstractConfigItemModule,
+  LintItem,
+} from '@smile-config/cli/interfaces';
 
 import { BaseConfigItemModule } from '../../../../src/base';
 import { EslintTypescriptModule } from './addons';
@@ -9,10 +12,25 @@ export class EslintModule
 {
   name = 'eslint';
   addons = [EslintTypescriptModule];
-  includeToLintScript = [
+  includeToLintScript: LintItem[] = [
     {
-      command: 'lint:js',
+      npmRun: 'lint:js',
       order: 10,
+      additionalCommands: {
+        'lint:js': 'eslint .',
+        'lint:js:fix': 'npm run lint:js -- --fix',
+      },
+      when: (packages) => !!packages && !packages['@nrwl/cli'],
+      instead: {
+        npmRun: 'affected:lint',
+        order: 10,
+        additionalCommands: {
+          'affected:lint':
+            'nx affected:lint --parallel --maxParallel=5 --cache',
+          'affected:lint:fix':
+            'nx affected:lint --parallel --maxParallel=5 --cache --fix',
+        },
+      },
     },
   ];
 

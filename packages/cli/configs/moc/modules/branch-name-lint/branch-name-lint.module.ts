@@ -1,4 +1,7 @@
-import type { AbstractConfigItemModule } from '@smile-config/cli/interfaces';
+import type {
+  AbstractConfigItemModule,
+  LintItem,
+} from '@smile-config/cli/interfaces';
 
 import { BaseConfigItemModule } from '../../../../src/base';
 
@@ -7,9 +10,9 @@ export class BranchNameLintModule
   implements AbstractConfigItemModule
 {
   name = 'branch-name-lint';
-  includeToLintScript = [
+  includeToLintScript: LintItem[] = [
     {
-      command: 'lint:branch-name',
+      npmRun: 'lint:branch-name',
       order: 0,
     },
   ];

@@ -12,8 +12,6 @@
     "lint": "npm run lint:branch-name && npm run lint:workspace && npm run affected:lint",
     "lint:branch-name": "branch-name-lint ./.branchlintrc.json",
     "lint:commit-name": "commitlint --edit",
-    "lint:js": "eslint ./packages/**/*.ts",
-    "lint:js:fix": "npm run lint:js -- --fix",
     "lint:workspace": "nx workspace-lint",
     "affected:lint": "nx affected:lint --parallel --maxParallel=5 --cache",
     "affected:lint:fix": "nx affected:lint --parallel --maxParallel=5 --cache --fix"
