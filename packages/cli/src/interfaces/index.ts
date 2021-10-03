@@ -1,10 +1,20 @@
+import type { PackageJson } from 'type-fest';
+
 export type Newable<T> = new (...args: any[]) => T;
 export type AppObject<T = any> = Record<any, T>;
 
-export interface LintItem {
-  command: string;
+export interface BaseLintItem {
+  npmRun: string[];
+  additionalCommands?: Record<string, string>;
   order: number;
 }
+
+export interface ConditionLintItem extends BaseLintItem {
+  when: (packages: PackageJson.Dependency | undefined) => boolean;
+  instead?: BaseLintItem;
+}
+
+export type LintItem = BaseLintItem | ConditionLintItem;
 
 export enum ChoiceType {
   RECOMMENDED = 'recommended',

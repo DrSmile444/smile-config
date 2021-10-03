@@ -1,4 +1,7 @@
-import type { AbstractConfigItemModule } from '@smile-config/cli/interfaces';
+import type {
+  AbstractConfigItemModule,
+  LintItem,
+} from '@smile-config/cli/interfaces';
 
 import { BaseConfigItemModule } from '../../../../src/base';
 
@@ -7,9 +10,9 @@ export class StylelintModule
   implements AbstractConfigItemModule
 {
   name = 'stylelint';
-  includeToLintScript = [
+  includeToLintScript: LintItem[] = [
     {
-      command: 'lint:styles',
+      npmRun: ['lint:styles'],
       order: 5,
     },
   ];
