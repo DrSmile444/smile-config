@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start:cli": "npm --prefix ./packages/cli run start",
+    "start:cli:watch": "npm --prefix ./packages/cli run start:watch",
     "build:cli": "nx build cli && chmod +x ./dist/packages/cli/bin/index.js",
     "repo:start": "npm run build:cli && smile-config",
     "postbuild:cli": "cp -R ./packages/cli/configs/ ./dist/packages/cli/configs",
@@ -61,6 +62,8 @@
     "deep-equal": "^2.0.5",
     "inquirer": "^8.1.5",
     "json-merger": "^1.1.6",
+    "p-queue": "^7.1.0",
+    "queue": "^6.0.2",
     "ts-node": "^9.1.1",
     "tslib": "^2.0.0",
     "type-fest": "^0.21.3"

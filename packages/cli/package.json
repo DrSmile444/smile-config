@@ -5,7 +5,8 @@
     "smile-config": "./bin/index.js"
   },
   "scripts": {
-    "start": "nodemon ./bin/index.ts -e ts"
+    "start": "ts-node ./bin/index.ts",
+    "start:watch": "nodemon ./bin/index.ts -e ts"
   },
   "dependencies": {
     "inquirer": "^8.1.5",

@@ -22,13 +22,11 @@ export enum ChoiceType {
   CUSTOM = 'custom',
 }
 
-export interface AbstractConfigItemModule<
-  T extends AbstractConfigItemModule = any
-> {
+export interface AbstractConfigItemModule {
   name: string;
   files: string[];
   includeToLintScript?: LintItem[];
-  addons?: T[];
+  addons?: Newable<AbstractConfigItemModule>[];
 }
 
 export interface ChoiceItemConfig<T extends AbstractConfigItemModule> {
@@ -47,12 +45,10 @@ export interface ChoiceConfig<T extends AbstractConfigModule = any> {
   modules: ChoiceModule[];
 }
 
-export interface AbstractConfigModule<
-  T extends AbstractConfigItemModule = any
-> {
+export interface AbstractConfigModule<> {
   name: string;
   url: string;
   required: string[];
-  modules: T[];
+  modules: Newable<AbstractConfigItemModule>[];
   choices: ChoiceConfig<AbstractConfigModule>[];
 }

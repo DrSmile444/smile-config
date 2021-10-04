@@ -60,7 +60,9 @@ export class ConfigService {
       (requiredFile) => !folderFiles.includes(requiredFile)
     );
 
-    if (missingRequiredFile !== undefined) {
+    if (!missingRequiredFile) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       throw new NoRequiredFileError(missingRequiredFile);
     }
 

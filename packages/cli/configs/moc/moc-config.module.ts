@@ -66,5 +66,10 @@ export class MocConfigModule implements AbstractConfigModule {
         SmileTrackModule,
       ],
     },
+    {
+      useClass: MocConfigModule,
+      type: ChoiceType.CUSTOM,
+      modules: [],
+    },
   ];
 }
