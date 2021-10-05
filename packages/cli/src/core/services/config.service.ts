@@ -66,6 +66,8 @@ export class ConfigService {
       throw new NoRequiredFileError(missingRequiredFile);
     }
 
+    console.info(chalk.bold(`\n${chalk.yellow('!')} Copy files`));
+
     console.info(chalk.bold('\nModify package.json'));
 
     // TODO check is husky selected
@@ -125,11 +127,18 @@ export class ConfigService {
 
     this.modifyPackageJson({ scripts: { lint: lintScript } });
 
-    console.info(chalk.bold('\nInstalling new modules...'));
+    console.info(
+      chalk.bold(`\n${chalk.yellow('!')} Installing new modules...`)
+    );
     execSync('npm i', { stdio: 'inherit' });
 
     console.info(chalk.bold('\nInstalling git hooks'));
     execSync('husky install', { stdio: 'inherit' });
+
+    console.info(
+      chalk.bold(`\n${chalk.green('✓')} Done! Repo is ready for work`)
+    );
+    console.info('  Suggestion: Stage your files before any changes');
   }
 
   getPackageJson(): PackageJson {
