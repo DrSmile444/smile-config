@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-import { prompt } from 'inquirer';
+import * as chalk from 'chalk';
+import { prompt, Separator } from 'inquirer';
+import type * as inquirer from 'inquirer';
 
 import { builtInConfigs } from '../src';
 import { FIRST_INDEX, MORE_THAN_ONE } from '../src/const';
@@ -15,6 +17,8 @@ import type {
 } from '../src/interfaces';
 
 (async () => {
+  console.info(`Welcome to ${chalk.bold('Smile Config')}!\n`);
+
   let config: AbstractConfigModule = builtInConfigs[FIRST_INDEX];
 
   if (builtInConfigs.length > MORE_THAN_ONE) {
@@ -48,17 +52,32 @@ import type {
     return;
   }
 
+  const modulesChoices = [
+    new Separator(),
+    ...config.modules.map((MapModule): inquirer.ChoiceOptions => {
+      const mapModule = new MapModule();
+      return {
+        name: `${chalk.bold(mapModule.title)} - ${chalk.gray(
+          mapModule.description
+        )}`,
+        short: mapModule.title,
+        value: MapModule,
+      };
+    }),
+  ];
+
   const modules = await prompt({
     type: 'checkbox',
     name: 'modules',
     message: '📌 Select modules you want to use:',
-    choices: config.modules.map((MapModule) => ({
-      name: new MapModule().title,
-      value: MapModule,
-    })),
+    choices: modulesChoices,
+    pageSize: 10,
   }).then((result) => result.modules as Newable<AbstractConfigItemModule>[]);
 
   const newModules: ChoiceModule[] = [];
+
+  // eslint-disable-next-line prettier/prettier
+  console.info('\n📎 Let\'s select addons:\n');
 
   await (async () => {
     // eslint-disable-next-line @typescript-eslint/prefer-for-of,@typescript-eslint/no-magic-numbers
@@ -67,16 +86,25 @@ import type {
       const module = new Module();
 
       if (module.addons) {
-        const addonChoices = module.addons.map((MapAddonModule) => ({
-          name: new MapAddonModule().title,
-          value: MapAddonModule,
-        }));
+        const addonChoices = module.addons.map(
+          (MapAddonModule): inquirer.ChoiceOptions => {
+            const mapAddonModule = new MapAddonModule();
+
+            return {
+              name: `${chalk.bold(mapAddonModule.title)} - ${chalk.gray(
+                mapAddonModule.description
+              )}`,
+              short: mapAddonModule.title,
+              value: MapAddonModule,
+            };
+          }
+        );
 
         // eslint-disable-next-line no-await-in-loop
         const addons = await prompt({
           type: 'checkbox',
           name: 'modules',
-          message: `📎 Select addons you want to add to ${module.title} module:`,
+          message: `📎 Select addons for ${module.title} module:`,
           choices: addonChoices,
         }).then(
           (result) => result.modules as Newable<AbstractConfigItemModule>[]
