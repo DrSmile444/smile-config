@@ -17,8 +17,14 @@ import type {
 } from '../src/interfaces';
 
 (async () => {
+  /**
+   * Start
+   * */
   console.info(`Welcome to ${chalk.bold('Smile Config')}!\n`);
 
+  /**
+   * Config select
+   * */
   let config: AbstractConfigModule = builtInConfigs[FIRST_INDEX];
 
   if (builtInConfigs.length > MORE_THAN_ONE) {
@@ -33,6 +39,9 @@ import type {
     }).then((result) => result.config as AbstractConfigModule);
   }
 
+  /**
+   * Choice select
+   * */
   let choice: ChoiceConfig<AbstractConfigModule> = config.choices[FIRST_INDEX];
 
   if (config.choices.length > MORE_THAN_ONE) {
@@ -52,6 +61,9 @@ import type {
     return;
   }
 
+  /**
+   * Modules select
+   * */
   const modulesChoices = [
     new Separator(),
     ...config.modules.map((MapModule): inquirer.ChoiceOptions => {
@@ -76,51 +88,71 @@ import type {
 
   const newModules: ChoiceModule[] = [];
 
-  // eslint-disable-next-line prettier/prettier
-  console.info('\n📎 Let\'s select addons:\n');
+  /**
+   * Addons select
+   * */
+  const addonsModules = modules
+    .map((Module) => ({
+      construct: Module,
+      instance: new Module(),
+    }))
+    .filter(({ instance }) => instance.addons && !!instance.addons.length);
 
-  await (async () => {
-    // eslint-disable-next-line @typescript-eslint/prefer-for-of,@typescript-eslint/no-magic-numbers
-    for (let i = 0; i < modules.length; i += 1) {
-      const Module = modules[i];
-      const module = new Module();
+  if (addonsModules.length) {
+    // eslint-disable-next-line prettier/prettier
+    console.info('\n\n📎 There are addons for modules');
 
-      if (module.addons) {
-        const addonChoices = module.addons.map(
-          (MapAddonModule): inquirer.ChoiceOptions => {
-            const mapAddonModule = new MapAddonModule();
+    console.info(`\n${chalk.bold('Modules')}`);
 
-            return {
-              name: `${chalk.bold(mapAddonModule.title)} - ${chalk.gray(
-                mapAddonModule.description
-              )}`,
-              short: mapAddonModule.title,
-              value: MapAddonModule,
-            };
-          }
-        );
+    addonsModules.forEach((module) => {
+      console.info(`  ${chalk.green(module.instance.title)}`);
+    });
 
-        // eslint-disable-next-line no-await-in-loop
-        const addons = await prompt({
-          type: 'checkbox',
-          name: 'modules',
-          message: `📎 Select addons for ${module.title} module:`,
-          choices: addonChoices,
-        }).then(
-          (result) => result.modules as Newable<AbstractConfigItemModule>[]
-        );
+    await (async () => {
+      // eslint-disable-next-line @typescript-eslint/prefer-for-of,@typescript-eslint/no-magic-numbers
+      for (let i = 0; i < modules.length; i += 1) {
+        const Module = modules[i];
+        const module = new Module();
 
-        const choiceItem: ChoiceItemConfig<AbstractConfigItemModule> = {
-          useClass: Module,
-          modules: addons,
-        };
+        if (module.addons) {
+          const addonChoices = module.addons.map(
+            (MapAddonModule): inquirer.ChoiceOptions => {
+              const mapAddonModule = new MapAddonModule();
 
-        newModules.push(addons.length ? choiceItem : Module);
+              return {
+                name: `${chalk.bold(mapAddonModule.title)} - ${chalk.gray(
+                  mapAddonModule.description
+                )}`,
+                short: mapAddonModule.title,
+                value: MapAddonModule,
+              };
+            }
+          );
+
+          // eslint-disable-next-line no-await-in-loop
+          const addons = await prompt({
+            type: 'checkbox',
+            name: 'modules',
+            message: `📎 Select addons for ${chalk.green.bold(
+              module.title
+            )} module:`,
+            choices: addonChoices,
+          }).then(
+            (result) => result.modules as Newable<AbstractConfigItemModule>[]
+          );
+
+          const choiceItem: ChoiceItemConfig<AbstractConfigItemModule> = {
+            useClass: Module,
+            modules: addons,
+          };
+
+          newModules.push(addons.length ? choiceItem : Module);
+        }
+
+        newModules.push(Module);
       }
-
-      newModules.push(Module);
-    }
-  })();
+    })();
+  }
 
   console.info({
     config,
