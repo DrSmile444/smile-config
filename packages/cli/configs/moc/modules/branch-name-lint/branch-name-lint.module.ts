@@ -9,7 +9,7 @@ export class BranchNameLintModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
-  name = 'branch-name-lint';
+  title = 'branch-name-lint';
   includeToLintScript: LintItem[] = [
     {
       npmRun: ['lint:branch-name'],

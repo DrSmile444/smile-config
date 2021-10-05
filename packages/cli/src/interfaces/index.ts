@@ -23,7 +23,7 @@ export enum ChoiceType {
 }
 
 export interface AbstractConfigItemModule {
-  name: string;
+  title: string;
   files: string[];
   includeToLintScript?: LintItem[];
   addons?: Newable<AbstractConfigItemModule>[];
@@ -46,7 +46,7 @@ export interface ChoiceConfig<T extends AbstractConfigModule = any> {
 }
 
 export interface AbstractConfigModule<> {
-  name: string;
+  title: string;
   url: string;
   required: string[];
   modules: Newable<AbstractConfigItemModule>[];

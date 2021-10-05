@@ -6,7 +6,7 @@ export class PrettierStylelintModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
-  name = 'stylelint';
+  title = 'stylelint';
 
   constructor() {
     super(__dirname);

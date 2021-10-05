@@ -9,7 +9,7 @@ export class StylelintModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
-  name = 'stylelint';
+  title = 'stylelint';
   includeToLintScript: LintItem[] = [
     {
       npmRun: ['lint:styles'],

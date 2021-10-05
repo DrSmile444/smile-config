@@ -23,7 +23,7 @@ import type {
       name: 'config',
       message: '📝 Which style guide do you want to follow?',
       choices: builtInConfigs.map((choiceConfig) => ({
-        name: `${choiceConfig.name}: ${choiceConfig.url}`,
+        name: `${choiceConfig.title}: ${choiceConfig.url}`,
         value: choiceConfig as AbstractConfigModule,
       })),
     }).then((result) => result.config as AbstractConfigModule);
@@ -52,9 +52,9 @@ import type {
     type: 'checkbox',
     name: 'modules',
     message: '📌 Select modules you want to use:',
-    choices: config.modules.map((mapModules) => ({
-      name: mapModules.name,
-      value: mapModules,
+    choices: config.modules.map((MapModule) => ({
+      name: new MapModule().title,
+      value: MapModule,
     })),
   }).then((result) => result.modules as Newable<AbstractConfigItemModule>[]);
 
@@ -67,16 +67,16 @@ import type {
       const module = new Module();
 
       if (module.addons) {
-        const addonChoices = module.addons.map((mapAddonModule) => ({
-          name: mapAddonModule.name,
-          value: mapAddonModule,
+        const addonChoices = module.addons.map((MapAddonModule) => ({
+          name: new MapAddonModule().title,
+          value: MapAddonModule,
         }));
 
         // eslint-disable-next-line no-await-in-loop
         const addons = await prompt({
           type: 'checkbox',
           name: 'modules',
-          message: `📎 Select addons you want to add to ${module.name} module:`,
+          message: `📎 Select addons you want to add to ${module.title} module:`,
           choices: addonChoices,
         }).then(
           (result) => result.modules as Newable<AbstractConfigItemModule>[]

@@ -6,7 +6,7 @@ export class HuskyModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
-  name = 'husky';
+  title = 'husky';
 
   constructor() {
     super(__dirname);

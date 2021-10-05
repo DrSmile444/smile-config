@@ -10,7 +10,7 @@ export class EslintModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
-  name = 'eslint';
+  title = 'eslint';
   addons = [EslintTypescriptModule];
   includeToLintScript: LintItem[] = [
     {

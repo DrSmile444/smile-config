@@ -6,7 +6,7 @@ export class PrettierEslintModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
-  name = 'eslint';
+  title = 'eslint';
 
   constructor() {
     super(__dirname);

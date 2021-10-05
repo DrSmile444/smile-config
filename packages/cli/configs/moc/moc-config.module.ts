@@ -17,7 +17,7 @@ import {
 } from './modules';
 
 export class MocConfigModule implements AbstractConfigModule {
-  name = 'MOC Global';
+  title = 'MOC Global';
   url = 'https://masterofcode.com';
 
   modules = mocModules;

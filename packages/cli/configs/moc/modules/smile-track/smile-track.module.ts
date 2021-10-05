@@ -6,7 +6,7 @@ export class SmileTrackModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
-  name = 'smile-track';
+  title = 'smile-track';
 
   constructor() {
     super(__dirname);
