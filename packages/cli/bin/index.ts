@@ -108,6 +108,8 @@ import type {
       console.info(`  ${chalk.green(module.instance.title)}`);
     });
 
+    console.info('');
+
     await (async () => {
       // eslint-disable-next-line @typescript-eslint/prefer-for-of,@typescript-eslint/no-magic-numbers
       for (let i = 0; i < modules.length; i += 1) {
@@ -154,10 +156,9 @@ import type {
     })();
   }
 
-  console.info({
-    config,
-    choice,
-    newModules,
+  configService.applyConfig({
+    ...choice,
+    modules: newModules,
   });
 })().catch((error) => {
   throw error;
