@@ -4,15 +4,24 @@ import type {
 } from '@smile-config/cli/interfaces';
 
 import { BaseConfigItemModule } from '../../../../src/base';
-import { EslintTypescriptModule } from './addons';
+import {
+  EslintSmileStyleModule,
+  EslintTypescriptImportsModule,
+  EslintTypescriptModule,
+} from './addons';
 
 export class EslintModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
   title = 'ESLint';
-  description = 'Enforce JS code style';
-  addons = [EslintTypescriptModule];
+  description = 'Enforce JS code style, best practices';
+  addons = [
+    EslintSmileStyleModule,
+    EslintTypescriptModule,
+    EslintTypescriptImportsModule,
+  ];
+
   includeToLintScript: LintItem[] = [
     {
       npmRun: ['lint:js'],

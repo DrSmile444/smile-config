@@ -5,6 +5,8 @@ import {
   CommitLintModule,
   EditorConfigModule,
   EslintModule,
+  EslintSmileStyleModule,
+  EslintTypescriptImportsModule,
   EslintTypescriptModule,
   HuskyModule,
   LintStagedModule,
@@ -34,7 +36,11 @@ export class MocConfigModule implements AbstractConfigModule {
         EditorConfigModule,
         {
           useClass: EslintModule,
-          modules: [EslintTypescriptModule],
+          modules: [
+            EslintSmileStyleModule,
+            EslintTypescriptModule,
+            EslintTypescriptImportsModule,
+          ],
         },
         StylelintModule,
         {
@@ -55,7 +61,11 @@ export class MocConfigModule implements AbstractConfigModule {
         EditorConfigModule,
         {
           useClass: EslintModule,
-          modules: [EslintTypescriptModule],
+          modules: [
+            EslintSmileStyleModule,
+            EslintTypescriptModule,
+            EslintTypescriptImportsModule,
+          ],
         },
         {
           useClass: PrettierModule,
