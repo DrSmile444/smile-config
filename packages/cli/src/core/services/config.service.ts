@@ -1,3 +1,4 @@
+import * as chalk from 'chalk';
 import { execSync } from 'child_process';
 import type { Linter } from 'eslint';
 import * as fs from 'fs';
@@ -42,7 +43,8 @@ export class ConfigService {
   applyConfig<T extends AbstractConfigModule>(
     config: Readonly<ChoiceConfig<T>>
   ) {
-    console.info('Working directory:', process.cwd());
+    console.info(chalk.bold('\nWorking directory'));
+    console.info(chalk.gray(`  ${process.cwd()}`));
 
     const folderFiles = this.folderService.readFolder();
 
@@ -60,9 +62,13 @@ export class ConfigService {
       (requiredFile) => !folderFiles.includes(requiredFile)
     );
 
-    if (missingRequiredFile !== undefined) {
+    if (missingRequiredFile) {
       throw new NoRequiredFileError(missingRequiredFile);
     }
+
+    console.info(chalk.bold(`\n${chalk.yellow('!')} Copy files`));
+
+    console.info(chalk.bold('\nModify package.json'));
 
     // TODO check is husky selected
     this.modifyPackageJson({
@@ -76,6 +82,8 @@ export class ConfigService {
         'npm-run-all': '^4.1.5',
       },
     });
+
+    console.info(`  ${chalk.green('✓')} Add npm-run-all`);
 
     /**
      * Iterating though modules
@@ -119,12 +127,18 @@ export class ConfigService {
 
     this.modifyPackageJson({ scripts: { lint: lintScript } });
 
-    console.info('Installing modules...');
+    console.info(
+      chalk.bold(`\n${chalk.yellow('!')} Installing new modules...`)
+    );
     execSync('npm i', { stdio: 'inherit' });
 
-    console.info('\n');
-    console.info('Installing git hooks');
+    console.info(chalk.bold('\nInstalling git hooks'));
     execSync('husky install', { stdio: 'inherit' });
+
+    console.info(
+      chalk.bold(`\n${chalk.green('✓')} Done! Repo is ready for work`)
+    );
+    console.info('  Suggestion: Stage your files before any changes');
   }
 
   getPackageJson(): PackageJson {
@@ -276,15 +290,24 @@ export class ConfigService {
             const hookName = moduleFileName.replace('.husky/', '');
 
             if (!this.checkInstalledPackage('husky')) {
-              console.info('Installing husky');
-              execSync('npx husky-init', { stdio: 'inherit' });
+              console.info(chalk.bold('\nInstalling husky'));
+              const huskyResult = execSync('npx husky-init')
+                .toString()
+                .split('\n')
+                .join('\n  ');
+
+              console.info(`  ${chalk.green('✓')} ${huskyResult}`);
             }
 
-            console.info('Installing git hook:', hookName);
-            execSync(
-              `husky add .husky/${hookName} 'echo "Error: no ${hookName} specified" && exit 1'`,
-              { stdio: 'inherit' }
-            );
+            console.info(chalk.bold('\nInstalling git hook:'), hookName);
+            const huskyHookResult = execSync(
+              `husky add .husky/${hookName} 'echo "Error: no ${hookName} specified" && exit 1'`
+            )
+              .toString()
+              .split('\n')
+              .join(' ');
+
+            console.info(`  ${chalk.green('✓')} ${huskyHookResult}`);
           }
 
           if (moduleFileName.includes('.gitignore')) {

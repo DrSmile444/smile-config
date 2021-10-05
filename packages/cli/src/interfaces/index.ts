@@ -17,18 +17,18 @@ export interface ConditionLintItem extends BaseLintItem {
 export type LintItem = BaseLintItem | ConditionLintItem;
 
 export enum ChoiceType {
-  RECOMMENDED = 'recommended',
-  NODE_RECOMMENDED = 'node:recommended',
-  CUSTOM = 'custom',
+  RECOMMENDED = 'Recommended',
+  FRONT_RECOMMENDED = 'Front:Recommended',
+  NODE_RECOMMENDED = 'Node:Recommended',
+  CUSTOM = 'Custom',
 }
 
-export interface AbstractConfigItemModule<
-  T extends AbstractConfigItemModule = any
-> {
-  name: string;
+export interface AbstractConfigItemModule {
+  title: string;
+  description: string;
   files: string[];
   includeToLintScript?: LintItem[];
-  addons?: T[];
+  addons?: Newable<AbstractConfigItemModule>[];
 }
 
 export interface ChoiceItemConfig<T extends AbstractConfigItemModule> {
@@ -47,12 +47,10 @@ export interface ChoiceConfig<T extends AbstractConfigModule = any> {
   modules: ChoiceModule[];
 }
 
-export interface AbstractConfigModule<
-  T extends AbstractConfigItemModule = any
-> {
-  name: string;
+export interface AbstractConfigModule<> {
+  title: string;
   url: string;
   required: string[];
-  modules: T[];
+  modules: Newable<AbstractConfigItemModule>[];
   choices: ChoiceConfig<AbstractConfigModule>[];
 }

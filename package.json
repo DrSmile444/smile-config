@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start:cli": "npm --prefix ./packages/cli run start",
+    "start:cli:watch": "npm --prefix ./packages/cli run start:watch",
     "build:cli": "nx build cli && chmod +x ./dist/packages/cli/bin/index.js",
     "repo:start": "npm run build:cli && smile-config",
     "postbuild:cli": "cp -R ./packages/cli/configs/ ./dist/packages/cli/configs",
@@ -45,7 +46,6 @@
     "eslint-import-resolver-typescript": "^2.5.0",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-prettier": "^4.0.0",
-    "husky": "^7.0.2",
     "jest": "27.0.3",
     "lint-staged": "^11.1.2",
     "nodemon": "^2.0.13",
@@ -58,9 +58,12 @@
     "typescript": "~4.3.5"
   },
   "dependencies": {
+    "chalk": "^4.1.0",
     "deep-equal": "^2.0.5",
     "inquirer": "^8.1.5",
     "json-merger": "^1.1.6",
+    "p-queue": "^7.1.0",
+    "queue": "^6.0.2",
     "ts-node": "^9.1.1",
     "tslib": "^2.0.0",
     "type-fest": "^0.21.3"

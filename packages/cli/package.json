@@ -5,9 +5,11 @@
     "smile-config": "./bin/index.js"
   },
   "scripts": {
-    "start": "nodemon ./bin/index.ts -e ts"
+    "start": "ts-node ./bin/index.ts",
+    "start:watch": "nodemon ./bin/index.ts -e ts"
   },
   "dependencies": {
+    "chalk": "^4.1.0",
     "inquirer": "^8.1.5",
     "json-merger": "^1.1.6"
   }

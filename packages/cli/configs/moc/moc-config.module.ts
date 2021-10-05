@@ -17,7 +17,7 @@ import {
 } from './modules';
 
 export class MocConfigModule implements AbstractConfigModule {
-  name = 'MOC Global';
+  title = 'MOC Global';
   url = 'https://masterofcode.com';
 
   modules = mocModules;
@@ -27,7 +27,7 @@ export class MocConfigModule implements AbstractConfigModule {
   choices: ChoiceConfig<MocConfigModule>[] = [
     {
       useClass: MocConfigModule,
-      type: ChoiceType.RECOMMENDED,
+      type: ChoiceType.FRONT_RECOMMENDED,
       modules: [
         BranchNameLintModule,
         CommitLintModule,
@@ -65,6 +65,11 @@ export class MocConfigModule implements AbstractConfigModule {
         LintStagedModule,
         SmileTrackModule,
       ],
+    },
+    {
+      useClass: MocConfigModule,
+      type: ChoiceType.CUSTOM,
+      modules: [],
     },
   ];
 }
