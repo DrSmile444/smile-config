@@ -18,6 +18,7 @@ export type LintItem = BaseLintItem | ConditionLintItem;
 
 export enum ChoiceType {
   RECOMMENDED = 'Recommended',
+  FRONT_RECOMMENDED = 'Front:Recommended',
   NODE_RECOMMENDED = 'Node:Recommended',
   CUSTOM = 'Custom',
 }

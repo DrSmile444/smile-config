@@ -27,7 +27,7 @@ export class MocConfigModule implements AbstractConfigModule {
   choices: ChoiceConfig<MocConfigModule>[] = [
     {
       useClass: MocConfigModule,
-      type: ChoiceType.RECOMMENDED,
+      type: ChoiceType.FRONT_RECOMMENDED,
       modules: [
         BranchNameLintModule,
         CommitLintModule,
