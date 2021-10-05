@@ -17,13 +17,14 @@ export interface ConditionLintItem extends BaseLintItem {
 export type LintItem = BaseLintItem | ConditionLintItem;
 
 export enum ChoiceType {
-  RECOMMENDED = 'recommended',
-  NODE_RECOMMENDED = 'node:recommended',
-  CUSTOM = 'custom',
+  RECOMMENDED = 'Recommended',
+  NODE_RECOMMENDED = 'Node:Recommended',
+  CUSTOM = 'Custom',
 }
 
 export interface AbstractConfigItemModule {
   title: string;
+  description: string;
   files: string[];
   includeToLintScript?: LintItem[];
   addons?: Newable<AbstractConfigItemModule>[];

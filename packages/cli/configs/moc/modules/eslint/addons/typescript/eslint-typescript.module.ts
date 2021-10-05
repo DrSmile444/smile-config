@@ -6,7 +6,8 @@ export class EslintTypescriptModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
-  title = 'typescript';
+  title = 'ESLint: TypeScript';
+  description = 'Typescript Config';
 
   constructor() {
     super(__dirname);

@@ -6,7 +6,8 @@ export class PrettierEslintModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
-  title = 'eslint';
+  title = 'Prettier: ESLint';
+  description = 'Prettier integration with ESLint';
 
   constructor() {
     super(__dirname);

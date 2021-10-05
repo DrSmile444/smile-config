@@ -6,7 +6,8 @@ export class LintStagedModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
-  title = 'lint-staged';
+  title = 'Lint Staged';
+  description = 'Lint only changed files';
 
   constructor() {
     super(__dirname);

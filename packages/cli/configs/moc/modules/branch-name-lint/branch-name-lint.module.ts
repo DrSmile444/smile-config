@@ -9,7 +9,8 @@ export class BranchNameLintModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
-  title = 'branch-name-lint';
+  title = 'Branch Name Lint';
+  description = 'Enforce branch name style';
   includeToLintScript: LintItem[] = [
     {
       npmRun: ['lint:branch-name'],

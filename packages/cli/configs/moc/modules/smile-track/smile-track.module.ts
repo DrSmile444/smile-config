@@ -6,7 +6,8 @@ export class SmileTrackModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
-  title = 'smile-track';
+  title = 'Smile Track';
+  description = 'Easy Jira time tracking';
 
   constructor() {
     super(__dirname);

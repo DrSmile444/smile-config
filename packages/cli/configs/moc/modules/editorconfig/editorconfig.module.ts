@@ -6,7 +6,8 @@ export class EditorConfigModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
-  title = 'editorconfig';
+  title = 'Editorconfig';
+  description = 'IDE configuration';
 
   constructor() {
     super(__dirname);

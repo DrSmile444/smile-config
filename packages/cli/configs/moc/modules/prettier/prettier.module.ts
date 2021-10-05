@@ -7,7 +7,8 @@ export class PrettierModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
-  title = 'prettier';
+  title = 'Prettier';
+  description = 'Enforce code formatting';
   addons = prettierAddons;
 
   constructor(public modules: typeof prettierAddons) {

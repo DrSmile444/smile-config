@@ -6,7 +6,8 @@ export class CommitLintModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
-  title = 'commitlint';
+  title = 'Commitlint';
+  description = 'Enforce commit name style';
 
   constructor() {
     super(__dirname);

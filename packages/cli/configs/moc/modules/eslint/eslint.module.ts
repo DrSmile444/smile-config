@@ -10,7 +10,8 @@ export class EslintModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
-  title = 'eslint';
+  title = 'ESLint';
+  description = 'Enforce JS code style';
   addons = [EslintTypescriptModule];
   includeToLintScript: LintItem[] = [
     {
