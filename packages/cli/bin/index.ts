@@ -21,7 +21,7 @@ import type {
     config = await prompt({
       type: 'list',
       name: 'config',
-      message: 'Which style guide do you want to follow?',
+      message: '📝 Which style guide do you want to follow?',
       choices: builtInConfigs.map((choiceConfig) => ({
         name: `${choiceConfig.name}: ${choiceConfig.url}`,
         value: choiceConfig as AbstractConfigModule,
@@ -35,7 +35,7 @@ import type {
     choice = await prompt({
       type: 'list',
       name: 'choice',
-      message: 'Select one of the built-in configs',
+      message: '🔧 Select one of the built-in configs:',
       choices: config.choices.map((mapChoice) => ({
         name: mapChoice.type,
         value: mapChoice,
@@ -51,7 +51,7 @@ import type {
   const modules = await prompt({
     type: 'checkbox',
     name: 'modules',
-    message: 'Select one of the built-in configs',
+    message: '📌 Select modules you want to use:',
     choices: config.modules.map((mapModules) => ({
       name: mapModules.name,
       value: mapModules,
@@ -76,7 +76,7 @@ import type {
         const addons = await prompt({
           type: 'checkbox',
           name: 'modules',
-          message: 'Select one of the built-in configs',
+          message: `📎 Select addons you want to add to ${module.name} module:`,
           choices: addonChoices,
         }).then(
           (result) => result.modules as Newable<AbstractConfigItemModule>[]
