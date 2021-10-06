@@ -17,9 +17,9 @@ export class EslintModule
   title = 'ESLint';
   description = 'Enforce JS code style, best practices';
   addons = [
-    EslintSmileStyleModule,
     EslintTypescriptModule,
     EslintTypescriptImportsModule,
+    EslintSmileStyleModule,
   ];
 
   includeToLintScript: LintItem[] = [
