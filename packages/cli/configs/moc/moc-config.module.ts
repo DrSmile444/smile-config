@@ -37,9 +37,9 @@ export class MocConfigModule implements AbstractConfigModule {
         {
           useClass: EslintModule,
           modules: [
-            EslintSmileStyleModule,
             EslintTypescriptModule,
             EslintTypescriptImportsModule,
+            EslintSmileStyleModule,
           ],
         },
         StylelintModule,
@@ -62,9 +62,9 @@ export class MocConfigModule implements AbstractConfigModule {
         {
           useClass: EslintModule,
           modules: [
-            EslintSmileStyleModule,
             EslintTypescriptModule,
             EslintTypescriptImportsModule,
+            EslintSmileStyleModule,
           ],
         },
         {
