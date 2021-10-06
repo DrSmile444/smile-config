@@ -1,23 +1,49 @@
 {
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "files": [
+        "*.ts",
+        "*.tsx",
+        "*.js",
+        "*.jsx"
+      ],
       "rules": {
         "class-methods-use-this": "off",
         "import/prefer-default-export": "off",
-        "import/extensions": ["error", "never", { "json": "always" }],
-        "quotes": ["error", "single"],
+        "import/extensions": [
+          "error",
+          "never",
+          {
+            "json": "always"
+          }
+        ],
+        "quotes": [
+          "error",
+          "single"
+        ],
         "operator-linebreak": "error",
         "no-unneeded-ternary": "error",
         "arrow-body-style": "error",
-        "arrow-parens": ["error", "always"],
-        "brace-style": ["error", "1tbs"],
-        "comma-dangle": ["error", "always-multiline"],
+        "arrow-parens": [
+          "error",
+          "always"
+        ],
+        "brace-style": [
+          "error",
+          "1tbs"
+        ],
+        "comma-dangle": [
+          "error",
+          "always-multiline"
+        ],
         "constructor-super": "error",
         "curly": "error",
         "dot-notation": "off",
         "eol-last": "error",
-        "eqeqeq": ["off", "smart"],
+        "eqeqeq": [
+          "off",
+          "smart"
+        ],
         "guard-for-in": "error",
         "id-blacklist": "off",
         "id-match": "off",
@@ -72,7 +98,10 @@
         "object-shorthand": "error",
         "prefer-arrow-callback": "error",
         "prefer-const": "error",
-        "quote-props": ["error", "as-needed"],
+        "quote-props": [
+          "error",
+          "as-needed"
+        ],
         "radix": "error",
         "semi": "error",
         "space-before-function-paren": "off",
@@ -80,7 +109,9 @@
           "error",
           "always",
           {
-            "markers": ["/"]
+            "markers": [
+              "/"
+            ]
           }
         ],
         "valid-typeof": "error"
