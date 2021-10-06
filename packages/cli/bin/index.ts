@@ -44,15 +44,17 @@ import type {
    * */
   let choice: ChoiceConfig<AbstractConfigModule> = config.choices[FIRST_INDEX];
 
+  const choicesChoices = config.choices.map((mapChoice) => ({
+    name: mapChoice.type,
+    value: mapChoice,
+  }));
+
   if (config.choices.length > MORE_THAN_ONE) {
     choice = await prompt({
       type: 'list',
       name: 'choice',
       message: '🔧 Select one of the built-in configs:',
-      choices: config.choices.map((mapChoice) => ({
-        name: mapChoice.type,
-        value: mapChoice,
-      })),
+      choices: choicesChoices,
     }).then((result) => result.choice as ChoiceConfig<AbstractConfigModule>);
   }
 
@@ -66,7 +68,7 @@ import type {
    * */
   const modulesChoices = [
     new Separator(),
-    ...config.modules.map((MapModule): inquirer.ChoiceOptions => {
+    ...config.modules.map((MapModule): inquirer.CheckboxChoiceOptions => {
       const mapModule = new MapModule();
       return {
         name: `${chalk.bold(mapModule.title)} - ${chalk.gray(
@@ -74,6 +76,7 @@ import type {
         )}`,
         short: mapModule.title,
         value: MapModule,
+        checked: true,
       };
     }),
   ];
@@ -118,7 +121,7 @@ import type {
 
         if (module.addons) {
           const addonChoices = module.addons.map(
-            (MapAddonModule): inquirer.ChoiceOptions => {
+            (MapAddonModule): inquirer.CheckboxChoiceOptions => {
               const mapAddonModule = new MapAddonModule();
 
               return {
@@ -127,6 +130,7 @@ import type {
                 )}`,
                 short: mapAddonModule.title,
                 value: MapAddonModule,
+                checked: true,
               };
             }
           );
