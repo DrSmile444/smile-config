@@ -3,6 +3,7 @@ import { ChoiceType } from '../../src/interfaces';
 import {
   BranchNameLintModule,
   CommitLintModule,
+  defaultModules,
   EditorConfigModule,
   EslintModule,
   EslintSmileStyleModule,
@@ -10,7 +11,6 @@ import {
   EslintTypescriptModule,
   HuskyModule,
   LintStagedModule,
-  mocModules,
   PrettierEslintModule,
   PrettierModule,
   PrettierStylelintModule,
@@ -18,17 +18,17 @@ import {
   StylelintModule,
 } from './modules';
 
-export class MocConfigModule implements AbstractConfigModule {
-  title = 'MOC Global';
-  url = 'https://masterofcode.com';
+export class DefaultConfigModule implements AbstractConfigModule {
+  title = 'Smile Config';
+  url = 'https://github.com/DrSmile444';
 
-  modules = mocModules;
+  modules = defaultModules;
 
   required = ['package.json'];
 
-  choices: ChoiceConfig<MocConfigModule>[] = [
+  choices: ChoiceConfig<DefaultConfigModule>[] = [
     {
-      useClass: MocConfigModule,
+      useClass: DefaultConfigModule,
       type: ChoiceType.FRONT_RECOMMENDED,
       modules: [
         BranchNameLintModule,
@@ -53,7 +53,7 @@ export class MocConfigModule implements AbstractConfigModule {
       ],
     },
     {
-      useClass: MocConfigModule,
+      useClass: DefaultConfigModule,
       type: ChoiceType.NODE_RECOMMENDED,
       modules: [
         BranchNameLintModule,
@@ -77,7 +77,7 @@ export class MocConfigModule implements AbstractConfigModule {
       ],
     },
     {
-      useClass: MocConfigModule,
+      useClass: DefaultConfigModule,
       type: ChoiceType.CUSTOM,
       modules: [],
     },

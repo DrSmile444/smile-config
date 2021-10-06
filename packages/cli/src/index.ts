@@ -1,8 +1,8 @@
-import { MocConfigModule } from '../configs/moc';
+import { DefaultConfigModule } from '../configs/default';
 import { configService } from './core/services';
 
-export const builtInConfigs = [new MocConfigModule()];
+export const builtInConfigs = [new DefaultConfigModule()];
 
 // TODO remove this mock
 // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-// configService.applyConfig(new MocConfigModule().choices[1]);
+// configService.applyConfig(new DefaultConfigModule().choices[1]);

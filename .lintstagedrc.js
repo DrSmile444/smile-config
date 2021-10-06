@@ -30,7 +30,7 @@ module.exports = {
     const { filePathLengthLimit, isTooManyFilesToLint, relativePaths } = getLintFlags(absolutePaths);
 
     if (filePathLengthLimit || isTooManyFilesToLint) {
-      return 'npm run lint:js';
+      return 'npm run affected:lint';
     }
 
     return `eslint ${relativePaths.join(' ')}`;
