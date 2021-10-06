@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import {
   EslintModule,
   EslintTypescriptModule,
-} from '../../../configs/moc/modules';
+} from '../../../configs/default/modules';
 import { EslintMerger } from './eslint.merger';
 
 export const eslintMerger = new EslintMerger();
