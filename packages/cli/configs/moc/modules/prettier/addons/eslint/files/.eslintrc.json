@@ -1,7 +1,3 @@
 {
-  "extends": ["prettier"],
-  "plugins": ["prettier"],
-  "rules": {
-    "prettier/prettier": "error"
-  }
+  "extends": ["./.eslint/prettier.eslintrc.json"]
 }
