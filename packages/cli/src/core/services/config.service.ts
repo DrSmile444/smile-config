@@ -155,10 +155,7 @@ export class ConfigService {
     const packageJson = this.getPackageJson();
     const newPackageJson = mergeObjects([packageJson, json]) as PackageJson;
 
-    fs.writeFileSync(
-      'package.json',
-      JSON.stringify(newPackageJson, null, JSON_STRINGIFY_SPACES)
-    );
+    this.writeJson('package.json', newPackageJson);
   }
 
   checkInstalledPackage(packageName: string) {
@@ -233,10 +230,7 @@ export class ConfigService {
               sourceFile
             );
 
-            fs.writeFileSync(
-              moduleFileName,
-              JSON.stringify(newEslintConfig, null, JSON_STRINGIFY_SPACES)
-            );
+            this.writeJson(moduleFileName, newEslintConfig);
             break;
           }
 
@@ -248,10 +242,8 @@ export class ConfigService {
               targetFile,
               sourceFile
             );
-            fs.writeFileSync(
-              moduleFileName,
-              JSON.stringify(newExtensions, null, JSON_STRINGIFY_SPACES)
-            );
+
+            this.writeJson(moduleFileName, newExtensions);
             break;
           }
 
@@ -263,22 +255,17 @@ export class ConfigService {
               targetFile,
               sourceFile
             );
-            fs.writeFileSync(
-              moduleFileName,
-              JSON.stringify(newStylelintConfig, null, JSON_STRINGIFY_SPACES)
-            );
+
+            this.writeJson(moduleFileName, newStylelintConfig);
             break;
           }
 
           if (!fs.existsSync(moduleFileName)) {
-            fs.writeFileSync(moduleFileName, '{}');
+            this.writeJson(moduleFileName, {});
           }
 
           const result = mergeFiles([moduleFileName, moduleFile]) as AppObject;
-          fs.writeFileSync(
-            moduleFileName,
-            `${JSON.stringify(result, null, JSON_STRINGIFY_SPACES)}\n`
-          );
+          this.writeJson(moduleFileName, result);
           break;
         }
 
@@ -372,5 +359,9 @@ export class ConfigService {
       targetFile,
       sourceFile,
     };
+  }
+
+  writeJson(path: string, json: Record<any, any>) {
+    fs.writeFileSync(path, JSON.stringify(json, null, JSON_STRINGIFY_SPACES));
   }
 }
