@@ -1,4 +1,5 @@
 import { ChoiceType } from '@smile-config/cli/interfaces';
+import * as childProcess from 'child_process';
 import * as fs from 'fs';
 
 import { DefaultConfigModule } from '../../../configs/default';
@@ -9,6 +10,9 @@ describe('ConfigService', () => {
   beforeAll(() => {
     const writeFileSyncSpy = jest.spyOn(fs, 'writeFileSync');
     writeFileSyncSpy.mockReturnValue();
+
+    const execSyncSpy = jest.spyOn(childProcess, 'execSync');
+    execSyncSpy.mockReturnValue(Buffer.from(''));
   });
 
   it('should work with one module', () => {

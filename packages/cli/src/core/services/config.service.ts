@@ -85,47 +85,12 @@ export class ConfigService {
 
     console.info(`  ${chalk.green('✓')} Add npm-run-all`);
 
-    /**
-     * Iterating though modules
-     * */
-    const lintScript = `npm-run-all --parallel ${config.modules
-      .map((module) => this.processModule(module))
-      .filter((scripts) => scripts.length)
-      .reduce(reduceArray)
-      .sort((a, b) => a.order - b.order)
-      .map((lintItem: LintItem): BaseLintItem | boolean => {
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if ((lintItem as ConditionLintItem).when) {
-          const conditionalLintItem = lintItem as ConditionLintItem;
-          const isAvailable = conditionalLintItem.when(
-            this.getPackageJson().devDependencies
-          );
-
-          if (isAvailable) {
-            this.modifyPackageJson({
-              scripts: conditionalLintItem.additionalCommands,
-            });
-            return conditionalLintItem;
-          }
-
-          if (conditionalLintItem.instead) {
-            this.modifyPackageJson({
-              scripts: conditionalLintItem.instead.additionalCommands,
-            });
-            return conditionalLintItem.instead;
-          }
-
-          return false;
-        }
-
-        return lintItem;
-      })
-      .filter(Boolean)
-      .map((lintItem: BaseLintItem) => lintItem.npmRun)
-      .reduce(reduceArray)
-      .join(' ')}`;
-
-    this.modifyPackageJson({ scripts: { lint: lintScript } });
+    const lintScriptCommand = this.getLintScript(config.modules);
+    if (lintScriptCommand) {
+      this.modifyPackageJson({
+        scripts: { lint: `npm-run-all --parallel ${lintScriptCommand}` },
+      });
+    }
 
     console.info(
       chalk.bold(`\n${chalk.yellow('!')} Installing new modules...`)
@@ -359,6 +324,54 @@ export class ConfigService {
       targetFile,
       sourceFile,
     };
+  }
+
+  getLintScript(modules: ChoiceModule[]) {
+    /**
+     * Iterating though modules
+     * */
+    const lintScriptItems = modules
+      .map((module) => this.processModule(module))
+      .filter((scripts) => scripts.length);
+
+    const lintScriptNpmCommands = lintScriptItems.length
+      ? lintScriptItems
+          .reduce(reduceArray)
+          .sort((a, b) => a.order - b.order)
+          .map((lintItem: LintItem): BaseLintItem | boolean => {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if ((lintItem as ConditionLintItem).when) {
+              const conditionalLintItem = lintItem as ConditionLintItem;
+              const isAvailable = conditionalLintItem.when(
+                this.getPackageJson().devDependencies
+              );
+
+              if (isAvailable) {
+                this.modifyPackageJson({
+                  scripts: conditionalLintItem.additionalCommands,
+                });
+                return conditionalLintItem;
+              }
+
+              if (conditionalLintItem.instead) {
+                this.modifyPackageJson({
+                  scripts: conditionalLintItem.instead.additionalCommands,
+                });
+                return conditionalLintItem.instead;
+              }
+
+              return false;
+            }
+
+            return lintItem;
+          })
+          .filter(Boolean)
+          .map((lintItem: BaseLintItem) => lintItem.npmRun)
+      : null;
+
+    return lintScriptNpmCommands
+      ? lintScriptNpmCommands.reduce(reduceArray).join(' ')
+      : null;
   }
 
   writeJson(path: string, json: Record<any, any>) {
