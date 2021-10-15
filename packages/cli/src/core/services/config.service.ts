@@ -6,7 +6,7 @@ import { mergeFiles, mergeObjects } from 'json-merger';
 import type { Configuration } from 'stylelint';
 import type { PackageJson } from 'type-fest';
 
-import { JSON_STRINGIFY_SPACES, SLICE_EXCLUDE_LAST_ELEMENT } from '../../const';
+import { SLICE_EXCLUDE_LAST_ELEMENT } from '../../const';
 import type {
   AbstractConfigItemModule,
   AbstractConfigModule,
@@ -107,9 +107,7 @@ export class ConfigService {
   }
 
   getPackageJson(): PackageJson {
-    return JSON.parse(
-      fs.readFileSync('package.json').toString()
-    ) as PackageJson;
+    return this.folderService.readFile<PackageJson>('package.json', 'json')!;
   }
 
   modifyPackageJson(json?: PackageJson) {
@@ -120,7 +118,7 @@ export class ConfigService {
     const packageJson = this.getPackageJson();
     const newPackageJson = mergeObjects([packageJson, json]) as PackageJson;
 
-    this.writeJson('package.json', newPackageJson);
+    this.folderService.writeFile('package.json', newPackageJson);
   }
 
   checkInstalledPackage(packageName: string) {
@@ -195,7 +193,7 @@ export class ConfigService {
               sourceFile
             );
 
-            this.writeJson(moduleFileName, newEslintConfig);
+            this.folderService.writeFile(moduleFileName, newEslintConfig);
             break;
           }
 
@@ -208,7 +206,7 @@ export class ConfigService {
               sourceFile
             );
 
-            this.writeJson(moduleFileName, newExtensions);
+            this.folderService.writeFile(moduleFileName, newExtensions);
             break;
           }
 
@@ -221,12 +219,12 @@ export class ConfigService {
               sourceFile
             );
 
-            this.writeJson(moduleFileName, newStylelintConfig);
+            this.folderService.writeFile(moduleFileName, newStylelintConfig);
             break;
           }
 
           if (!fs.existsSync(moduleFileName)) {
-            this.writeJson(moduleFileName, {});
+            this.folderService.writeFile(moduleFileName, {});
           }
 
           try {
@@ -235,12 +233,10 @@ export class ConfigService {
             if (fs.existsSync(moduleFileName)) {
               result = mergeFiles([moduleFileName, moduleFile]) as AppObject;
             } else {
-              result = JSON.parse(
-                fs.readFileSync(moduleFile).toString()
-              ) as AppObject;
+              result = this.folderService.readFile(moduleFile, 'json')!;
             }
 
-            this.writeJson(moduleFileName, result);
+            this.folderService.writeFile(moduleFileName, result);
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
           } catch (e: Error) {
@@ -314,9 +310,9 @@ export class ConfigService {
     const isTargetFileExists = fs.existsSync(target);
 
     const targetFile = isTargetFileExists
-      ? (JSON.parse(fs.readFileSync(target).toString()) as T)
+      ? this.folderService.readFile<T>(target, 'json')
       : null;
-    const sourceFile = JSON.parse(fs.readFileSync(source).toString()) as T;
+    const sourceFile = this.folderService.readFile<T>(source, 'json')!;
 
     return {
       targetFile,
@@ -331,9 +327,9 @@ export class ConfigService {
     const isTargetFileExists = fs.existsSync(target);
 
     const targetFile = isTargetFileExists
-      ? fs.readFileSync(target).toString()
+      ? this.folderService.readFile<string>(target, 'text')
       : null;
-    const sourceFile = fs.readFileSync(source).toString();
+    const sourceFile = this.folderService.readFile<string>(source, 'text')!;
 
     return {
       targetFile,
@@ -387,9 +383,5 @@ export class ConfigService {
     return lintScriptNpmCommands
       ? lintScriptNpmCommands.reduce(reduceArray).join(' ')
       : null;
-  }
-
-  writeJson(path: string, json: Record<any, any>) {
-    fs.writeFileSync(path, JSON.stringify(json, null, JSON_STRINGIFY_SPACES));
   }
 }
