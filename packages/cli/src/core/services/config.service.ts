@@ -229,8 +229,23 @@ export class ConfigService {
             this.writeJson(moduleFileName, {});
           }
 
-          const result = mergeFiles([moduleFileName, moduleFile]) as AppObject;
-          this.writeJson(moduleFileName, result);
+          try {
+            let result: AppObject = {};
+
+            if (fs.existsSync(moduleFileName)) {
+              result = mergeFiles([moduleFileName, moduleFile]) as AppObject;
+            } else {
+              result = JSON.parse(
+                fs.readFileSync(moduleFile).toString()
+              ) as AppObject;
+            }
+
+            this.writeJson(moduleFileName, result);
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+          } catch (e: Error) {
+            console.error(`Cannot merge the file: ${moduleFile}`);
+          }
           break;
         }
 
