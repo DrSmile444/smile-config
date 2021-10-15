@@ -7,6 +7,7 @@ import {
   FIRST_INDEX,
   JSON_STRINGIFY_SPACES,
   ONE_ITEM_LENGTH,
+  SLICE_EXCLUDE_LAST_ELEMENT,
   SPLICE_LAST_ELEMENT,
 } from '../../const';
 
@@ -73,10 +74,29 @@ export class FolderService {
 
   writeFile(destination: string, file: AppObject | string): void {
     const filePath = path.resolve(process.cwd(), destination);
+    const isAbsolute = path.isAbsolute(destination);
     const finalFile =
       typeof file === 'object'
         ? JSON.stringify(file, null, JSON_STRINGIFY_SPACES)
         : file;
+
+    if (!isAbsolute && this.isNestedFile(destination)) {
+      let folderPath = '';
+      const SLICE_START = 0;
+
+      destination
+        .split('/')
+        .slice(SLICE_START, SLICE_EXCLUDE_LAST_ELEMENT)
+        .forEach((folder) => {
+          folderPath += `${folder}/`;
+
+          const folderFullPath = path.resolve(process.cwd(), folderPath);
+
+          if (!fs.existsSync(folderFullPath)) {
+            fs.mkdirSync(folderFullPath);
+          }
+        });
+    }
 
     fs.writeFileSync(filePath, finalFile);
   }
