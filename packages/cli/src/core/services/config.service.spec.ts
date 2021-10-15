@@ -8,6 +8,9 @@ import { configService } from './index';
 
 describe('ConfigService', () => {
   beforeAll(() => {
+    const cwdSpy = jest.spyOn(process, 'cwd');
+    cwdSpy.mockReturnValue(`${process.cwd()}/test-output`);
+
     const writeFileSyncSpy = jest.spyOn(fs, 'writeFileSync');
     writeFileSyncSpy.mockReturnValue();
 
