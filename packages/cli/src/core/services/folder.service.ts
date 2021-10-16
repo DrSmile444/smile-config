@@ -74,11 +74,26 @@ export class FolderService {
 
   writeFile(destination: string, file: AppObject | string): void {
     const filePath = path.resolve(process.cwd(), destination);
-    const isAbsolute = path.isAbsolute(destination);
     const finalFile =
       typeof file === 'object'
         ? JSON.stringify(file, null, JSON_STRINGIFY_SPACES)
         : file;
+
+    this.createNestedFolders(destination);
+
+    fs.writeFileSync(filePath, finalFile);
+  }
+
+  copyFile(destination: string, origin: string) {
+    const filePath = path.resolve(process.cwd(), destination);
+
+    this.createNestedFolders(destination);
+
+    fs.writeFileSync(filePath, fs.readFileSync(origin));
+  }
+
+  private createNestedFolders(destination: string) {
+    const isAbsolute = path.isAbsolute(destination);
 
     if (!isAbsolute && this.isNestedFile(destination)) {
       let folderPath = '';
@@ -97,11 +112,5 @@ export class FolderService {
           }
         });
     }
-
-    fs.writeFileSync(filePath, finalFile);
-  }
-
-  copyFile(destination: string, origin: string) {
-    fs.writeFileSync(destination, fs.readFileSync(origin));
   }
 }

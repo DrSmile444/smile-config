@@ -6,7 +6,6 @@ import { mergeFiles, mergeObjects } from 'json-merger';
 import type { Configuration } from 'stylelint';
 import type { PackageJson } from 'type-fest';
 
-import { SLICE_EXCLUDE_LAST_ELEMENT } from '../../const';
 import type {
   AbstractConfigItemModule,
   AbstractConfigModule,
@@ -166,22 +165,6 @@ export class ConfigService {
     resolvedModule.files.forEach((moduleFile) => {
       const moduleFileName = this.folderService.getFileName(moduleFile);
 
-      if (this.folderService.isNestedFile(moduleFileName)) {
-        let folderPath = '';
-        const SLICE_START = 0;
-
-        moduleFileName
-          .split('/')
-          .slice(SLICE_START, SLICE_EXCLUDE_LAST_ELEMENT)
-          .forEach((folder) => {
-            folderPath += `${folder}/`;
-
-            if (!fs.existsSync(folderPath)) {
-              fs.mkdirSync(folderPath);
-            }
-          });
-      }
-
       switch (this.folderService.getFileType(moduleFileName)) {
         case FileType.JSON: {
           if (moduleFileName === '.eslintrc.json') {
@@ -283,7 +266,7 @@ export class ConfigService {
               targetFile,
               sourceFile
             );
-            fs.writeFileSync(moduleFileName, newGitIgnore);
+            this.folderService.writeFile(moduleFileName, newGitIgnore);
             break;
           }
 
