@@ -1,7 +1,15 @@
 /* eslint-disable class-methods-use-this */
+import type { AppObject } from '@smile-config/cli/interfaces';
 import * as fs from 'fs';
+import * as path from 'path';
 
-import { FIRST_INDEX, ONE_ITEM_LENGTH, SPLICE_LAST_ELEMENT } from '../../const';
+import {
+  FIRST_INDEX,
+  JSON_STRINGIFY_SPACES,
+  ONE_ITEM_LENGTH,
+  SLICE_EXCLUDE_LAST_ELEMENT,
+  SPLICE_LAST_ELEMENT,
+} from '../../const';
 
 export enum FileType {
   EDITORCONFIG = 'editorconfig',
@@ -16,17 +24,19 @@ export class FolderService {
     return fs.readdirSync(process.cwd());
   }
 
-  getFileName(path: string) {
-    return path.split('files/').splice(SPLICE_LAST_ELEMENT)[FIRST_INDEX];
+  getFileName(destination: string) {
+    return destination.split('files/').splice(SPLICE_LAST_ELEMENT)[FIRST_INDEX];
   }
 
-  isNestedFile(path: string): boolean {
-    return path.split('/').length !== ONE_ITEM_LENGTH;
+  isNestedFile(destination: string): boolean {
+    return destination.split('/').length !== ONE_ITEM_LENGTH;
   }
 
-  getFileType(path: string): FileType | string {
-    const file = path.split('/').splice(SPLICE_LAST_ELEMENT)[FIRST_INDEX];
-    const type = path
+  getFileType(destination: string): FileType | string {
+    const file = destination.split('/').splice(SPLICE_LAST_ELEMENT)[
+      FIRST_INDEX
+    ];
+    const type = destination
       .split('/')
       .splice(SPLICE_LAST_ELEMENT)
       [FIRST_INDEX].split('.')
@@ -35,7 +45,72 @@ export class FolderService {
     return type === file ? FileType.NO_EXTENSION : type;
   }
 
+  readFile<T extends AppObject | string = AppObject | string>(
+    destination: string,
+    type: 'json' | 'text' = 'text'
+  ): T | null {
+    const filePath = path.resolve(process.cwd(), destination);
+    const isFileAvailable = fs.existsSync(filePath);
+    const file = isFileAvailable ? fs.readFileSync(filePath).toString() : null;
+
+    if (file === null) {
+      return null;
+    }
+
+    if (type === 'json') {
+      try {
+        return JSON.parse(file) as AppObject;
+      } catch (e: unknown) {
+        console.error(
+          `Cannot parse the file: ${destination}. Full path: ${filePath}`
+        );
+        console.error(e);
+        return null;
+      }
+    }
+
+    return file as T;
+  }
+
+  writeFile(destination: string, file: AppObject | string): void {
+    const filePath = path.resolve(process.cwd(), destination);
+    const finalFile =
+      typeof file === 'object'
+        ? JSON.stringify(file, null, JSON_STRINGIFY_SPACES)
+        : file;
+
+    this.createNestedFolders(destination);
+
+    fs.writeFileSync(filePath, finalFile);
+  }
+
   copyFile(destination: string, origin: string) {
-    fs.writeFileSync(destination, fs.readFileSync(origin));
+    const filePath = path.resolve(process.cwd(), destination);
+
+    this.createNestedFolders(destination);
+
+    fs.writeFileSync(filePath, fs.readFileSync(origin));
+  }
+
+  private createNestedFolders(destination: string) {
+    const isAbsolute = path.isAbsolute(destination);
+
+    if (!isAbsolute && this.isNestedFile(destination)) {
+      let folderPath = '';
+      const SLICE_START = 0;
+
+      destination
+        .split('/')
+        .slice(SLICE_START, SLICE_EXCLUDE_LAST_ELEMENT)
+        .forEach((folder) => {
+          folderPath += `${folder}/`;
+
+          const folderFullPath = path.resolve(process.cwd(), folderPath);
+
+          if (!fs.existsSync(folderFullPath)) {
+            fs.mkdirSync(folderFullPath);
+          }
+        });
+    }
   }
 }

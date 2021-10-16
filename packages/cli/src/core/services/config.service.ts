@@ -6,7 +6,6 @@ import { mergeFiles, mergeObjects } from 'json-merger';
 import type { Configuration } from 'stylelint';
 import type { PackageJson } from 'type-fest';
 
-import { JSON_STRINGIFY_SPACES, SLICE_EXCLUDE_LAST_ELEMENT } from '../../const';
 import type {
   AbstractConfigItemModule,
   AbstractConfigModule,
@@ -85,47 +84,12 @@ export class ConfigService {
 
     console.info(`  ${chalk.green('✓')} Add npm-run-all`);
 
-    /**
-     * Iterating though modules
-     * */
-    const lintScript = `npm-run-all --parallel ${config.modules
-      .map((module) => this.processModule(module))
-      .filter((scripts) => scripts.length)
-      .reduce(reduceArray)
-      .sort((a, b) => a.order - b.order)
-      .map((lintItem: LintItem): BaseLintItem | boolean => {
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if ((lintItem as ConditionLintItem).when) {
-          const conditionalLintItem = lintItem as ConditionLintItem;
-          const isAvailable = conditionalLintItem.when(
-            this.getPackageJson().devDependencies
-          );
-
-          if (isAvailable) {
-            this.modifyPackageJson({
-              scripts: conditionalLintItem.additionalCommands,
-            });
-            return conditionalLintItem;
-          }
-
-          if (conditionalLintItem.instead) {
-            this.modifyPackageJson({
-              scripts: conditionalLintItem.instead.additionalCommands,
-            });
-            return conditionalLintItem.instead;
-          }
-
-          return false;
-        }
-
-        return lintItem;
-      })
-      .filter(Boolean)
-      .map((lintItem: BaseLintItem) => lintItem.npmRun)
-      .reduce(reduceArray)
-      .join(' ')}`;
-
-    this.modifyPackageJson({ scripts: { lint: lintScript } });
+    const lintScriptCommand = this.getLintScript(config.modules);
+    if (lintScriptCommand) {
+      this.modifyPackageJson({
+        scripts: { lint: `npm-run-all --parallel ${lintScriptCommand}` },
+      });
+    }
 
     console.info(
       chalk.bold(`\n${chalk.yellow('!')} Installing new modules...`)
@@ -142,9 +106,7 @@ export class ConfigService {
   }
 
   getPackageJson(): PackageJson {
-    return JSON.parse(
-      fs.readFileSync('package.json').toString()
-    ) as PackageJson;
+    return this.folderService.readFile<PackageJson>('package.json', 'json')!;
   }
 
   modifyPackageJson(json?: PackageJson) {
@@ -155,10 +117,7 @@ export class ConfigService {
     const packageJson = this.getPackageJson();
     const newPackageJson = mergeObjects([packageJson, json]) as PackageJson;
 
-    fs.writeFileSync(
-      'package.json',
-      JSON.stringify(newPackageJson, null, JSON_STRINGIFY_SPACES)
-    );
+    this.folderService.writeFile('package.json', newPackageJson);
   }
 
   checkInstalledPackage(packageName: string) {
@@ -206,22 +165,6 @@ export class ConfigService {
     resolvedModule.files.forEach((moduleFile) => {
       const moduleFileName = this.folderService.getFileName(moduleFile);
 
-      if (this.folderService.isNestedFile(moduleFileName)) {
-        let folderPath = '';
-        const SLICE_START = 0;
-
-        moduleFileName
-          .split('/')
-          .slice(SLICE_START, SLICE_EXCLUDE_LAST_ELEMENT)
-          .forEach((folder) => {
-            folderPath += `${folder}/`;
-
-            if (!fs.existsSync(folderPath)) {
-              fs.mkdirSync(folderPath);
-            }
-          });
-      }
-
       switch (this.folderService.getFileType(moduleFileName)) {
         case FileType.JSON: {
           if (moduleFileName === '.eslintrc.json') {
@@ -233,10 +176,7 @@ export class ConfigService {
               sourceFile
             );
 
-            fs.writeFileSync(
-              moduleFileName,
-              JSON.stringify(newEslintConfig, null, JSON_STRINGIFY_SPACES)
-            );
+            this.folderService.writeFile(moduleFileName, newEslintConfig);
             break;
           }
 
@@ -248,10 +188,8 @@ export class ConfigService {
               targetFile,
               sourceFile
             );
-            fs.writeFileSync(
-              moduleFileName,
-              JSON.stringify(newExtensions, null, JSON_STRINGIFY_SPACES)
-            );
+
+            this.folderService.writeFile(moduleFileName, newExtensions);
             break;
           }
 
@@ -263,22 +201,30 @@ export class ConfigService {
               targetFile,
               sourceFile
             );
-            fs.writeFileSync(
-              moduleFileName,
-              JSON.stringify(newStylelintConfig, null, JSON_STRINGIFY_SPACES)
-            );
+
+            this.folderService.writeFile(moduleFileName, newStylelintConfig);
             break;
           }
 
           if (!fs.existsSync(moduleFileName)) {
-            fs.writeFileSync(moduleFileName, '{}');
+            this.folderService.writeFile(moduleFileName, {});
           }
 
-          const result = mergeFiles([moduleFileName, moduleFile]) as AppObject;
-          fs.writeFileSync(
-            moduleFileName,
-            `${JSON.stringify(result, null, JSON_STRINGIFY_SPACES)}\n`
-          );
+          try {
+            let result: AppObject = {};
+
+            if (fs.existsSync(moduleFileName)) {
+              result = mergeFiles([moduleFileName, moduleFile]) as AppObject;
+            } else {
+              result = this.folderService.readFile(moduleFile, 'json')!;
+            }
+
+            this.folderService.writeFile(moduleFileName, result);
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+          } catch (e: Error) {
+            console.error(`Cannot merge the file: ${moduleFile}`);
+          }
           break;
         }
 
@@ -320,7 +266,7 @@ export class ConfigService {
               targetFile,
               sourceFile
             );
-            fs.writeFileSync(moduleFileName, newGitIgnore);
+            this.folderService.writeFile(moduleFileName, newGitIgnore);
             break;
           }
 
@@ -347,9 +293,9 @@ export class ConfigService {
     const isTargetFileExists = fs.existsSync(target);
 
     const targetFile = isTargetFileExists
-      ? (JSON.parse(fs.readFileSync(target).toString()) as T)
+      ? this.folderService.readFile<T>(target, 'json')
       : null;
-    const sourceFile = JSON.parse(fs.readFileSync(source).toString()) as T;
+    const sourceFile = this.folderService.readFile<T>(source, 'json')!;
 
     return {
       targetFile,
@@ -364,13 +310,61 @@ export class ConfigService {
     const isTargetFileExists = fs.existsSync(target);
 
     const targetFile = isTargetFileExists
-      ? fs.readFileSync(target).toString()
+      ? this.folderService.readFile<string>(target, 'text')
       : null;
-    const sourceFile = fs.readFileSync(source).toString();
+    const sourceFile = this.folderService.readFile<string>(source, 'text')!;
 
     return {
       targetFile,
       sourceFile,
     };
+  }
+
+  getLintScript(modules: ChoiceModule[]) {
+    /**
+     * Iterating though modules
+     * */
+    const lintScriptItems = modules
+      .map((module) => this.processModule(module))
+      .filter((scripts) => scripts.length);
+
+    const lintScriptNpmCommands = lintScriptItems.length
+      ? lintScriptItems
+          .reduce(reduceArray)
+          .sort((a, b) => a.order - b.order)
+          .map((lintItem: LintItem): BaseLintItem | boolean => {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if ((lintItem as ConditionLintItem).when) {
+              const conditionalLintItem = lintItem as ConditionLintItem;
+              const isAvailable = conditionalLintItem.when(
+                this.getPackageJson().devDependencies
+              );
+
+              if (isAvailable) {
+                this.modifyPackageJson({
+                  scripts: conditionalLintItem.additionalCommands,
+                });
+                return conditionalLintItem;
+              }
+
+              if (conditionalLintItem.instead) {
+                this.modifyPackageJson({
+                  scripts: conditionalLintItem.instead.additionalCommands,
+                });
+                return conditionalLintItem.instead;
+              }
+
+              return false;
+            }
+
+            return lintItem;
+          })
+          .filter(Boolean)
+          .map((lintItem: BaseLintItem) => lintItem.npmRun)
+      : null;
+
+    return lintScriptNpmCommands
+      ? lintScriptNpmCommands.reduce(reduceArray).join(' ')
+      : null;
   }
 }
