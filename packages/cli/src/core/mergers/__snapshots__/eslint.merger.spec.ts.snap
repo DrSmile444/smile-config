@@ -58,129 +58,12 @@ Object {
   "extends": Array [
     "airbnb-base",
   ],
-  "ignorePatterns": Array [
-    "**/*",
-  ],
   "overrides": Array [
     Object {
-      "files": Array [
-        "*.ts",
-        "*.tsx",
-        "*.js",
-        "*.jsx",
+      "extends": Array [
+        "plugin:import/typescript",
+        "plugin:@typescript-eslint/all",
       ],
-      "rules": Object {
-        "arrow-body-style": "error",
-        "arrow-parens": Array [
-          "error",
-          "always",
-        ],
-        "brace-style": Array [
-          "error",
-          "1tbs",
-        ],
-        "class-methods-use-this": "off",
-        "comma-dangle": Array [
-          "error",
-          "always-multiline",
-        ],
-        "constructor-super": "error",
-        "curly": "error",
-        "dot-notation": "off",
-        "eol-last": "error",
-        "eqeqeq": Array [
-          "off",
-          "smart",
-        ],
-        "guard-for-in": "error",
-        "id-blacklist": "off",
-        "id-match": "off",
-        "import/extensions": Array [
-          "error",
-          "never",
-          Object {
-            "json": "always",
-          },
-        ],
-        "import/prefer-default-export": "off",
-        "max-len": Array [
-          "error",
-          Object {
-            "code": 140,
-          },
-        ],
-        "no-bitwise": "off",
-        "no-caller": "error",
-        "no-console": Array [
-          "error",
-          Object {
-            "allow": Array [
-              "info",
-              "warn",
-              "dir",
-              "timeLog",
-              "assert",
-              "clear",
-              "count",
-              "countReset",
-              "group",
-              "groupEnd",
-              "table",
-              "dirxml",
-              "error",
-              "groupCollapsed",
-              "Console",
-              "profile",
-              "profileEnd",
-              "timeStamp",
-              "context",
-            ],
-          },
-        ],
-        "no-debugger": "error",
-        "no-duplicate-imports": "error",
-        "no-empty": "off",
-        "no-empty-function": "off",
-        "no-eval": "error",
-        "no-fallthrough": "error",
-        "no-new-wrappers": "error",
-        "no-throw-literal": "error",
-        "no-trailing-spaces": "error",
-        "no-undef-init": "error",
-        "no-underscore-dangle": "off",
-        "no-unneeded-ternary": "error",
-        "no-unused-expressions": "error",
-        "no-unused-labels": "error",
-        "no-use-before-define": "error",
-        "no-var": "error",
-        "object-shorthand": "error",
-        "operator-linebreak": "error",
-        "prefer-arrow-callback": "error",
-        "prefer-const": "error",
-        "quote-props": Array [
-          "error",
-          "as-needed",
-        ],
-        "quotes": Array [
-          "error",
-          "single",
-        ],
-        "radix": "error",
-        "semi": "error",
-        "space-before-function-paren": "off",
-        "spaced-comment": Array [
-          "error",
-          "always",
-          Object {
-            "markers": Array [
-              "/",
-            ],
-          },
-        ],
-        "valid-typeof": "error",
-      },
-    },
-    Object {
       "files": Array [
         "*.ts",
         "*.tsx",
@@ -191,9 +74,6 @@ Object {
           "tsconfig.json",
         ],
       },
-      "plugins": Array [
-        "@typescript-eslint/tslint",
-      ],
       "rules": Object {
         "@typescript-eslint/array-type": Array [
           "error",
@@ -212,6 +92,13 @@ Object {
         "@typescript-eslint/indent": Array [
           "error",
           2,
+        ],
+        "@typescript-eslint/lines-between-class-members": Array [
+          "error",
+          "always",
+          Object {
+            "exceptAfterSingleLine": true,
+          },
         ],
         "@typescript-eslint/member-delimiter-style": Array [
           "error",
@@ -270,52 +157,6 @@ Object {
           "always",
         ],
         "@typescript-eslint/strict-boolean-expressions": "off",
-        "@typescript-eslint/tslint/config": Array [
-          "error",
-          Object {
-            "rules": Object {
-              "import-spacing": true,
-              "no-restricted-globals": Array [
-                true,
-                "name",
-                "length",
-                "event",
-                "isNaN",
-                "isFinite",
-              ],
-              "ordered-imports": Object {
-                "options": Object {
-                  "grouped-imports": true,
-                  "groups": Array [
-                    Object {
-                      "match": "^@angular",
-                      "name": "angular imports",
-                      "order": 0,
-                    },
-                    Object {
-                      "match": "^\\\\.",
-                      "name": "relative imports",
-                      "order": 60,
-                    },
-                    Object {
-                      "match": "",
-                      "name": "other lib imports",
-                      "order": 0,
-                    },
-                  ],
-                },
-              },
-              "whitespace": Array [
-                true,
-                "check-branch",
-                "check-decl",
-                "check-operator",
-                "check-separator",
-                "check-type",
-              ],
-            },
-          },
-        ],
         "@typescript-eslint/type-annotation-spacing": "error",
         "@typescript-eslint/unified-signatures": "error",
         "indent": "off",

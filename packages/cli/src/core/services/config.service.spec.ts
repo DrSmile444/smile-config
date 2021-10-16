@@ -1,58 +1,128 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { getProjectRoots } from '@nrwl/workspace/src/command-line/shared';
 import { ChoiceType } from '@smile-config/cli/interfaces';
 import * as childProcess from 'child_process';
-import * as fs from 'fs';
+import type { Linter } from 'eslint';
+import * as path from 'path';
+import * as process from 'process';
 
+import { rootDir } from '../../../../../root-dir';
 import { DefaultConfigModule } from '../../../configs/default';
 import { EditorConfigModule } from '../../../configs/default/modules';
-import { configService } from './index';
+import { FIRST_INDEX } from '../../const';
+import { TestUtil } from '../../test-utils/test.util';
+import { NoPackageJsonError, NoRequiredFileError } from '../errors';
+import { configService, folderService } from './index';
 
 const testDir = 'test-output';
 const testDirInitial = 'test-output-initial';
 
 describe('ConfigService', () => {
-  beforeAll(() => {
-    // Clean up the test directory
-    if (fs.existsSync(testDir)) {
-      fs.rmdirSync(testDir, { recursive: true });
-    }
+  const cliProjectRoot = getProjectRoots(['cli']);
+  const resolvedPath = path.resolve(rootDir, cliProjectRoot[FIRST_INDEX]);
 
-    // Create a test directory
-    childProcess.execSync(`cp -R ${testDirInitial} ${testDir}`);
-
+  beforeAll(async () => {
     const cwdSpy = jest.spyOn(process, 'cwd');
+    // Mock for npm test
+    cwdSpy.mockReturnValue(resolvedPath);
+    // Mock for output destination
     cwdSpy.mockReturnValue(`${process.cwd()}/${testDir}`);
+
+    TestUtil.cleanDirectory(testDir, resolvedPath);
+    await TestUtil.initTestDirectory(testDir, testDirInitial, resolvedPath);
 
     const execSyncSpy = jest.spyOn(childProcess, 'execSync');
     execSyncSpy.mockReturnValue(Buffer.from(''));
   });
 
   afterAll(() => {
-    const resultFiles = fs.readdirSync(testDir);
-    console.info({ resultFiles });
+    TestUtil.cleanDirectory(testDir, resolvedPath);
   });
 
-  it('should', () => {
-    expect(true).toBe(true);
-  });
+  describe('error cases', () => {
+    it('should throw an error without package.json', () => {
+      TestUtil.cleanDirectory(testDir, resolvedPath);
+      TestUtil.createDirectory(testDir, resolvedPath);
 
-  it('should work with one module', () => {
-    configService.applyConfig({
-      useClass: DefaultConfigModule,
-      type: ChoiceType.CUSTOM,
-      modules: [EditorConfigModule],
+      const errorFunction = () => {
+        configService.applyConfig({
+          useClass: DefaultConfigModule,
+          type: ChoiceType.CUSTOM,
+          modules: [EditorConfigModule],
+        });
+      };
+
+      expect(errorFunction).toThrow(NoPackageJsonError);
     });
 
-    expect(true).toBe(true);
+    it('should throw an error if no required file', async () => {
+      TestUtil.cleanDirectory(testDir, resolvedPath);
+      await TestUtil.initTestDirectory(testDir, testDirInitial, resolvedPath);
+
+      class TestConfig extends DefaultConfigModule {
+        required = ['required.file'];
+      }
+
+      const errorFunction = () => {
+        configService.applyConfig({
+          useClass: TestConfig,
+          type: ChoiceType.CUSTOM,
+          modules: [],
+        });
+      };
+
+      expect(errorFunction).toThrow(NoRequiredFileError);
+    });
   });
 
-  it('should work with all modules', () => {
-    const defaultConfigModule = new DefaultConfigModule();
-    configService.applyConfig({
-      useClass: DefaultConfigModule,
-      type: ChoiceType.CUSTOM,
-      modules: defaultConfigModule.modules,
+  describe('success cases', () => {
+    beforeEach(async () => {
+      TestUtil.cleanDirectory(testDir, resolvedPath);
+      await TestUtil.initTestDirectory(testDir, testDirInitial, resolvedPath);
     });
 
-    expect(true).toBe(true);
+    function callWithOneModule() {
+      configService.applyConfig({
+        useClass: DefaultConfigModule,
+        type: ChoiceType.CUSTOM,
+        modules: [EditorConfigModule],
+      });
+    }
+
+    function callWithAllModules() {
+      const defaultConfigModule = new DefaultConfigModule();
+      configService.applyConfig({
+        useClass: DefaultConfigModule,
+        type: ChoiceType.CUSTOM,
+        modules: defaultConfigModule.modules,
+      });
+    }
+
+    it('should work with one module', () => {
+      expect(callWithOneModule).not.toThrow();
+    });
+
+    it('should work with all modules', () => {
+      expect(callWithAllModules).not.toThrow();
+    });
+
+    it('should merge existing configs', () => {
+      folderService.writeFile('.eslintrc.json', {
+        ignorePatterns: ['e2e-testing-case'],
+        extends: ['e2e-testing-case'],
+        plugins: ['e2e-testing-case'],
+      } as Linter.Config);
+
+      expect(callWithAllModules).not.toThrow();
+
+      const resultEslintFile = folderService.readFile<Linter.Config>(
+        '.eslintrc.json',
+        'json'
+      )!;
+
+      expect(resultEslintFile.ignorePatterns).toContain('e2e-testing-case');
+      expect(resultEslintFile.extends).toContain('e2e-testing-case');
+      expect(resultEslintFile.plugins).toContain('e2e-testing-case');
+    });
   });
 });
