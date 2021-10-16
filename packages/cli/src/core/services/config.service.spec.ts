@@ -20,6 +20,7 @@ const testDirInitial = 'test-output-initial';
 describe('ConfigService', () => {
   const cliProjectRoot = getProjectRoots(['cli']);
   const resolvedPath = path.resolve(rootDir, cliProjectRoot[FIRST_INDEX]);
+  const testUtil = new TestUtil(resolvedPath);
 
   beforeAll(async () => {
     const cwdSpy = jest.spyOn(process, 'cwd');
@@ -28,21 +29,21 @@ describe('ConfigService', () => {
     // Mock for output destination
     cwdSpy.mockReturnValue(`${process.cwd()}/${testDir}`);
 
-    TestUtil.cleanDirectory(testDir, resolvedPath);
-    await TestUtil.initTestDirectory(testDir, testDirInitial, resolvedPath);
+    testUtil.cleanDirectory(testDir);
+    await testUtil.initTestDirectory(testDir, testDirInitial);
 
     const execSyncSpy = jest.spyOn(childProcess, 'execSync');
     execSyncSpy.mockReturnValue(Buffer.from(''));
   });
 
   afterAll(() => {
-    TestUtil.cleanDirectory(testDir, resolvedPath);
+    testUtil.cleanDirectory(testDir);
   });
 
   describe('error cases', () => {
     it('should throw an error without package.json', () => {
-      TestUtil.cleanDirectory(testDir, resolvedPath);
-      TestUtil.createDirectory(testDir, resolvedPath);
+      testUtil.cleanDirectory(testDir);
+      testUtil.createDirectory(testDir);
 
       const errorFunction = () => {
         configService.applyConfig({
@@ -56,8 +57,8 @@ describe('ConfigService', () => {
     });
 
     it('should throw an error if no required file', async () => {
-      TestUtil.cleanDirectory(testDir, resolvedPath);
-      await TestUtil.initTestDirectory(testDir, testDirInitial, resolvedPath);
+      testUtil.cleanDirectory(testDir);
+      await testUtil.initTestDirectory(testDir, testDirInitial);
 
       class TestConfig extends DefaultConfigModule {
         required = ['required.file'];
@@ -77,8 +78,8 @@ describe('ConfigService', () => {
 
   describe('success cases', () => {
     beforeEach(async () => {
-      TestUtil.cleanDirectory(testDir, resolvedPath);
-      await TestUtil.initTestDirectory(testDir, testDirInitial, resolvedPath);
+      testUtil.cleanDirectory(testDir);
+      await testUtil.initTestDirectory(testDir, testDirInitial);
     });
 
     function callWithOneModule() {
