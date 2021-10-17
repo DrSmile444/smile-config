@@ -8,7 +8,9 @@
     "build:cli": "nx build cli && chmod +x ./dist/packages/cli/bin/index.js",
     "repo:start": "npm run build:cli && smile-config",
     "postbuild:cli": "cp -R ./packages/cli/configs/ ./dist/packages/cli/configs",
-    "link:cli": "cd ./dist/packages/cli && npm link",
+    "link:cli": "npm run build:cli && cd ./dist/packages/cli && npm link",
+    "unlink:cli": "npm uninstall smile-config -g",
+    "pack:cli": "npm run build:cli && cd ./dist/packages/cli && npm pack",
     "prepare": "husky install",
     "test": "jest",
     "lint": "npm-run-all --parallel lint:branch-name lint:workspace test affected:lint",
@@ -22,14 +24,14 @@
   },
   "private": true,
   "devDependencies": {
-    "@commitlint/config-conventional": "^13.1.0",
-    "@nrwl/cli": "12.9.0",
+    "@commitlint/config-conventional": "^13.2.0",
+    "@nrwl/cli": "12.10.0",
     "@nrwl/eslint-plugin-nx": "12.9.0",
-    "@nrwl/jest": "12.9.0",
-    "@nrwl/linter": "12.9.0",
-    "@nrwl/node": "^12.9.0",
-    "@nrwl/tao": "12.9.0",
-    "@nrwl/workspace": "12.9.0",
+    "@nrwl/jest": "12.10.0",
+    "@nrwl/linter": "12.10.0",
+    "@nrwl/node": "^12.10.0",
+    "@nrwl/tao": "12.10.0",
+    "@nrwl/workspace": "12.10.0",
     "@types/deep-equal": "^1.0.1",
     "@types/eslint": "^7.28.0",
     "@types/inquirer": "^8.1.2",
@@ -68,6 +70,7 @@
     "queue": "^6.0.2",
     "ts-node": "^9.1.1",
     "tslib": "^2.0.0",
-    "type-fest": "^0.21.3"
+    "type-fest": "^0.21.3",
+    "update-notifier": "^5.1.0"
   }
 }

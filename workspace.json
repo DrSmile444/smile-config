@@ -38,10 +38,12 @@
             "packageJson": "packages/cli/package.json",
             "main": "packages/cli/bin/index.ts",
             "optimization": true,
-            "sourceMap": null,
+            "sourceMap": false,
             "verbose": true,
             "assets": [
-              "packages/cli/*.md"
+              "packages/cli/*.md",
+              "packages/cli/LICENSE",
+              "packages/cli/pre-start.js"
             ]
           }
         }
