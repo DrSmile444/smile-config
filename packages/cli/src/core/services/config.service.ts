@@ -224,6 +224,7 @@ export class ConfigService {
             // @ts-expect-error
           } catch (e: Error) {
             console.error(`Cannot merge the file: ${moduleFile}`);
+            console.error(e);
           }
           break;
         }
