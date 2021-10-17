@@ -37,6 +37,9 @@
             "tsConfig": "packages/cli/tsconfig.lib.json",
             "packageJson": "packages/cli/package.json",
             "main": "packages/cli/bin/index.ts",
+            "optimization": true,
+            "sourceMap": null,
+            "verbose": true,
             "assets": [
               "packages/cli/*.md"
             ]
