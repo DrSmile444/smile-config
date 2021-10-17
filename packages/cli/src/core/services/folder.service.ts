@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import type { AppObject } from '@smile-config/cli/interfaces';
 import * as fs from 'fs';
+import { mergeFiles } from 'json-merger';
 import * as path from 'path';
 
 import {
@@ -72,6 +73,12 @@ export class FolderService {
     return file as T;
   }
 
+  isExistFile(destination: string): boolean {
+    const filePath = path.resolve(process.cwd(), destination);
+
+    return fs.existsSync(filePath);
+  }
+
   writeFile(destination: string, file: AppObject | string): void {
     const filePath = path.resolve(process.cwd(), destination);
     const finalFile =
@@ -90,6 +97,18 @@ export class FolderService {
     this.createNestedFolders(destination);
 
     fs.writeFileSync(filePath, fs.readFileSync(origin));
+  }
+
+  mergeFiles(destination: string, source: string) {
+    const destinationFilePath = path.isAbsolute(destination)
+      ? destination
+      : path.resolve(process.cwd(), destination);
+
+    const sourceFilePath = path.isAbsolute(source)
+      ? source
+      : path.resolve(process.cwd(), source);
+
+    return mergeFiles([destinationFilePath, sourceFilePath]) as AppObject;
   }
 
   private createNestedFolders(destination: string) {

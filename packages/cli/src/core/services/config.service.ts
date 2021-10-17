@@ -1,8 +1,7 @@
 import * as chalk from 'chalk';
 import { execSync } from 'child_process';
 import type { Linter } from 'eslint';
-import * as fs from 'fs';
-import { mergeFiles, mergeObjects } from 'json-merger';
+import { mergeObjects } from 'json-merger';
 import type { Configuration } from 'stylelint';
 import type { PackageJson } from 'type-fest';
 
@@ -206,15 +205,18 @@ export class ConfigService {
             break;
           }
 
-          if (!fs.existsSync(moduleFileName)) {
+          if (!this.folderService.isExistFile(moduleFileName)) {
             this.folderService.writeFile(moduleFileName, {});
           }
 
           try {
             let result: AppObject = {};
 
-            if (fs.existsSync(moduleFileName)) {
-              result = mergeFiles([moduleFileName, moduleFile]) as AppObject;
+            if (this.folderService.isExistFile(moduleFileName)) {
+              result = this.folderService.mergeFiles(
+                moduleFileName,
+                moduleFile
+              )!;
             } else {
               result = this.folderService.readFile(moduleFile, 'json')!;
             }
@@ -223,8 +225,11 @@ export class ConfigService {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
           } catch (e: Error) {
-            console.error(`Cannot merge the file: ${moduleFile}`);
+            console.error(
+              `Cannot merge the file: ${moduleFile} with ${moduleFileName}`
+            );
             console.error(e);
+            throw e;
           }
           break;
         }
@@ -291,7 +296,7 @@ export class ConfigService {
     target: string,
     source: string
   ): { targetFile: T | null; sourceFile: T } {
-    const isTargetFileExists = fs.existsSync(target);
+    const isTargetFileExists = this.folderService.isExistFile(target);
 
     const targetFile = isTargetFileExists
       ? this.folderService.readFile<T>(target, 'json')
@@ -308,7 +313,7 @@ export class ConfigService {
     target: string,
     source: string
   ): { targetFile: string | null; sourceFile: string } {
-    const isTargetFileExists = fs.existsSync(target);
+    const isTargetFileExists = this.folderService.isExistFile(target);
 
     const targetFile = isTargetFileExists
       ? this.folderService.readFile<string>(target, 'text')
