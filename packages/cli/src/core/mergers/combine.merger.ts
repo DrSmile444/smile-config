@@ -1,13 +1,16 @@
 export class CombineMerger {
   mergeFiles(target: string | null, source: string): string {
-    if (target === null) {
-      return source;
+    const normalizedTarget = target ? target.replace(/\r\n/g, '\n') : target;
+    const normalizedSource = source ? source.replace(/\r\n/g, '\n') : source;
+
+    if (normalizedTarget === null) {
+      return normalizedSource;
     }
 
-    if (target.includes(source)) {
-      return target;
+    if (normalizedTarget.includes(normalizedSource)) {
+      return normalizedTarget;
     }
 
-    return `${target}\n${source}`;
+    return `${normalizedTarget}\n${normalizedSource}`;
   }
 }
