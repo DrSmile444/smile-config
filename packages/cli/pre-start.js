@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-// eslint-disable-next-line import/no-extraneous-dependencies
+const { program } = require('commander');
 const updateNotifier = require('update-notifier');
+
 const pkg = require('./package.json');
 
 const notifier = updateNotifier({
@@ -21,8 +22,13 @@ const logWhite = (text) =>
   console.info(consoleColors.Reset, text, consoleColors.Reset);
 
 try {
-  // eslint-disable-next-line global-require
-  require('./bin');
+  if (process.argv.length > 2) {
+    program.version(pkg.version, '-v, --version');
+    program.parse(process.argv);
+  } else {
+    // eslint-disable-next-line global-require
+    require('./bin');
+  }
 } catch (e) {
   logYellow('********************************');
   logYellow('*** Cannot load the binaries ***');

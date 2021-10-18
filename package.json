@@ -5,12 +5,13 @@
   "scripts": {
     "start:cli": "npm --prefix ./packages/cli run start",
     "start:cli:watch": "npm --prefix ./packages/cli run start:watch",
-    "build:cli": "nx build cli && chmod +x ./dist/packages/cli/bin/index.js",
+    "build:cli": "nx build cli && chmod +x ./dist/packages/cli/bin/index.js && bash ./cli_post_build.sh",
     "repo:start": "npm run build:cli && smile-config",
     "postbuild:cli": "cp -R ./packages/cli/configs/ ./dist/packages/cli/configs",
     "link:cli": "npm run build:cli && cd ./dist/packages/cli && npm link",
     "unlink:cli": "npm uninstall smile-config -g",
     "pack:cli": "npm run build:cli && cd ./dist/packages/cli && npm pack",
+    "publish:cli": "npm run build:cli && cd ./dist/packages/cli && npm publish",
     "prepare": "husky install",
     "test": "jest",
     "lint": "npm-run-all --parallel lint:branch-name lint:workspace test affected:lint",
@@ -63,6 +64,7 @@
   },
   "dependencies": {
     "chalk": "^4.1.0",
+    "commander": "^7.2.0",
     "deep-equal": "^2.0.5",
     "inquirer": "^8.1.5",
     "json-merger": "^1.1.6",
