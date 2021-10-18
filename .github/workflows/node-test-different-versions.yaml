@@ -1,5 +1,7 @@
-name: node-test-different-versions
-on: [push, pull_request]
+name: Test Node.js
+
+on: pull_request
+
 permissions: read-all
 jobs:
   test:
@@ -7,7 +9,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        node-version: [12, 14, 16]
+        node-version: [10, 12, 14, 16]
     steps:
       - name: checkout
         uses: actions/checkout@v2
