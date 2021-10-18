@@ -1,6 +1,6 @@
 {
   "name": "smile-config",
-  "version": "1.2.10",
+  "version": "1.2.14",
   "description": "A tool for cloning and templating code with configuration easily.",
   "author": "Dmytro Vakulenko (SmileLA)",
   "bin": {

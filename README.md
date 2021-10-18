@@ -7,7 +7,7 @@ It features sharable configs for any template, such as linters, file structure, 
 npx smile-config
 ```
 
-![usage-example](docs/demo.gif)
+![usage-example](https://raw.githubusercontent.com/DrSmile444/smile-config/main/docs/demo.gif)
 
 ## Table of Contents
 
@@ -58,7 +58,7 @@ That's it! Now you can use the app in any folder.
 
 Built-in and your configs support custom module selecting, so you can choose your setup.
 
-![custom-select-demo](docs/custom-demo.gif)
+![custom-select-demo](https://raw.githubusercontent.com/DrSmile444/smile-config/main/docs/custom-demo.gif)
 
 ## Built-in configs
 
@@ -76,14 +76,14 @@ Built-in default config has:
 * [**Smile Track**](https://www.npmjs.com/package/smile-track) -  is an app for auto calculating and tracking time by using your git history;
 * [**VSCode suggested extensions**](https://code.visualstudio.com/docs/editor/extension-marketplace#_workspace-recommended-extensions) - A good set of extensions can make working with a particular workspace or programming language more productive and you'd often like to share this list with your team or colleagues.
 
-![list-of-default-modules](docs/default-modules.png)
+![list-of-default-modules](https://raw.githubusercontent.com/DrSmile444/smile-config/main/docs/default-modules.png)
 
 ## Build your config
 
 > Note: API will be changed in the future
 
 1) Fork the repo;
-2) Create your own config. Use [default]() as an example;
+2) Create your own config. Use [default](https://github.com/DrSmile444/smile-config/tree/main/packages/cli/configs/default) as an example;
 3) Create pull request.
 
 ## TODO

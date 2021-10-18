@@ -253,7 +253,7 @@ export class ConfigService {
 
             console.info(chalk.bold('\nInstalling git hook:'), hookName);
             const huskyHookResult = execSync(
-              `husky add .husky/${hookName} 'echo "Error: no ${hookName} specified" && exit 1'`
+              `npx husky add .husky/${hookName} 'echo "Error: no ${hookName} specified" && exit 1'`
             )
               .toString()
               .split('\n')
