@@ -243,7 +243,7 @@ export class ConfigService {
 
             if (!this.checkInstalledPackage('husky')) {
               console.info(chalk.bold('\nInstalling husky'));
-              const huskyResult = execSync('npx husky-init')
+              const huskyResult = execSync('npm_config_yes=true npx husky-init')
                 .toString()
                 .split('\n')
                 .join('\n  ');
@@ -253,7 +253,7 @@ export class ConfigService {
 
             console.info(chalk.bold('\nInstalling git hook:'), hookName);
             const huskyHookResult = execSync(
-              `npx husky add .husky/${hookName} 'echo "Error: no ${hookName} specified" && exit 1'`
+              `npm_config_yes=true npx husky add .husky/${hookName} 'echo "Error: no ${hookName} specified" && exit 1'`
             )
               .toString()
               .split('\n')
