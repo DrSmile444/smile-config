@@ -6,7 +6,10 @@ import { CombineMerger } from './combine.merger';
 const combineMerger = new CombineMerger();
 
 const readFile = (filePath: string): string =>
-  fs.readFileSync(path.join(__dirname, filePath)).toString();
+  fs
+    .readFileSync(path.join(__dirname, filePath))
+    .toString()
+    .replace(/\r\n/g, '\n');
 
 describe('CombineMerger', () => {
   it('should merge vscode extensions and remove the same value', () => {

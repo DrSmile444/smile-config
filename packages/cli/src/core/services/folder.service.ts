@@ -3,6 +3,8 @@ import type { AppObject } from '@smile-config/cli/interfaces';
 import * as fs from 'fs';
 import { mergeFiles } from 'json-merger';
 import * as path from 'path';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import slash = require('slash');
 
 import {
   FIRST_INDEX,
@@ -26,18 +28,20 @@ export class FolderService {
   }
 
   getFileName(destination: string) {
-    return destination.split('files/').splice(SPLICE_LAST_ELEMENT)[FIRST_INDEX];
+    return slash(destination).split('files/').splice(SPLICE_LAST_ELEMENT)[
+      FIRST_INDEX
+    ];
   }
 
   isNestedFile(destination: string): boolean {
-    return destination.split('/').length !== ONE_ITEM_LENGTH;
+    return slash(destination).split('/').length !== ONE_ITEM_LENGTH;
   }
 
   getFileType(destination: string): FileType | string {
-    const file = destination.split('/').splice(SPLICE_LAST_ELEMENT)[
+    const file = slash(destination).split('/').splice(SPLICE_LAST_ELEMENT)[
       FIRST_INDEX
     ];
-    const type = destination
+    const type = slash(destination)
       .split('/')
       .splice(SPLICE_LAST_ELEMENT)
       [FIRST_INDEX].split('.')
@@ -50,7 +54,7 @@ export class FolderService {
     destination: string,
     type: 'json' | 'text' = 'text'
   ): T | null {
-    const filePath = path.resolve(process.cwd(), destination);
+    const filePath = path.resolve(process.cwd(), slash(destination));
     const isFileAvailable = fs.existsSync(filePath);
     const file = isFileAvailable ? fs.readFileSync(filePath).toString() : null;
 
@@ -63,7 +67,7 @@ export class FolderService {
         return JSON.parse(file) as AppObject;
       } catch (e: unknown) {
         console.error(
-          `Cannot parse the file: ${destination}. Full path: ${filePath}`
+          `Cannot parse the file: ${slash(destination)}. Full path: ${filePath}`
         );
         console.error(e);
         return null;
@@ -74,35 +78,35 @@ export class FolderService {
   }
 
   isExistFile(destination: string): boolean {
-    const filePath = path.resolve(process.cwd(), destination);
+    const filePath = path.resolve(process.cwd(), slash(destination));
 
     return fs.existsSync(filePath);
   }
 
   writeFile(destination: string, file: AppObject | string): void {
-    const filePath = path.resolve(process.cwd(), destination);
+    const filePath = path.resolve(process.cwd(), slash(destination));
     const finalFile =
       typeof file === 'object'
         ? JSON.stringify(file, null, JSON_STRINGIFY_SPACES)
         : file;
 
-    this.createNestedFolders(destination);
+    this.createNestedFolders(slash(destination));
 
     fs.writeFileSync(filePath, finalFile);
   }
 
   copyFile(destination: string, origin: string) {
-    const filePath = path.resolve(process.cwd(), destination);
+    const filePath = path.resolve(process.cwd(), slash(destination));
 
-    this.createNestedFolders(destination);
+    this.createNestedFolders(slash(destination));
 
     fs.writeFileSync(filePath, fs.readFileSync(origin));
   }
 
   mergeFiles(destination: string, source: string) {
-    const destinationFilePath = path.isAbsolute(destination)
-      ? destination
-      : path.resolve(process.cwd(), destination);
+    const destinationFilePath = path.isAbsolute(slash(destination))
+      ? slash(destination)
+      : path.resolve(process.cwd(), slash(destination));
 
     const sourceFilePath = path.isAbsolute(source)
       ? source
@@ -112,13 +116,13 @@ export class FolderService {
   }
 
   private createNestedFolders(destination: string) {
-    const isAbsolute = path.isAbsolute(destination);
+    const isAbsolute = path.isAbsolute(slash(destination));
 
-    if (!isAbsolute && this.isNestedFile(destination)) {
+    if (!isAbsolute && this.isNestedFile(slash(destination))) {
       let folderPath = '';
       const SLICE_START = 0;
 
-      destination
+      slash(destination)
         .split('/')
         .slice(SLICE_START, SLICE_EXCLUDE_LAST_ELEMENT)
         .forEach((folder) => {

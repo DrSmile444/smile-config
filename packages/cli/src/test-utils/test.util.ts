@@ -5,12 +5,18 @@ import * as path from 'path';
 export class TestUtil {
   constructor(private readonly testRoot: string) {}
 
-  cleanDirectory(destination: string) {
+  async cleanDirectory(destination: string): Promise<string | null> {
     const destinationPath = path.resolve(this.testRoot, destination);
 
     if (fs.existsSync(destinationPath)) {
-      fs.rmdirSync(destinationPath, { recursive: true });
+      return new Promise((resolve) => {
+        exec(`rm -rf ${destinationPath}`, (error, stdout) => {
+          resolve(stdout);
+        });
+      });
     }
+
+    return Promise.resolve(null);
   }
 
   createDirectory(destination: string) {
