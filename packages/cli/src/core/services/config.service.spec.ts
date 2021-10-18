@@ -29,20 +29,20 @@ describe('ConfigService', () => {
     // Mock for output destination
     cwdSpy.mockReturnValue(`${process.cwd()}/${testDir}`);
 
-    testUtil.cleanDirectory(testDir);
+    await testUtil.cleanDirectory(testDir);
     await testUtil.initTestDirectory(testDir, testDirInitial);
 
     const execSyncSpy = jest.spyOn(childProcess, 'execSync');
     execSyncSpy.mockReturnValue(Buffer.from(''));
   });
 
-  afterAll(() => {
-    testUtil.cleanDirectory(testDir);
+  afterAll(async () => {
+    await testUtil.cleanDirectory(testDir);
   });
 
   describe('error cases', () => {
-    it('should throw an error without package.json', () => {
-      testUtil.cleanDirectory(testDir);
+    it('should throw an error without package.json', async () => {
+      await testUtil.cleanDirectory(testDir);
       testUtil.createDirectory(testDir);
 
       const errorFunction = () => {
@@ -57,7 +57,7 @@ describe('ConfigService', () => {
     });
 
     it('should throw an error if no required file', async () => {
-      testUtil.cleanDirectory(testDir);
+      await testUtil.cleanDirectory(testDir);
       await testUtil.initTestDirectory(testDir, testDirInitial);
 
       class TestConfig extends DefaultConfigModule {
@@ -78,7 +78,7 @@ describe('ConfigService', () => {
 
   describe('success cases', () => {
     beforeEach(async () => {
-      testUtil.cleanDirectory(testDir);
+      await testUtil.cleanDirectory(testDir);
       await testUtil.initTestDirectory(testDir, testDirInitial);
     });
 
