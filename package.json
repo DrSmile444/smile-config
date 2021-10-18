@@ -64,6 +64,7 @@
   },
   "dependencies": {
     "chalk": "^4.1.0",
+    "commander": "^7.2.0",
     "deep-equal": "^2.0.5",
     "inquirer": "^8.1.5",
     "json-merger": "^1.1.6",
