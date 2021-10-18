@@ -5,13 +5,13 @@ export class BaseConfigItemModule {
   files: string[] = [];
 
   constructor(private readonly dirName: string) {
-    this.files = this.getFiles(path.join(path.normalize(dirName), './files'));
+    this.files = this.getFiles(path.join(dirName, './files'));
   }
 
   getFiles(dir: string): string[] {
     const dirents = fs.readdirSync(dir, { withFileTypes: true });
     const files = dirents.map((dirent) => {
-      const res = path.normalize(path.resolve(dir, dirent.name));
+      const res = path.resolve(dir, dirent.name);
       return dirent.isDirectory() ? this.getFiles(res) : res;
     });
 
