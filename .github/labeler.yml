@@ -5,7 +5,7 @@
 repo:
   - '*'
 
-# Add 'cli' label to any change within the 'cli' package
+# Add 'cli' label to any change within the 'cli' package excluding configs
 cli:
   - any: [ 'packages/cli/*', 'packages/cli/**/*', '!packages/cli/configs/*', '!packages/cli/configs/**/*' ]
 
