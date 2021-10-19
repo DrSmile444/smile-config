@@ -236,6 +236,8 @@ export class ConfigService {
 
         case FileType.JS:
         case FileType.GIT_IGNORE:
+        case FileType.PRETTIER_IGNORE:
+        case FileType.PRETTIER_RC:
         case FileType.NO_EXTENSION:
         case FileType.EDITORCONFIG: {
           if (moduleFileName.includes('.husky/')) {
