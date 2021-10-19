@@ -10,8 +10,7 @@ cli:
   - any: [ 'packages/cli/*', 'packages/cli/**/*', '!packages/cli/configs/*', '!packages/cli/configs/**/*' ]
 
 configs:
-  - packages/cli/configs/*
-  - packages/cli/configs/**/*
+  - any: [ 'packages/cli/configs/*', 'packages/cli/configs/**/*' ]
 
 # Add 'test' label to any change to *.spec.js files within the source dir
 test:
