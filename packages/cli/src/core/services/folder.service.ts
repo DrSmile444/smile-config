@@ -20,6 +20,8 @@ export enum FileType {
   JS = 'js',
   JSON = 'json',
   NO_EXTENSION = 'no_extension',
+  PRETTIER_IGNORE = 'prettierignore',
+  PRETTIER_RC = 'prettierrc',
 }
 
 export class FolderService {
