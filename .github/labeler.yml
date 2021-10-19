@@ -1,0 +1,17 @@
+# READ MORE HERE:
+# https://github.com/actions/labeler
+
+# Add 'repo' label to any root file changes
+repo:
+  - '*'
+
+# Add 'cli' label to any change within the 'cli' package excluding configs
+cli:
+  - any: [ 'packages/cli/*', 'packages/cli/**/*', '!packages/cli/configs/*', '!packages/cli/configs/**/*' ]
+
+configs:
+  - any: [ 'packages/cli/configs/*', 'packages/cli/configs/**/*' ]
+
+# Add 'test' label to any change to *.spec.js files within the source dir
+test:
+  - packages/**/*.spec.js
