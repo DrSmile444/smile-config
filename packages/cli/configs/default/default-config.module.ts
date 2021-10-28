@@ -6,6 +6,7 @@ import {
   defaultModules,
   EditorConfigModule,
   EslintModule,
+  EslintNodeModule,
   EslintSmileStyleModule,
   EslintTypescriptImportsModule,
   EslintTypescriptModule,
@@ -57,7 +58,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
         EditorConfigModule,
         {
           useClass: EslintModule,
-          modules: [EslintSmileStyleModule],
+          modules: [EslintNodeModule, EslintSmileStyleModule],
         },
         {
           useClass: PrettierModule,
@@ -103,6 +104,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
         {
           useClass: EslintModule,
           modules: [
+            EslintNodeModule,
             EslintTypescriptModule,
             EslintTypescriptImportsModule,
             EslintSmileStyleModule,
