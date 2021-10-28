@@ -6,6 +6,8 @@ import {
   defaultModules,
   EditorConfigModule,
   EslintModule,
+  EslintNodeModule,
+  EslintReactModule,
   EslintSmileStyleModule,
   EslintTypescriptImportsModule,
   EslintTypescriptModule,
@@ -36,11 +38,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
         EditorConfigModule,
         {
           useClass: EslintModule,
-          modules: [
-            EslintTypescriptModule,
-            EslintTypescriptImportsModule,
-            EslintSmileStyleModule,
-          ],
+          modules: [EslintSmileStyleModule],
         },
         StylelintModule,
         {
@@ -61,7 +59,74 @@ export class DefaultConfigModule implements AbstractConfigModule {
         EditorConfigModule,
         {
           useClass: EslintModule,
+          modules: [EslintNodeModule, EslintSmileStyleModule],
+        },
+        {
+          useClass: PrettierModule,
+          modules: [PrettierEslintModule],
+        },
+        HuskyModule,
+        LintStagedModule,
+        SmileTrackModule,
+      ],
+    },
+    {
+      useClass: DefaultConfigModule,
+      type: ChoiceType.REACT_RECOMMENDED,
+      modules: [
+        BranchNameLintModule,
+        CommitLintModule,
+        EditorConfigModule,
+        {
+          useClass: EslintModule,
+          modules: [EslintReactModule, EslintSmileStyleModule],
+        },
+        StylelintModule,
+        {
+          useClass: PrettierModule,
+          modules: [PrettierEslintModule, PrettierStylelintModule],
+        },
+        HuskyModule,
+        LintStagedModule,
+        SmileTrackModule,
+      ],
+    },
+    {
+      useClass: DefaultConfigModule,
+      type: ChoiceType.FRONT_TYPESCRIPT_RECOMMENDED,
+      modules: [
+        BranchNameLintModule,
+        CommitLintModule,
+        EditorConfigModule,
+        {
+          useClass: EslintModule,
           modules: [
+            EslintTypescriptModule,
+            EslintTypescriptImportsModule,
+            EslintSmileStyleModule,
+          ],
+        },
+        StylelintModule,
+        {
+          useClass: PrettierModule,
+          modules: [PrettierEslintModule, PrettierStylelintModule],
+        },
+        HuskyModule,
+        LintStagedModule,
+        SmileTrackModule,
+      ],
+    },
+    {
+      useClass: DefaultConfigModule,
+      type: ChoiceType.NODE_TYPESCRIPT_RECOMMENDED,
+      modules: [
+        BranchNameLintModule,
+        CommitLintModule,
+        EditorConfigModule,
+        {
+          useClass: EslintModule,
+          modules: [
+            EslintNodeModule,
             EslintTypescriptModule,
             EslintTypescriptImportsModule,
             EslintSmileStyleModule,
@@ -70,6 +135,32 @@ export class DefaultConfigModule implements AbstractConfigModule {
         {
           useClass: PrettierModule,
           modules: [PrettierEslintModule],
+        },
+        HuskyModule,
+        LintStagedModule,
+        SmileTrackModule,
+      ],
+    },
+    {
+      useClass: DefaultConfigModule,
+      type: ChoiceType.REACT_TYPESCRIPT_EXPERIMENTAL,
+      modules: [
+        BranchNameLintModule,
+        CommitLintModule,
+        EditorConfigModule,
+        {
+          useClass: EslintModule,
+          modules: [
+            EslintReactModule,
+            EslintTypescriptModule,
+            EslintTypescriptImportsModule,
+            EslintSmileStyleModule,
+          ],
+        },
+        StylelintModule,
+        {
+          useClass: PrettierModule,
+          modules: [PrettierEslintModule, PrettierStylelintModule],
         },
         HuskyModule,
         LintStagedModule,

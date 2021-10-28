@@ -5,6 +5,8 @@ import type {
 
 import { BaseConfigItemModule } from '../../../../src/base';
 import {
+  EslintNodeModule,
+  EslintReactModule,
   EslintSmileStyleModule,
   EslintTypescriptImportsModule,
   EslintTypescriptModule,
@@ -17,6 +19,8 @@ export class EslintModule
   title = 'ESLint';
   description = 'Enforce JS code style, best practices';
   addons = [
+    EslintNodeModule,
+    EslintReactModule,
     EslintTypescriptModule,
     EslintTypescriptImportsModule,
     EslintSmileStyleModule,
