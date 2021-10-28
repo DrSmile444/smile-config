@@ -7,6 +7,7 @@ import {
   EditorConfigModule,
   EslintModule,
   EslintNodeModule,
+  EslintReactModule,
   EslintSmileStyleModule,
   EslintTypescriptImportsModule,
   EslintTypescriptModule,
@@ -113,6 +114,27 @@ export class DefaultConfigModule implements AbstractConfigModule {
         {
           useClass: PrettierModule,
           modules: [PrettierEslintModule],
+        },
+        HuskyModule,
+        LintStagedModule,
+        SmileTrackModule,
+      ],
+    },
+    {
+      useClass: DefaultConfigModule,
+      type: ChoiceType.REACT_RECOMMENDED,
+      modules: [
+        BranchNameLintModule,
+        CommitLintModule,
+        EditorConfigModule,
+        {
+          useClass: EslintModule,
+          modules: [EslintReactModule, EslintSmileStyleModule],
+        },
+        StylelintModule,
+        {
+          useClass: PrettierModule,
+          modules: [PrettierEslintModule, PrettierStylelintModule],
         },
         HuskyModule,
         LintStagedModule,

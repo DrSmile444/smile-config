@@ -22,6 +22,7 @@ export enum ChoiceType {
   NODE_RECOMMENDED = 'Node:Recommended',
   FRONT_TYPESCRIPT_RECOMMENDED = 'Front:Typescript:Recommended',
   NODE_TYPESCRIPT_RECOMMENDED = 'Node:Typescript:Recommended',
+  REACT_RECOMMENDED = 'React:Recommended',
   CUSTOM = 'Custom',
 }
 
