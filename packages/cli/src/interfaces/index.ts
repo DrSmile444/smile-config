@@ -23,6 +23,7 @@ export enum ChoiceType {
   FRONT_TYPESCRIPT_RECOMMENDED = 'Front:Typescript:Recommended',
   NODE_TYPESCRIPT_RECOMMENDED = 'Node:Typescript:Recommended',
   REACT_RECOMMENDED = 'React:Recommended',
+  REACT_TYPESCRIPT_EXPERIMENTAL = 'React:Typescript:Experimental',
   CUSTOM = 'Custom',
 }
 
