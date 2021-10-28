@@ -20,6 +20,8 @@ export enum ChoiceType {
   RECOMMENDED = 'Recommended',
   FRONT_RECOMMENDED = 'Front:Recommended',
   NODE_RECOMMENDED = 'Node:Recommended',
+  FRONT_TYPESCRIPT_RECOMMENDED = 'Front:Typescript:Recommended',
+  NODE_TYPESCRIPT_RECOMMENDED = 'Node:Typescript:Recommended',
   CUSTOM = 'Custom',
 }
 
