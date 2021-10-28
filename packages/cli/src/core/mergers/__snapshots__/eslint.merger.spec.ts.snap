@@ -51,13 +51,9 @@ Object {
 exports[`EslintMerger should merge real eslint config 1`] = `
 Object {
   "env": Object {
-    "commonjs": true,
     "es2021": true,
-    "node": true,
   },
-  "extends": Array [
-    "airbnb-base",
-  ],
+  "extends": Array [],
   "overrides": Array [
     Object {
       "extends": Array [
