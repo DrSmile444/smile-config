@@ -1,3 +1,5 @@
+import * as chalk from 'chalk';
+
 import type { AbstractConfigModule, ChoiceConfig } from '../../src/interfaces';
 import { ChoiceType } from '../../src/interfaces';
 import {
@@ -32,6 +34,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
     {
       useClass: DefaultConfigModule,
       type: ChoiceType.FRONT_RECOMMENDED,
+      name: `Front Recommended`,
       modules: [
         BranchNameLintModule,
         CommitLintModule,
@@ -53,6 +56,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
     {
       useClass: DefaultConfigModule,
       type: ChoiceType.NODE_RECOMMENDED,
+      name: `${chalk.green('Node')} Recommended`,
       modules: [
         BranchNameLintModule,
         CommitLintModule,
@@ -73,6 +77,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
     {
       useClass: DefaultConfigModule,
       type: ChoiceType.REACT_RECOMMENDED,
+      name: `${chalk.cyan('React')} Recommended`,
       modules: [
         BranchNameLintModule,
         CommitLintModule,
@@ -94,6 +99,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
     {
       useClass: DefaultConfigModule,
       type: ChoiceType.FRONT_TYPESCRIPT_RECOMMENDED,
+      name: `Front ${chalk.blue('Typescript')} Recommended`,
       modules: [
         BranchNameLintModule,
         CommitLintModule,
@@ -119,6 +125,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
     {
       useClass: DefaultConfigModule,
       type: ChoiceType.NODE_TYPESCRIPT_RECOMMENDED,
+      name: `${chalk.green('Node')} ${chalk.blue('Typescript')} Recommended`,
       modules: [
         BranchNameLintModule,
         CommitLintModule,
@@ -144,6 +151,9 @@ export class DefaultConfigModule implements AbstractConfigModule {
     {
       useClass: DefaultConfigModule,
       type: ChoiceType.REACT_TYPESCRIPT_EXPERIMENTAL,
+      name: `${chalk.cyan('React')} ${chalk.blue(
+        'Typescript'
+      )} ${chalk.redBright('Experimental')}`,
       modules: [
         BranchNameLintModule,
         CommitLintModule,
@@ -169,7 +179,28 @@ export class DefaultConfigModule implements AbstractConfigModule {
     },
     {
       useClass: DefaultConfigModule,
+      type: ChoiceType.NODE_MA_RECOMMENDED,
+      name: `${chalk.green('Node')} ${chalk.yellow(
+        'Masters Academy'
+      )} Recommended`,
+      modules: [
+        EditorConfigModule,
+        {
+          useClass: EslintModule,
+          modules: [EslintNodeModule],
+        },
+        {
+          useClass: PrettierModule,
+          modules: [PrettierEslintModule],
+        },
+        HuskyModule,
+        LintStagedModule,
+      ],
+    },
+    {
+      useClass: DefaultConfigModule,
       type: ChoiceType.CUSTOM,
+      name: 'Custom',
       modules: [],
     },
   ];
