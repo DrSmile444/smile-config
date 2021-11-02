@@ -14,6 +14,7 @@ import {
   EslintTypescriptImportsModule,
   EslintTypescriptModule,
   EslintVueModule,
+  EslintVueTypescriptModule,
   HuskyModule,
   LintStagedModule,
   PrettierEslintModule,
@@ -213,7 +214,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
         {
           useClass: EslintModule,
           modules: [
-            EslintVueModule,
+            EslintVueTypescriptModule,
             EslintTypescriptModule,
             EslintTypescriptImportsModule,
             EslintSmileStyleModule,
