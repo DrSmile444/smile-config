@@ -49,6 +49,7 @@ describe('ConfigService', () => {
         configService.applyConfig({
           useClass: DefaultConfigModule,
           type: ChoiceType.CUSTOM,
+          name: 'test',
           modules: [EditorConfigModule],
         });
       };
@@ -68,6 +69,7 @@ describe('ConfigService', () => {
         configService.applyConfig({
           useClass: TestConfig,
           type: ChoiceType.CUSTOM,
+          name: 'test',
           modules: [],
         });
       };
@@ -86,6 +88,7 @@ describe('ConfigService', () => {
       configService.applyConfig({
         useClass: DefaultConfigModule,
         type: ChoiceType.CUSTOM,
+        name: 'test',
         modules: [EditorConfigModule],
       });
     }
@@ -95,6 +98,7 @@ describe('ConfigService', () => {
       configService.applyConfig({
         useClass: DefaultConfigModule,
         type: ChoiceType.CUSTOM,
+        name: 'test',
         modules: defaultConfigModule.modules,
       });
     }

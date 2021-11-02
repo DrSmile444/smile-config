@@ -24,6 +24,7 @@ export enum ChoiceType {
   NODE_TYPESCRIPT_RECOMMENDED = 'Node:Typescript:Recommended',
   REACT_RECOMMENDED = 'React:Recommended',
   REACT_TYPESCRIPT_EXPERIMENTAL = 'React:Typescript:Experimental',
+  NODE_MA_RECOMMENDED = 'Node:MA:Recommended',
   CUSTOM = 'Custom',
 }
 
@@ -48,6 +49,7 @@ export type ChoiceModule =
 export interface ChoiceConfig<T extends AbstractConfigModule = any> {
   useClass: Newable<T>;
   type: ChoiceType;
+  name: string;
   modules: ChoiceModule[];
 }
 

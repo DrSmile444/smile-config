@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import * as chalk from 'chalk';
 import { prompt, Separator } from 'inquirer';
-import type * as inquirer from 'inquirer';
+import * as inquirer from 'inquirer';
 
 import { builtInConfigs } from '../src';
 import { FIRST_INDEX, MORE_THAN_ONE } from '../src/const';
@@ -44,10 +44,13 @@ import type {
    * */
   let choice: ChoiceConfig<AbstractConfigModule> = config.choices[FIRST_INDEX];
 
-  const choicesChoices = config.choices.map((mapChoice) => ({
-    name: mapChoice.type,
-    value: mapChoice,
-  }));
+  const choicesChoices = [
+    new inquirer.Separator(),
+    ...config.choices.map((mapChoice) => ({
+      name: mapChoice.name,
+      value: mapChoice,
+    })),
+  ];
 
   if (config.choices.length > MORE_THAN_ONE) {
     choice = await prompt({
