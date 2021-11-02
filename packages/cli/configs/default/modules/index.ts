@@ -7,6 +7,7 @@ import { LintStagedModule } from './lint-staged/lint-staged.module';
 import { PrettierModule } from './prettier/prettier.module';
 import { SmileTrackModule } from './smile-track/smile-track.module';
 import { StylelintModule } from './stylelint/stylelint.module';
+import { VscodeModule } from './vscode/vscode.module';
 
 export const defaultModules = [
   BranchNameLintModule,
@@ -18,6 +19,7 @@ export const defaultModules = [
   PrettierModule,
   SmileTrackModule,
   StylelintModule,
+  VscodeModule,
 ];
 
 export * from './branch-name-lint/branch-name-lint.module';
@@ -31,3 +33,4 @@ export * from './prettier';
 export * from './prettier/prettier.module';
 export * from './smile-track/smile-track.module';
 export * from './stylelint/stylelint.module';
+export * from './vscode/vscode.module';
