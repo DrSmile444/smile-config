@@ -177,26 +177,26 @@ export class DefaultConfigModule implements AbstractConfigModule {
         SmileTrackModule,
       ],
     },
-    {
-      useClass: DefaultConfigModule,
-      type: ChoiceType.NODE_MA_RECOMMENDED,
-      name: `${chalk.green('Node')} ${chalk.yellow(
-        'Masters Academy'
-      )} Recommended`,
-      modules: [
-        EditorConfigModule,
-        {
-          useClass: EslintModule,
-          modules: [EslintNodeModule],
-        },
-        {
-          useClass: PrettierModule,
-          modules: [PrettierEslintModule],
-        },
-        HuskyModule,
-        LintStagedModule,
-      ],
-    },
+    // {
+    //   useClass: DefaultConfigModule,
+    //   type: ChoiceType.NODE_MA_RECOMMENDED,
+    //   name: `${chalk.green('Node')} ${chalk.yellow(
+    //     'Masters Academy'
+    //   )} Recommended`,
+    //   modules: [
+    //     EditorConfigModule,
+    //     {
+    //       useClass: EslintModule,
+    //       modules: [EslintNodeModule],
+    //     },
+    //     {
+    //       useClass: PrettierModule,
+    //       modules: [PrettierEslintModule],
+    //     },
+    //     HuskyModule,
+    //     LintStagedModule,
+    //   ],
+    // },
     {
       useClass: DefaultConfigModule,
       type: ChoiceType.CUSTOM,
