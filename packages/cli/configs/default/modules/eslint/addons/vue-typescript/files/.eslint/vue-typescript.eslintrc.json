@@ -1,0 +1,22 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "plugin:vue/essential",
+    "airbnb-base"
+  ],
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser",
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "vue"
+  ],
+  "rules": {
+    "vue/valid-define-props": "error"
+  }
+}

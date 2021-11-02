@@ -1,7 +1,7 @@
 {
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx", "*.vue"],
       "rules": {
         "class-methods-use-this": "off",
         "import/prefer-default-export": "off",

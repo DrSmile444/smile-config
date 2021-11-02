@@ -13,6 +13,8 @@ import {
   EslintSmileStyleModule,
   EslintTypescriptImportsModule,
   EslintTypescriptModule,
+  EslintVueModule,
+  EslintVueTypescriptModule,
   HuskyModule,
   LintStagedModule,
   PrettierEslintModule,
@@ -20,6 +22,7 @@ import {
   PrettierStylelintModule,
   SmileTrackModule,
   StylelintModule,
+  VscodeModule,
 } from './modules';
 
 export class DefaultConfigModule implements AbstractConfigModule {
@@ -36,6 +39,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
       type: ChoiceType.FRONT_RECOMMENDED,
       name: `Front Recommended`,
       modules: [
+        VscodeModule,
         BranchNameLintModule,
         CommitLintModule,
         EditorConfigModule,
@@ -58,6 +62,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
       type: ChoiceType.NODE_RECOMMENDED,
       name: `${chalk.green('Node')} Recommended`,
       modules: [
+        VscodeModule,
         BranchNameLintModule,
         CommitLintModule,
         EditorConfigModule,
@@ -79,6 +84,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
       type: ChoiceType.REACT_RECOMMENDED,
       name: `${chalk.cyan('React')} Recommended`,
       modules: [
+        VscodeModule,
         BranchNameLintModule,
         CommitLintModule,
         EditorConfigModule,
@@ -98,9 +104,33 @@ export class DefaultConfigModule implements AbstractConfigModule {
     },
     {
       useClass: DefaultConfigModule,
+      type: ChoiceType.VUE_RECOMMENDED,
+      name: `${chalk.greenBright('Vue')} Recommended`,
+      modules: [
+        VscodeModule,
+        BranchNameLintModule,
+        CommitLintModule,
+        EditorConfigModule,
+        {
+          useClass: EslintModule,
+          modules: [EslintVueModule, EslintSmileStyleModule],
+        },
+        StylelintModule,
+        {
+          useClass: PrettierModule,
+          modules: [PrettierEslintModule, PrettierStylelintModule],
+        },
+        HuskyModule,
+        LintStagedModule,
+        SmileTrackModule,
+      ],
+    },
+    {
+      useClass: DefaultConfigModule,
       type: ChoiceType.FRONT_TYPESCRIPT_RECOMMENDED,
       name: `Front ${chalk.blue('Typescript')} Recommended`,
       modules: [
+        VscodeModule,
         BranchNameLintModule,
         CommitLintModule,
         EditorConfigModule,
@@ -127,6 +157,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
       type: ChoiceType.NODE_TYPESCRIPT_RECOMMENDED,
       name: `${chalk.green('Node')} ${chalk.blue('Typescript')} Recommended`,
       modules: [
+        VscodeModule,
         BranchNameLintModule,
         CommitLintModule,
         EditorConfigModule,
@@ -155,6 +186,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
         'Typescript'
       )} ${chalk.redBright('Experimental')}`,
       modules: [
+        VscodeModule,
         BranchNameLintModule,
         CommitLintModule,
         EditorConfigModule,
@@ -177,6 +209,36 @@ export class DefaultConfigModule implements AbstractConfigModule {
         SmileTrackModule,
       ],
     },
+    {
+      useClass: DefaultConfigModule,
+      type: ChoiceType.VUE_TYPESCRIPT_EXPERIMENTAL,
+      name: `${chalk.greenBright('Vue')} ${chalk.blue(
+        'Typescript'
+      )} ${chalk.redBright('Experimental')}`,
+      modules: [
+        VscodeModule,
+        BranchNameLintModule,
+        CommitLintModule,
+        EditorConfigModule,
+        {
+          useClass: EslintModule,
+          modules: [
+            EslintVueTypescriptModule,
+            EslintTypescriptModule,
+            EslintTypescriptImportsModule,
+            EslintSmileStyleModule,
+          ],
+        },
+        StylelintModule,
+        {
+          useClass: PrettierModule,
+          modules: [PrettierEslintModule, PrettierStylelintModule],
+        },
+        HuskyModule,
+        LintStagedModule,
+        SmileTrackModule,
+      ],
+    },
     // {
     //   useClass: DefaultConfigModule,
     //   type: ChoiceType.NODE_MA_RECOMMENDED,
@@ -184,6 +246,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
     //     'Masters Academy'
     //   )} Recommended`,
     //   modules: [
+    //     VscodeModule,
     //     EditorConfigModule,
     //     {
     //       useClass: EslintModule,
