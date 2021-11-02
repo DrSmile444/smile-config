@@ -13,6 +13,7 @@ import {
   EslintSmileStyleModule,
   EslintTypescriptImportsModule,
   EslintTypescriptModule,
+  EslintVueModule,
   HuskyModule,
   LintStagedModule,
   PrettierEslintModule,
@@ -98,6 +99,28 @@ export class DefaultConfigModule implements AbstractConfigModule {
     },
     {
       useClass: DefaultConfigModule,
+      type: ChoiceType.VUE_RECOMMENDED,
+      name: `${chalk.greenBright('Vue')} Recommended`,
+      modules: [
+        BranchNameLintModule,
+        CommitLintModule,
+        EditorConfigModule,
+        {
+          useClass: EslintModule,
+          modules: [EslintVueModule, EslintSmileStyleModule],
+        },
+        StylelintModule,
+        {
+          useClass: PrettierModule,
+          modules: [PrettierEslintModule, PrettierStylelintModule],
+        },
+        HuskyModule,
+        LintStagedModule,
+        SmileTrackModule,
+      ],
+    },
+    {
+      useClass: DefaultConfigModule,
       type: ChoiceType.FRONT_TYPESCRIPT_RECOMMENDED,
       name: `Front ${chalk.blue('Typescript')} Recommended`,
       modules: [
@@ -162,6 +185,35 @@ export class DefaultConfigModule implements AbstractConfigModule {
           useClass: EslintModule,
           modules: [
             EslintReactModule,
+            EslintTypescriptModule,
+            EslintTypescriptImportsModule,
+            EslintSmileStyleModule,
+          ],
+        },
+        StylelintModule,
+        {
+          useClass: PrettierModule,
+          modules: [PrettierEslintModule, PrettierStylelintModule],
+        },
+        HuskyModule,
+        LintStagedModule,
+        SmileTrackModule,
+      ],
+    },
+    {
+      useClass: DefaultConfigModule,
+      type: ChoiceType.VUE_TYPESCRIPT_EXPERIMENTAL,
+      name: `${chalk.greenBright('Vue')} ${chalk.blue(
+        'Typescript'
+      )} ${chalk.redBright('Experimental')}`,
+      modules: [
+        BranchNameLintModule,
+        CommitLintModule,
+        EditorConfigModule,
+        {
+          useClass: EslintModule,
+          modules: [
+            EslintVueModule,
             EslintTypescriptModule,
             EslintTypescriptImportsModule,
             EslintSmileStyleModule,

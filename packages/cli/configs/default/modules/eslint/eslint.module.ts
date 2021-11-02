@@ -10,6 +10,7 @@ import {
   EslintSmileStyleModule,
   EslintTypescriptImportsModule,
   EslintTypescriptModule,
+  EslintVueModule,
 } from './addons';
 
 export class EslintModule
@@ -21,6 +22,7 @@ export class EslintModule
   addons = [
     EslintNodeModule,
     EslintReactModule,
+    EslintVueModule,
     EslintTypescriptModule,
     EslintTypescriptImportsModule,
     EslintSmileStyleModule,
