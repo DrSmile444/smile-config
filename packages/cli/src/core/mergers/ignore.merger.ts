@@ -1,3 +1,7 @@
+function escapeRegExp(string: string): string {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
 export class IgnoreMerger {
   mergeFiles(target: string | null, source: string): string {
     const normalizedTarget = target ? target.replace(/\r\n/g, '\n') : target;
@@ -14,7 +18,7 @@ export class IgnoreMerger {
     let result = normalizedTarget;
 
     normalizedSource.split('\n').forEach((line) => {
-      if (!RegExp(line).exec(normalizedTarget)) {
+      if (!RegExp(escapeRegExp(line)).exec(normalizedTarget)) {
         result += line;
       }
     });
