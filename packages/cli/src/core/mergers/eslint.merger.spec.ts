@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires,global-require,@typescript-eslint/no-require-imports */
+import * as CommentJSON from 'comment-json';
 import type { Linter } from 'eslint';
 import * as fs from 'fs';
 
@@ -11,7 +12,9 @@ import { EslintMerger } from './eslint.merger';
 export const eslintMerger = new EslintMerger();
 
 const readJsonFile = (path?: string): Linter.Config | null =>
-  path ? (JSON.parse(fs.readFileSync(path).toString()) as Linter.Config) : null;
+  path
+    ? (CommentJSON.parse(fs.readFileSync(path).toString()) as Linter.Config)
+    : null;
 
 describe('EslintMerger', () => {
   it('should merge mock eslint config', () => {

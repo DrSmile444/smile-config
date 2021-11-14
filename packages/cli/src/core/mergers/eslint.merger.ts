@@ -1,3 +1,4 @@
+import * as CommentJSON from 'comment-json';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import deepEqual = require('deep-equal');
 import type { Linter } from 'eslint';
@@ -37,8 +38,8 @@ export class EslintMerger {
     }
 
     if (target.overrides && source.overrides) {
-      const leftOverrides = JSON.parse(
-        JSON.stringify(source.overrides)
+      const leftOverrides = CommentJSON.parse(
+        CommentJSON.stringify(source.overrides)
       ) as Linter.ConfigOverride[];
 
       defaultMerge.overrides = [

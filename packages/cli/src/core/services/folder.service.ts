@@ -1,7 +1,8 @@
 /* eslint-disable class-methods-use-this */
 import type { AppObject } from '@smile-config/cli/interfaces';
+import * as CommentJSON from 'comment-json';
 import * as fs from 'fs';
-import { mergeFiles } from 'json-merger';
+import { mergeFiles, mergeObjects } from 'json-merger';
 import * as path from 'path';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import slash = require('slash');
@@ -67,7 +68,7 @@ export class FolderService {
 
     if (type === 'json') {
       try {
-        return JSON.parse(file) as AppObject;
+        return CommentJSON.parse(file) as AppObject;
       } catch (e: unknown) {
         console.error(
           `Cannot parse the file: ${slash(destination)}. Full path: ${filePath}`
@@ -90,7 +91,7 @@ export class FolderService {
     const filePath = path.resolve(process.cwd(), slash(destination));
     const finalFile =
       typeof file === 'object'
-        ? JSON.stringify(file, null, JSON_STRINGIFY_SPACES)
+        ? CommentJSON.stringify(file, null, JSON_STRINGIFY_SPACES)
         : file;
 
     this.createNestedFolders(slash(destination));
@@ -115,7 +116,14 @@ export class FolderService {
       ? source
       : path.resolve(process.cwd(), source);
 
-    return mergeFiles([destinationFilePath, sourceFilePath]) as AppObject;
+    const destinationFile = CommentJSON.parse(
+      fs.readFileSync(destinationFilePath).toString()
+    ) as AppObject;
+    const sourceFile = CommentJSON.parse(
+      fs.readFileSync(sourceFilePath).toString()
+    ) as AppObject;
+
+    return mergeObjects([destinationFile, sourceFile]) as AppObject;
   }
 
   private createNestedFolders(destination: string) {
