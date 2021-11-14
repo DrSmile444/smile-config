@@ -1,0 +1,23 @@
+{
+  "rules": {
+    "selector-type-no-unknown": [
+      true,
+      {
+        "ignoreTypes": [
+          "dp-date-picker",
+          "dp-day-calendar",
+          "dp-month-calendar",
+          "dp-time-select"
+        ]
+      }
+    ],
+    "selector-pseudo-element-no-unknown": [
+      true,
+      {
+        "ignorePseudoElements": [
+          "ng-deep"
+        ]
+      }
+    ]
+  }
+}
