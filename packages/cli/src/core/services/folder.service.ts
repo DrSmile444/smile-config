@@ -90,9 +90,12 @@ export class FolderService {
   writeFile(destination: string, file: AppObject | string): void {
     const filePath = path.resolve(process.cwd(), slash(destination));
     const finalFile =
+      // eslint-disable-next-line no-nested-ternary
       typeof file === 'object'
         ? `${CommentJSON.stringify(file, null, JSON_STRINGIFY_SPACES)}\n`
-        : file;
+        : file.endsWith('\n')
+        ? file
+        : `${file}\n`;
 
     this.createNestedFolders(slash(destination));
 
