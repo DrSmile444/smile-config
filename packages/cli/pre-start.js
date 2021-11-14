@@ -42,4 +42,5 @@ try {
   logWhite('$ npm build');
   logYellow('');
   logYellow('********************************');
+  console.error(e);
 }
