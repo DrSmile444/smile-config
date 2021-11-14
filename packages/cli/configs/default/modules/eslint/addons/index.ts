@@ -1,3 +1,4 @@
+export * from './angular/angular.module';
 export * from './node/node.module';
 export * from './react/react.module';
 export * from './smile-style/eslint-smile-style.module';

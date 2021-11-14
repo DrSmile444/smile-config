@@ -16,6 +16,7 @@ import {
 
 export enum FileType {
   EDITORCONFIG = 'editorconfig',
+  ESLINTIGNORE = 'eslintignore',
   GIT_IGNORE = 'gitignore',
   JS = 'js',
   JSON = 'json',

@@ -239,6 +239,7 @@ export class ConfigService {
         case FileType.PRETTIER_IGNORE:
         case FileType.PRETTIER_RC:
         case FileType.NO_EXTENSION:
+        case FileType.ESLINTIGNORE:
         case FileType.EDITORCONFIG: {
           if (moduleFileName.includes('.husky/')) {
             const hookName = moduleFileName.replace('.husky/', '');
@@ -251,6 +252,9 @@ export class ConfigService {
                 .join('\n  ');
 
               console.info(`  ${chalk.green('✓')} ${huskyResult}`);
+
+              const huskyInstallResult = execSync('npm i husky').toString();
+              console.info(`  ${chalk.green('✓')} ${huskyInstallResult}`);
             }
 
             console.info(chalk.bold('\nInstalling git hook:'), hookName);

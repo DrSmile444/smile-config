@@ -1,0 +1,9 @@
+{
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-extraneous-class": "off",
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/no-extra-parens": "warn",
+    "@typescript-eslint/explicit-function-return-type": "warn"
+  }
+}

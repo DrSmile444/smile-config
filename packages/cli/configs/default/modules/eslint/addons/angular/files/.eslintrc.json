@@ -1,0 +1,7 @@
+{
+  "extends": [
+    "./.eslint/angular-html.eslintrc.json",
+    "./.eslint/angular-ts.eslintrc.json",
+    "./.eslint/angular-override.eslintrc.json"
+  ]
+}
