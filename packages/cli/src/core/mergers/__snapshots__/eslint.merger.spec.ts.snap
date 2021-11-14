@@ -33,11 +33,11 @@ Object {
       },
     },
     Object {
-      "files": Array [
+      "files": CommentArray [
         "*.ts",
         "*.tsx",
       ],
-      "plugins": Array [
+      "plugins": CommentArray [
         "rule-b-ts-plugin",
       ],
       "rules": Object {
