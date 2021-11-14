@@ -91,7 +91,7 @@ export class FolderService {
     const filePath = path.resolve(process.cwd(), slash(destination));
     const finalFile =
       typeof file === 'object'
-        ? CommentJSON.stringify(file, null, JSON_STRINGIFY_SPACES)
+        ? `${CommentJSON.stringify(file, null, JSON_STRINGIFY_SPACES)}\n`
         : file;
 
     this.createNestedFolders(slash(destination));
