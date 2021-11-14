@@ -19,8 +19,8 @@ import type {
 } from '../../interfaces';
 import { NoPackageJsonError, NoRequiredFileError } from '../errors';
 import type {
-  CombineMerger,
   EslintMerger,
+  IgnoreMerger,
   StylelintMerger,
   VscodeExtensionMerger,
   VscodeExtensions,
@@ -31,7 +31,7 @@ import { FileType } from './folder.service';
 
 export class ConfigService {
   constructor(
-    private readonly combineMerger: CombineMerger,
+    private readonly ignoreMerger: IgnoreMerger,
     private readonly eslintMergerService: EslintMerger,
     private readonly folderService: FolderService,
     private readonly stylelintMerger: StylelintMerger,
@@ -276,11 +276,11 @@ export class ConfigService {
               moduleFile
             );
 
-            const newGitIgnore = this.combineMerger.mergeFiles(
+            const newIgnore = this.ignoreMerger.mergeFiles(
               targetFile,
               sourceFile
             );
-            this.folderService.writeFile(moduleFileName, newGitIgnore);
+            this.folderService.writeFile(moduleFileName, newIgnore);
             break;
           }
 

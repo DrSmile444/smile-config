@@ -1,9 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { CombineMerger } from './combine.merger';
+import { IgnoreMerger } from './ignore.merger';
 
-const combineMerger = new CombineMerger();
+const combineMerger = new IgnoreMerger();
 
 const readFile = (filePath: string): string =>
   fs
@@ -11,7 +11,7 @@ const readFile = (filePath: string): string =>
     .toString()
     .replace(/\r\n/g, '\n');
 
-describe('CombineMerger', () => {
+describe('IgnoreMerger', () => {
   it('should merge vscode extensions and remove the same value', () => {
     const result = combineMerger.mergeFiles(
       readFile('./__mocks__/combine-a.gitignore'),

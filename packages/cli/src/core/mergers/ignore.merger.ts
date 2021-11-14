@@ -1,4 +1,4 @@
-export class CombineMerger {
+export class IgnoreMerger {
   mergeFiles(target: string | null, source: string): string {
     const normalizedTarget = target ? target.replace(/\r\n/g, '\n') : target;
     const normalizedSource = source ? source.replace(/\r\n/g, '\n') : source;
@@ -11,6 +11,14 @@ export class CombineMerger {
       return normalizedTarget;
     }
 
-    return `${normalizedTarget}\n${normalizedSource}`;
+    let result = normalizedTarget;
+
+    normalizedSource.split('\n').forEach((line) => {
+      if (!RegExp(line).exec(normalizedTarget)) {
+        result += line;
+      }
+    });
+
+    return result;
   }
 }
