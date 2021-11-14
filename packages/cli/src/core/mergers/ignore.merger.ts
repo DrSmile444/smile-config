@@ -23,6 +23,6 @@ export class IgnoreMerger {
       }
     });
 
-    return result;
+    return result.endsWith('\n') ? result : `${result}\n`;
   }
 }

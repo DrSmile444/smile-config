@@ -2,7 +2,7 @@
 import type { AppObject } from '@smile-config/cli/interfaces';
 import * as CommentJSON from 'comment-json';
 import * as fs from 'fs';
-import { mergeFiles, mergeObjects } from 'json-merger';
+import { mergeObjects } from 'json-merger';
 import * as path from 'path';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import slash = require('slash');
