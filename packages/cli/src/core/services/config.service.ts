@@ -268,7 +268,9 @@ export class ConfigService {
             console.info(`  ${chalk.green('✓')} ${huskyHookResult}`);
           }
 
-          if (moduleFileName.includes('.gitignore')) {
+          const mergeFiles = ['.gitignore', '.eslintignore', '.prettierignore'];
+
+          if (mergeFiles.some((name) => moduleFileName.includes(name))) {
             const { sourceFile, targetFile } = this.getPlainMergeFiles(
               moduleFileName,
               moduleFile
