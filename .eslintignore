@@ -1,0 +1,3 @@
+packages/cli/configs/**/modules/**
+!packages/cli/configs/**/modules/**/*.ts
+!packages/cli/configs/**/modules/**/addons/*.ts
