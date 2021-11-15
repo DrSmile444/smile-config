@@ -1,7 +1,8 @@
-import { mergeObjects } from 'json-merger';
+import * as deepmerge from 'deepmerge';
 import type { Configuration } from 'stylelint';
 
 import { mergeArray } from '../utils';
+import { mergeOptions } from './merge-options';
 
 export class StylelintMerger {
   mergeStyle(
@@ -12,7 +13,10 @@ export class StylelintMerger {
       return target;
     }
 
-    const mergedConfig = mergeObjects([source, target]) as Configuration;
+    const mergedConfig = deepmerge.all(
+      [source, target],
+      mergeOptions
+    ) as Configuration;
     mergedConfig.extends = mergeArray(source.extends, target.extends);
 
     return mergedConfig;

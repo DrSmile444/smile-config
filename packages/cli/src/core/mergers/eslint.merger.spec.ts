@@ -11,9 +11,9 @@ import { EslintMerger } from './eslint.merger';
 
 export const eslintMerger = new EslintMerger();
 
-const readJsonFile = (path?: string): Linter.Config | null =>
-  path
-    ? (CommentJSON.parse(fs.readFileSync(path).toString()) as Linter.Config)
+const readJsonFile = (filePath?: string): Linter.Config | null =>
+  filePath
+    ? (CommentJSON.parse(fs.readFileSync(filePath).toString()) as Linter.Config)
     : null;
 
 describe('EslintMerger', () => {
@@ -31,7 +31,7 @@ describe('EslintMerger', () => {
     const result2 = eslintMerger.mergeConfigs(result1, sourceC);
 
     expect(result1).toMatchSnapshot();
-    expect(result2).toStrictEqual(expected);
+    expect(result2).toEqual(expected);
   });
 
   it('should merge real eslint config', () => {

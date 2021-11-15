@@ -1,8 +1,8 @@
 /* eslint-disable class-methods-use-this */
 import type { AppObject } from '@smile-config/cli/interfaces';
 import * as CommentJSON from 'comment-json';
+import * as deepmerge from 'deepmerge';
 import * as fs from 'fs';
-import { mergeObjects } from 'json-merger';
 import * as path from 'path';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import slash = require('slash');
@@ -14,6 +14,7 @@ import {
   SLICE_EXCLUDE_LAST_ELEMENT,
   SPLICE_LAST_ELEMENT,
 } from '../../const';
+import { mergeOptions } from '../mergers/merge-options';
 
 export enum FileType {
   EDITORCONFIG = 'editorconfig',
@@ -126,7 +127,10 @@ export class FolderService {
       fs.readFileSync(sourceFilePath).toString()
     ) as AppObject;
 
-    return mergeObjects([destinationFile, sourceFile]) as AppObject;
+    return deepmerge.all(
+      [destinationFile, sourceFile],
+      mergeOptions
+    ) as AppObject;
   }
 
   private createNestedFolders(destination: string) {

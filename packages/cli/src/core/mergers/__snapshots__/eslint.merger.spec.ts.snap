@@ -16,7 +16,7 @@ Object {
   ],
   "overrides": Array [
     Object {
-      "files": Array [
+      "files": CommentArray [
         "*.ts",
         "*.tsx",
         "*.js",
@@ -53,25 +53,25 @@ Object {
   "env": Object {
     "es2021": true,
   },
-  "extends": Array [],
-  "overrides": Array [
+  "extends": CommentArray [],
+  "overrides": CommentArray [
     Object {
-      "extends": Array [
+      "extends": CommentArray [
         "plugin:import/typescript",
         "plugin:@typescript-eslint/all",
       ],
-      "files": Array [
+      "files": CommentArray [
         "*.ts",
         "*.tsx",
       ],
       "parserOptions": Object {
         "createDefaultProgram": true,
-        "project": Array [
+        "project": CommentArray [
           "tsconfig.json",
         ],
       },
       "rules": Object {
-        "@typescript-eslint/array-type": Array [
+        "@typescript-eslint/array-type": CommentArray [
           "error",
           Object {
             "default": "array",
@@ -79,24 +79,24 @@ Object {
         ],
         "@typescript-eslint/consistent-type-definitions": "error",
         "@typescript-eslint/dot-notation": "off",
-        "@typescript-eslint/explicit-member-accessibility": Array [
+        "@typescript-eslint/explicit-member-accessibility": CommentArray [
           "off",
           Object {
             "accessibility": "explicit",
           },
         ],
-        "@typescript-eslint/indent": Array [
+        "@typescript-eslint/indent": CommentArray [
           "error",
           2,
         ],
-        "@typescript-eslint/lines-between-class-members": Array [
+        "@typescript-eslint/lines-between-class-members": CommentArray [
           "error",
           "always",
           Object {
             "exceptAfterSingleLine": true,
           },
         ],
-        "@typescript-eslint/member-delimiter-style": Array [
+        "@typescript-eslint/member-delimiter-style": CommentArray [
           "error",
           Object {
             "multiline": Object {
@@ -110,20 +110,20 @@ Object {
           },
         ],
         "@typescript-eslint/member-ordering": "error",
-        "@typescript-eslint/naming-convention": Array [
+        "@typescript-eslint/naming-convention": CommentArray [
           "error",
           Object {
             "custom": Object {
               "match": false,
               "regex": "^I[A-Z]",
             },
-            "format": Array [
+            "format": CommentArray [
               "PascalCase",
             ],
             "selector": "interface",
           },
           Object {
-            "format": Array [
+            "format": CommentArray [
               "strictCamelCase",
               "snake_case",
               "UPPER_CASE",
@@ -131,7 +131,7 @@ Object {
             "selector": "property",
           },
         ],
-        "@typescript-eslint/no-duplicate-imports": Array [
+        "@typescript-eslint/no-duplicate-imports": CommentArray [
           "error",
         ],
         "@typescript-eslint/no-empty-function": "off",
@@ -144,11 +144,11 @@ Object {
         "@typescript-eslint/no-use-before-define": "error",
         "@typescript-eslint/prefer-function-type": "error",
         "@typescript-eslint/prefer-readonly-parameter-types": "off",
-        "@typescript-eslint/quotes": Array [
+        "@typescript-eslint/quotes": CommentArray [
           "error",
           "single",
         ],
-        "@typescript-eslint/semi": Array [
+        "@typescript-eslint/semi": CommentArray [
           "error",
           "always",
         ],
@@ -166,7 +166,7 @@ Object {
   "settings": Object {
     "import/resolver": Object {
       "node": Object {
-        "extensions": Array [
+        "extensions": CommentArray [
           ".js",
           ".jsx",
           ".ts",

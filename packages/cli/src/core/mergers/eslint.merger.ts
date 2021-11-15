@@ -1,11 +1,12 @@
 import * as CommentJSON from 'comment-json';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import deepEqual = require('deep-equal');
+import * as deepmerge from 'deepmerge';
 import type { Linter } from 'eslint';
-import { mergeObjects } from 'json-merger';
 
 import { NOT_FOUND_INDEX } from '../../const';
 import { coerceArray, mergeArray } from '../utils';
+import { mergeOptions } from './merge-options';
 
 export class EslintMerger {
   mergeConfigs(
@@ -16,11 +17,10 @@ export class EslintMerger {
       return source;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const defaultMerge: Linter.Config = mergeObjects([
-      target,
-      source,
-    ]) as Linter.Config;
+    const defaultMerge: Linter.Config = deepmerge.all(
+      [target, source],
+      mergeOptions
+    ) as Linter.Config;
 
     if (target.plugins && source.plugins) {
       defaultMerge.plugins = mergeArray(target.plugins, source.plugins);
@@ -58,10 +58,10 @@ export class EslintMerger {
 
           if (foundSourceOverrideIndex !== NOT_FOUND_INDEX) {
             const foundSourceOverride = leftOverrides[foundSourceOverrideIndex];
-            const mergedOverride = mergeObjects([
-              targetOverride,
-              foundSourceOverride,
-            ]) as Linter.ConfigOverride;
+            const mergedOverride = deepmerge.all(
+              [targetOverride, foundSourceOverride],
+              mergeOptions
+            ) as Linter.ConfigOverride;
             mergedOverride.plugins = mergeArray(
               targetOverride.plugins,
               foundSourceOverride.plugins

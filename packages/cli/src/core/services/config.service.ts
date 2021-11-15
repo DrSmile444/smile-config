@@ -1,7 +1,7 @@
 import * as chalk from 'chalk';
 import { execSync } from 'child_process';
+import * as deepmerge from 'deepmerge';
 import type { Linter } from 'eslint';
-import { mergeObjects } from 'json-merger';
 import type { Configuration } from 'stylelint';
 import type { PackageJson } from 'type-fest';
 
@@ -25,6 +25,7 @@ import type {
   VscodeExtensionMerger,
   VscodeExtensions,
 } from '../mergers';
+import { mergeOptions } from '../mergers/merge-options';
 import { reduceArray } from '../utils';
 import type { FolderService } from './folder.service';
 import { FileType } from './folder.service';
@@ -114,7 +115,10 @@ export class ConfigService {
     }
 
     const packageJson = this.getPackageJson();
-    const newPackageJson = mergeObjects([packageJson, json]) as PackageJson;
+    const newPackageJson = deepmerge.all(
+      [packageJson, json],
+      mergeOptions
+    ) as PackageJson;
 
     this.folderService.writeFile('package.json', newPackageJson);
   }
