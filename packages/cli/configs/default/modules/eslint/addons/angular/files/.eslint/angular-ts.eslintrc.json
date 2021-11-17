@@ -24,13 +24,8 @@
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
       ],
       "rules": {
-        "@typescript-eslint/no-parameter-properties": "off",
-        "@typescript-eslint/unbound-method": [
-          "error",
-          {
-            "ignoreStatic": true
-          }
-        ],
+
+
         "@angular-eslint/component-selector": [
           "error",
           {
@@ -140,12 +135,6 @@
               "PascalCase"
             ],
             "leadingUnderscore": "allow"
-          }
-        ],
-        "@typescript-eslint/no-inferrable-types": [
-          "off",
-          {
-            "ignoreParameters": true
           }
         ],
         "@typescript-eslint/no-shadow": [
