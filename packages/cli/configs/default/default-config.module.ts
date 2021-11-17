@@ -259,7 +259,6 @@ export class DefaultConfigModule implements AbstractConfigModule {
             EslintVueTypescriptModule,
             EslintTypescriptModule,
             EslintTypescriptImportsModule,
-            EslintSmileStyleModule,
           ],
         },
         StylelintModule,
