@@ -54,6 +54,10 @@ Object {
     "es2021": true,
   },
   "extends": CommentArray [],
+  "ignorePatterns": CommentArray [
+    "!src/**/*.{ts,tsx,js,jsx,vue,html,css}",
+    "node_modules",
+  ],
   "overrides": CommentArray [
     Object {
       "extends": CommentArray [
