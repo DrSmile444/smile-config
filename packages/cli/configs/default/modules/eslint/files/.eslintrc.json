@@ -2,6 +2,10 @@
   "env": {
     "es2021": true
   },
+  "ignorePatterns": [
+    "!src/**/*.{ts,tsx,js,jsx,vue,html,css}",
+    "node_modules"
+  ],
   "root": true,
   "extends": []
 }
