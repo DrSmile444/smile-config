@@ -5,7 +5,7 @@ import { ChoiceType } from '../../src/interfaces';
 import {
   BranchNameLintModule,
   CommitLintModule,
-  defaultModules,
+  defaultBackendModules,
   EditorConfigModule,
   EslintModule,
   EslintNodeModule,
@@ -22,9 +22,9 @@ import {
 
 export class BackendConfigModule implements AbstractConfigModule {
   title = 'Backend Recommended Tools';
-  url = 'https://github.com/DrSmile444';
+  description = 'Basic Node.js and TypeScript';
 
-  modules = defaultModules;
+  modules = defaultBackendModules;
 
   required = ['package.json'];
 

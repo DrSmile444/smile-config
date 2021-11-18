@@ -9,7 +9,7 @@ import { SmileTrackModule } from './smile-track/smile-track.module';
 import { StylelintModule } from './stylelint/stylelint.module';
 import { VscodeModule } from './vscode/vscode.module';
 
-export const defaultModules = [
+export const defaultFrontendModules = [
   BranchNameLintModule,
   CommitLintModule,
   EditorConfigModule,
@@ -19,6 +19,18 @@ export const defaultModules = [
   PrettierModule,
   SmileTrackModule,
   StylelintModule,
+  VscodeModule,
+];
+
+export const defaultBackendModules = [
+  BranchNameLintModule,
+  CommitLintModule,
+  EditorConfigModule,
+  EslintModule,
+  HuskyModule,
+  LintStagedModule,
+  PrettierModule,
+  SmileTrackModule,
   VscodeModule,
 ];
 

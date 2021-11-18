@@ -33,7 +33,7 @@ import type {
       name: 'config',
       message: '📝 Which style guide do you want to follow?',
       choices: builtInConfigs.map((choiceConfig) => ({
-        name: `${choiceConfig.title}: ${choiceConfig.url}`,
+        name: `${choiceConfig.title} - ${chalk.gray(choiceConfig.description)}`,
         value: choiceConfig as AbstractConfigModule,
       })),
     }).then((result) => result.config as AbstractConfigModule);

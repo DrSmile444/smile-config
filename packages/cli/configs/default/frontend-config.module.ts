@@ -5,7 +5,7 @@ import { ChoiceType } from '../../src/interfaces';
 import {
   BranchNameLintModule,
   CommitLintModule,
-  defaultModules,
+  defaultFrontendModules,
   EditorConfigModule,
   EslintAngularModule,
   EslintModule,
@@ -28,9 +28,9 @@ import {
 
 export class FrontendConfigModule implements AbstractConfigModule {
   title = 'Frontend Recommended Tools';
-  url = 'https://github.com/DrSmile444';
+  description = 'General Frontend, React, Vue, Angular, Typescript';
 
-  modules = defaultModules;
+  modules = defaultFrontendModules;
 
   required = ['package.json'];
 
