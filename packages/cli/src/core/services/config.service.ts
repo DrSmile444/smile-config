@@ -69,6 +69,8 @@ export class ConfigService {
 
     console.info(chalk.bold('\nModify package.json'));
 
+    this.folderService.createNestedFolders('.husky/');
+
     // TODO check is husky selected
     this.modifyPackageJson({
       scripts: {
@@ -256,6 +258,8 @@ export class ConfigService {
                 .join('\n  ');
 
               console.info(`  ${chalk.green('✓')} ${huskyResult}`);
+
+              console.info(chalk.bold('\nSetting husky'));
 
               const huskyInstallResult = execSync('npm i husky').toString();
               console.info(`  ${chalk.green('✓')} ${huskyInstallResult}`);
