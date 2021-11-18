@@ -32,5 +32,6 @@ export * from './lint-staged/lint-staged.module';
 export * from './prettier';
 export * from './prettier/prettier.module';
 export * from './smile-track/smile-track.module';
+export * from './stylelint/addons';
 export * from './stylelint/stylelint.module';
 export * from './vscode/vscode.module';

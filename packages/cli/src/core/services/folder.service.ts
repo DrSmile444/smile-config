@@ -1,7 +1,8 @@
 /* eslint-disable class-methods-use-this */
 import type { AppObject } from '@smile-config/cli/interfaces';
+import * as CommentJSON from 'comment-json';
+import * as deepmerge from 'deepmerge';
 import * as fs from 'fs';
-import { mergeFiles } from 'json-merger';
 import * as path from 'path';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import slash = require('slash');
@@ -13,9 +14,11 @@ import {
   SLICE_EXCLUDE_LAST_ELEMENT,
   SPLICE_LAST_ELEMENT,
 } from '../../const';
+import { mergeOptions } from '../mergers/merge-options';
 
 export enum FileType {
   EDITORCONFIG = 'editorconfig',
+  ESLINTIGNORE = 'eslintignore',
   GIT_IGNORE = 'gitignore',
   JS = 'js',
   JSON = 'json',
@@ -66,7 +69,7 @@ export class FolderService {
 
     if (type === 'json') {
       try {
-        return JSON.parse(file) as AppObject;
+        return CommentJSON.parse(file) as AppObject;
       } catch (e: unknown) {
         console.error(
           `Cannot parse the file: ${slash(destination)}. Full path: ${filePath}`
@@ -88,9 +91,12 @@ export class FolderService {
   writeFile(destination: string, file: AppObject | string): void {
     const filePath = path.resolve(process.cwd(), slash(destination));
     const finalFile =
+      // eslint-disable-next-line no-nested-ternary
       typeof file === 'object'
-        ? JSON.stringify(file, null, JSON_STRINGIFY_SPACES)
-        : file;
+        ? `${CommentJSON.stringify(file, null, JSON_STRINGIFY_SPACES)}\n`
+        : file.endsWith('\n')
+        ? file
+        : `${file}\n`;
 
     this.createNestedFolders(slash(destination));
 
@@ -114,7 +120,17 @@ export class FolderService {
       ? source
       : path.resolve(process.cwd(), source);
 
-    return mergeFiles([destinationFilePath, sourceFilePath]) as AppObject;
+    const destinationFile = CommentJSON.parse(
+      fs.readFileSync(destinationFilePath).toString()
+    ) as AppObject;
+    const sourceFile = CommentJSON.parse(
+      fs.readFileSync(sourceFilePath).toString()
+    ) as AppObject;
+
+    return deepmerge.all(
+      [destinationFile, sourceFile],
+      mergeOptions
+    ) as AppObject;
   }
 
   private createNestedFolders(destination: string) {

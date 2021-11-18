@@ -25,6 +25,7 @@ export enum ChoiceType {
   REACT_RECOMMENDED = 'React:Recommended',
   REACT_TYPESCRIPT_EXPERIMENTAL = 'React:Typescript:Experimental',
   VUE_RECOMMENDED = 'Vue:Recommended',
+  ANGULAR_TYPESCRIPT_RECOMMENDED = 'Angular:Typescript:Recommended',
   VUE_TYPESCRIPT_EXPERIMENTAL = 'Vue:Typescript:Experimental',
   NODE_MA_RECOMMENDED = 'Node:MA:Recommended',
   CUSTOM = 'Custom',

@@ -7,6 +7,7 @@ import {
   CommitLintModule,
   defaultModules,
   EditorConfigModule,
+  EslintAngularModule,
   EslintModule,
   EslintNodeModule,
   EslintReactModule,
@@ -21,6 +22,7 @@ import {
   PrettierModule,
   PrettierStylelintModule,
   SmileTrackModule,
+  StylelintAngularModule,
   StylelintModule,
   VscodeModule,
 } from './modules';
@@ -154,6 +156,37 @@ export class DefaultConfigModule implements AbstractConfigModule {
     },
     {
       useClass: DefaultConfigModule,
+      type: ChoiceType.ANGULAR_TYPESCRIPT_RECOMMENDED,
+      name: `Angular ${chalk.blue('Typescript')} Recommended`,
+      modules: [
+        VscodeModule,
+        BranchNameLintModule,
+        CommitLintModule,
+        EditorConfigModule,
+        {
+          useClass: EslintModule,
+          modules: [
+            EslintTypescriptModule,
+            EslintTypescriptImportsModule,
+            EslintSmileStyleModule,
+            EslintAngularModule,
+          ],
+        },
+        {
+          useClass: StylelintModule,
+          modules: [StylelintAngularModule],
+        },
+        {
+          useClass: PrettierModule,
+          modules: [PrettierEslintModule, PrettierStylelintModule],
+        },
+        HuskyModule,
+        LintStagedModule,
+        SmileTrackModule,
+      ],
+    },
+    {
+      useClass: DefaultConfigModule,
       type: ChoiceType.NODE_TYPESCRIPT_RECOMMENDED,
       name: `${chalk.green('Node')} ${chalk.blue('Typescript')} Recommended`,
       modules: [
@@ -226,7 +259,6 @@ export class DefaultConfigModule implements AbstractConfigModule {
             EslintVueTypescriptModule,
             EslintTypescriptModule,
             EslintTypescriptImportsModule,
-            EslintSmileStyleModule,
           ],
         },
         StylelintModule,

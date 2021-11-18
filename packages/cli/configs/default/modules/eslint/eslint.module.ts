@@ -5,6 +5,7 @@ import type {
 
 import { BaseConfigItemModule } from '../../../../src/base';
 import {
+  EslintAngularModule,
   EslintNodeModule,
   EslintReactModule,
   EslintSmileStyleModule,
@@ -28,6 +29,7 @@ export class EslintModule
     EslintTypescriptModule,
     EslintTypescriptImportsModule,
     EslintSmileStyleModule,
+    EslintAngularModule,
   ];
 
   includeToLintScript: LintItem[] = [

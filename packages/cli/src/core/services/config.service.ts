@@ -1,7 +1,7 @@
 import * as chalk from 'chalk';
 import { execSync } from 'child_process';
+import * as deepmerge from 'deepmerge';
 import type { Linter } from 'eslint';
-import { mergeObjects } from 'json-merger';
 import type { Configuration } from 'stylelint';
 import type { PackageJson } from 'type-fest';
 
@@ -19,19 +19,20 @@ import type {
 } from '../../interfaces';
 import { NoPackageJsonError, NoRequiredFileError } from '../errors';
 import type {
-  CombineMerger,
   EslintMerger,
+  IgnoreMerger,
   StylelintMerger,
   VscodeExtensionMerger,
   VscodeExtensions,
 } from '../mergers';
+import { mergeOptions } from '../mergers/merge-options';
 import { reduceArray } from '../utils';
 import type { FolderService } from './folder.service';
 import { FileType } from './folder.service';
 
 export class ConfigService {
   constructor(
-    private readonly combineMerger: CombineMerger,
+    private readonly ignoreMerger: IgnoreMerger,
     private readonly eslintMergerService: EslintMerger,
     private readonly folderService: FolderService,
     private readonly stylelintMerger: StylelintMerger,
@@ -114,7 +115,10 @@ export class ConfigService {
     }
 
     const packageJson = this.getPackageJson();
-    const newPackageJson = mergeObjects([packageJson, json]) as PackageJson;
+    const newPackageJson = deepmerge.all(
+      [packageJson, json],
+      mergeOptions
+    ) as PackageJson;
 
     this.folderService.writeFile('package.json', newPackageJson);
   }
@@ -239,6 +243,7 @@ export class ConfigService {
         case FileType.PRETTIER_IGNORE:
         case FileType.PRETTIER_RC:
         case FileType.NO_EXTENSION:
+        case FileType.ESLINTIGNORE:
         case FileType.EDITORCONFIG: {
           if (moduleFileName.includes('.husky/')) {
             const hookName = moduleFileName.replace('.husky/', '');
@@ -251,6 +256,9 @@ export class ConfigService {
                 .join('\n  ');
 
               console.info(`  ${chalk.green('✓')} ${huskyResult}`);
+
+              const huskyInstallResult = execSync('npm i husky').toString();
+              console.info(`  ${chalk.green('✓')} ${huskyInstallResult}`);
             }
 
             console.info(chalk.bold('\nInstalling git hook:'), hookName);
@@ -264,17 +272,19 @@ export class ConfigService {
             console.info(`  ${chalk.green('✓')} ${huskyHookResult}`);
           }
 
-          if (moduleFileName.includes('.gitignore')) {
+          const mergeFiles = ['.gitignore', '.eslintignore', '.prettierignore'];
+
+          if (mergeFiles.some((name) => moduleFileName.includes(name))) {
             const { sourceFile, targetFile } = this.getPlainMergeFiles(
               moduleFileName,
               moduleFile
             );
 
-            const newGitIgnore = this.combineMerger.mergeFiles(
+            const newIgnore = this.ignoreMerger.mergeFiles(
               targetFile,
               sourceFile
             );
-            this.folderService.writeFile(moduleFileName, newGitIgnore);
+            this.folderService.writeFile(moduleFileName, newIgnore);
             break;
           }
 

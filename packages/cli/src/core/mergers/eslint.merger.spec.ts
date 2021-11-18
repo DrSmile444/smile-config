@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires,global-require,@typescript-eslint/no-require-imports */
+import * as CommentJSON from 'comment-json';
 import type { Linter } from 'eslint';
 import * as fs from 'fs';
 
@@ -10,8 +11,10 @@ import { EslintMerger } from './eslint.merger';
 
 export const eslintMerger = new EslintMerger();
 
-const readJsonFile = (path?: string): Linter.Config | null =>
-  path ? (JSON.parse(fs.readFileSync(path).toString()) as Linter.Config) : null;
+const readJsonFile = (filePath?: string): Linter.Config | null =>
+  filePath
+    ? (CommentJSON.parse(fs.readFileSync(filePath).toString()) as Linter.Config)
+    : null;
 
 describe('EslintMerger', () => {
   it('should merge mock eslint config', () => {
@@ -28,7 +31,7 @@ describe('EslintMerger', () => {
     const result2 = eslintMerger.mergeConfigs(result1, sourceC);
 
     expect(result1).toMatchSnapshot();
-    expect(result2).toStrictEqual(expected);
+    expect(result2).toEqual(expected);
   });
 
   it('should merge real eslint config', () => {

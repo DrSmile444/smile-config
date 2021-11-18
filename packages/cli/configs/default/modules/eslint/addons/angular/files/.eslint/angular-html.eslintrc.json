@@ -1,0 +1,32 @@
+{
+  "overrides": [
+    {
+      "files": [
+        "*.html"
+      ],
+      "plugins": [
+        "@angular-eslint/eslint-plugin-template"
+      ],
+      "parser": "@angular-eslint/template-parser",
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "rules": {
+        "@angular-eslint/template/no-negated-async": "error",
+        "@angular-eslint/template/banana-in-box": "error"
+      }
+    },
+    {
+      "parser": "@angular-eslint/template-parser",
+      "plugins": [
+        "@angular-eslint/eslint-plugin-template"
+      ],
+      "files": [
+        "*.component.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ]
+    }
+  ]
+}

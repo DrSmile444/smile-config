@@ -4,6 +4,7 @@ import type {
 } from '@smile-config/cli/interfaces';
 
 import { BaseConfigItemModule } from '../../../../src/base';
+import { StylelintAngularModule } from './addons';
 
 export class StylelintModule
   extends BaseConfigItemModule
@@ -17,6 +18,8 @@ export class StylelintModule
       order: 5,
     },
   ];
+
+  addons = [StylelintAngularModule];
 
   constructor() {
     super(__dirname);
