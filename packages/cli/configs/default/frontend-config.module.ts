@@ -8,7 +8,7 @@ import {
   defaultFrontendModules,
   EditorConfigModule,
   EslintAngularModule,
-  EslintModule,
+  EslintFrontendModule,
   EslintReactModule,
   EslintSmileStyleModule,
   EslintTypescriptImportsModule,
@@ -45,7 +45,7 @@ export class FrontendConfigModule implements AbstractConfigModule {
         CommitLintModule,
         EditorConfigModule,
         {
-          useClass: EslintModule,
+          useClass: EslintFrontendModule,
           modules: [EslintSmileStyleModule],
         },
         StylelintModule,
@@ -68,7 +68,7 @@ export class FrontendConfigModule implements AbstractConfigModule {
         CommitLintModule,
         EditorConfigModule,
         {
-          useClass: EslintModule,
+          useClass: EslintFrontendModule,
           modules: [EslintReactModule, EslintSmileStyleModule],
         },
         StylelintModule,
@@ -91,7 +91,7 @@ export class FrontendConfigModule implements AbstractConfigModule {
         CommitLintModule,
         EditorConfigModule,
         {
-          useClass: EslintModule,
+          useClass: EslintFrontendModule,
           modules: [EslintVueModule, EslintSmileStyleModule],
         },
         StylelintModule,
@@ -114,7 +114,7 @@ export class FrontendConfigModule implements AbstractConfigModule {
         CommitLintModule,
         EditorConfigModule,
         {
-          useClass: EslintModule,
+          useClass: EslintFrontendModule,
           modules: [
             EslintTypescriptModule,
             EslintTypescriptImportsModule,
@@ -141,7 +141,7 @@ export class FrontendConfigModule implements AbstractConfigModule {
         CommitLintModule,
         EditorConfigModule,
         {
-          useClass: EslintModule,
+          useClass: EslintFrontendModule,
           modules: [
             EslintTypescriptModule,
             EslintTypescriptImportsModule,
@@ -174,7 +174,7 @@ export class FrontendConfigModule implements AbstractConfigModule {
         CommitLintModule,
         EditorConfigModule,
         {
-          useClass: EslintModule,
+          useClass: EslintFrontendModule,
           modules: [
             EslintReactModule,
             EslintTypescriptModule,
@@ -204,7 +204,7 @@ export class FrontendConfigModule implements AbstractConfigModule {
         CommitLintModule,
         EditorConfigModule,
         {
-          useClass: EslintModule,
+          useClass: EslintFrontendModule,
           modules: [
             EslintVueTypescriptModule,
             EslintTypescriptModule,

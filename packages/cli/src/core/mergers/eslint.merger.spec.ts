@@ -4,7 +4,7 @@ import type { Linter } from 'eslint';
 import * as fs from 'fs';
 
 import {
-  EslintModule,
+  EslintFrontendModule,
   EslintTypescriptModule,
 } from '../../../configs/default/modules';
 import { EslintMerger } from './eslint.merger';
@@ -36,7 +36,9 @@ describe('EslintMerger', () => {
 
   it('should merge real eslint config', () => {
     const targetFilePath = readJsonFile(
-      new EslintModule().files.find((file) => file.includes('.eslintrc.json'))
+      new EslintFrontendModule().files.find((file) =>
+        file.includes('.eslintrc.json')
+      )
     );
     const sourceFilePath = readJsonFile(
       new EslintTypescriptModule().files.find((file) =>

@@ -7,7 +7,7 @@ import {
   CommitLintModule,
   defaultBackendModules,
   EditorConfigModule,
-  EslintModule,
+  EslintBackendModule,
   EslintNodeModule,
   EslintSmileStyleModule,
   EslintTypescriptImportsModule,
@@ -39,7 +39,7 @@ export class BackendConfigModule implements AbstractConfigModule {
         CommitLintModule,
         EditorConfigModule,
         {
-          useClass: EslintModule,
+          useClass: EslintBackendModule,
           modules: [EslintNodeModule, EslintSmileStyleModule],
         },
         {
@@ -61,7 +61,7 @@ export class BackendConfigModule implements AbstractConfigModule {
         CommitLintModule,
         EditorConfigModule,
         {
-          useClass: EslintModule,
+          useClass: EslintBackendModule,
           modules: [
             EslintNodeModule,
             EslintTypescriptModule,
@@ -88,7 +88,7 @@ export class BackendConfigModule implements AbstractConfigModule {
     //     VscodeModule,
     //     EditorConfigModule,
     //     {
-    //       useClass: EslintModule,
+    //       useClass: EslintBackendModule,
     //       modules: [EslintNodeModule],
     //     },
     //     {

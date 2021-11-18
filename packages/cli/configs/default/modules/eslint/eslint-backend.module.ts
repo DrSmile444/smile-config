@@ -15,7 +15,7 @@ import {
   EslintVueTypescriptModule,
 } from './addons';
 
-export class EslintModule
+export class EslintBackendModule
   extends BaseConfigItemModule
   implements AbstractConfigItemModule
 {
@@ -23,13 +23,9 @@ export class EslintModule
   description = 'Enforce JS code style, best practices';
   addons = [
     EslintNodeModule,
-    EslintReactModule,
-    EslintVueModule,
-    EslintVueTypescriptModule,
     EslintTypescriptModule,
     EslintTypescriptImportsModule,
     EslintSmileStyleModule,
-    EslintAngularModule,
   ];
 
   includeToLintScript: LintItem[] = [
