@@ -7,7 +7,7 @@ import * as path from 'path';
 import * as process from 'process';
 
 import { rootDir } from '../../../../../root-dir';
-import { DefaultConfigModule } from '../../../configs/default';
+import { FrontendConfigModule } from '../../../configs/default';
 import { EditorConfigModule } from '../../../configs/default/modules';
 import { FIRST_INDEX } from '../../const';
 import { TestUtil } from '../../test-utils/test.util';
@@ -47,7 +47,7 @@ describe('ConfigService', () => {
 
       const errorFunction = () => {
         configService.applyConfig({
-          useClass: DefaultConfigModule,
+          useClass: FrontendConfigModule,
           type: ChoiceType.CUSTOM,
           name: 'test',
           modules: [EditorConfigModule],
@@ -61,7 +61,7 @@ describe('ConfigService', () => {
       await testUtil.cleanDirectory(testDir);
       await testUtil.initTestDirectory(testDir, testDirInitial);
 
-      class TestConfig extends DefaultConfigModule {
+      class TestConfig extends FrontendConfigModule {
         required = ['required.file'];
       }
 
@@ -86,7 +86,7 @@ describe('ConfigService', () => {
 
     function callWithOneModule() {
       configService.applyConfig({
-        useClass: DefaultConfigModule,
+        useClass: FrontendConfigModule,
         type: ChoiceType.CUSTOM,
         name: 'test',
         modules: [EditorConfigModule],
@@ -94,9 +94,9 @@ describe('ConfigService', () => {
     }
 
     function callWithAllModules() {
-      const defaultConfigModule = new DefaultConfigModule();
+      const defaultConfigModule = new FrontendConfigModule();
       configService.applyConfig({
-        useClass: DefaultConfigModule,
+        useClass: FrontendConfigModule,
         type: ChoiceType.CUSTOM,
         name: 'test',
         modules: defaultConfigModule.modules,

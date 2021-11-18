@@ -1,8 +1,6 @@
-import { DefaultConfigModule } from '../configs/default';
-import { configService } from './core/services';
+import { BackendConfigModule, FrontendConfigModule } from '../configs/default';
 
-export const builtInConfigs = [new DefaultConfigModule()];
-
-// TODO remove this mock
-// eslint-disable-next-line @typescript-eslint/no-magic-numbers
-// configService.applyConfig(new DefaultConfigModule().choices[1]);
+export const builtInConfigs = [
+  new FrontendConfigModule(),
+  new BackendConfigModule(),
+];
