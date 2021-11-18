@@ -133,7 +133,7 @@ export class FolderService {
     ) as AppObject;
   }
 
-  private createNestedFolders(destination: string) {
+  createNestedFolders(destination: string) {
     const isAbsolute = path.isAbsolute(slash(destination));
 
     if (!isAbsolute && this.isNestedFile(slash(destination))) {

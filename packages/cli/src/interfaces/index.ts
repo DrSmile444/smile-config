@@ -58,7 +58,7 @@ export interface ChoiceConfig<T extends AbstractConfigModule = any> {
 
 export interface AbstractConfigModule<> {
   title: string;
-  url: string;
+  description: string;
   required: string[];
   modules: Newable<AbstractConfigItemModule>[];
   choices: ChoiceConfig<AbstractConfigModule>[];

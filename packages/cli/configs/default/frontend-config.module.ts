@@ -5,11 +5,10 @@ import { ChoiceType } from '../../src/interfaces';
 import {
   BranchNameLintModule,
   CommitLintModule,
-  defaultModules,
+  defaultFrontendModules,
   EditorConfigModule,
   EslintAngularModule,
-  EslintModule,
-  EslintNodeModule,
+  EslintFrontendModule,
   EslintReactModule,
   EslintSmileStyleModule,
   EslintTypescriptImportsModule,
@@ -27,17 +26,17 @@ import {
   VscodeModule,
 } from './modules';
 
-export class DefaultConfigModule implements AbstractConfigModule {
-  title = 'Smile Config';
-  url = 'https://github.com/DrSmile444';
+export class FrontendConfigModule implements AbstractConfigModule {
+  title = 'Frontend Recommended Tools';
+  description = 'General Frontend, React, Vue, Angular, Typescript';
 
-  modules = defaultModules;
+  modules = defaultFrontendModules;
 
   required = ['package.json'];
 
-  choices: ChoiceConfig<DefaultConfigModule>[] = [
+  choices: ChoiceConfig<FrontendConfigModule>[] = [
     {
-      useClass: DefaultConfigModule,
+      useClass: FrontendConfigModule,
       type: ChoiceType.FRONT_RECOMMENDED,
       name: `Front Recommended`,
       modules: [
@@ -46,7 +45,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
         CommitLintModule,
         EditorConfigModule,
         {
-          useClass: EslintModule,
+          useClass: EslintFrontendModule,
           modules: [EslintSmileStyleModule],
         },
         StylelintModule,
@@ -60,29 +59,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
       ],
     },
     {
-      useClass: DefaultConfigModule,
-      type: ChoiceType.NODE_RECOMMENDED,
-      name: `${chalk.green('Node')} Recommended`,
-      modules: [
-        VscodeModule,
-        BranchNameLintModule,
-        CommitLintModule,
-        EditorConfigModule,
-        {
-          useClass: EslintModule,
-          modules: [EslintNodeModule, EslintSmileStyleModule],
-        },
-        {
-          useClass: PrettierModule,
-          modules: [PrettierEslintModule],
-        },
-        HuskyModule,
-        LintStagedModule,
-        SmileTrackModule,
-      ],
-    },
-    {
-      useClass: DefaultConfigModule,
+      useClass: FrontendConfigModule,
       type: ChoiceType.REACT_RECOMMENDED,
       name: `${chalk.cyan('React')} Recommended`,
       modules: [
@@ -91,7 +68,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
         CommitLintModule,
         EditorConfigModule,
         {
-          useClass: EslintModule,
+          useClass: EslintFrontendModule,
           modules: [EslintReactModule, EslintSmileStyleModule],
         },
         StylelintModule,
@@ -105,7 +82,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
       ],
     },
     {
-      useClass: DefaultConfigModule,
+      useClass: FrontendConfigModule,
       type: ChoiceType.VUE_RECOMMENDED,
       name: `${chalk.greenBright('Vue')} Recommended`,
       modules: [
@@ -114,7 +91,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
         CommitLintModule,
         EditorConfigModule,
         {
-          useClass: EslintModule,
+          useClass: EslintFrontendModule,
           modules: [EslintVueModule, EslintSmileStyleModule],
         },
         StylelintModule,
@@ -128,7 +105,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
       ],
     },
     {
-      useClass: DefaultConfigModule,
+      useClass: FrontendConfigModule,
       type: ChoiceType.FRONT_TYPESCRIPT_RECOMMENDED,
       name: `Front ${chalk.blue('Typescript')} Recommended`,
       modules: [
@@ -137,7 +114,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
         CommitLintModule,
         EditorConfigModule,
         {
-          useClass: EslintModule,
+          useClass: EslintFrontendModule,
           modules: [
             EslintTypescriptModule,
             EslintTypescriptImportsModule,
@@ -155,7 +132,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
       ],
     },
     {
-      useClass: DefaultConfigModule,
+      useClass: FrontendConfigModule,
       type: ChoiceType.ANGULAR_TYPESCRIPT_RECOMMENDED,
       name: `Angular ${chalk.blue('Typescript')} Recommended`,
       modules: [
@@ -164,7 +141,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
         CommitLintModule,
         EditorConfigModule,
         {
-          useClass: EslintModule,
+          useClass: EslintFrontendModule,
           modules: [
             EslintTypescriptModule,
             EslintTypescriptImportsModule,
@@ -186,34 +163,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
       ],
     },
     {
-      useClass: DefaultConfigModule,
-      type: ChoiceType.NODE_TYPESCRIPT_RECOMMENDED,
-      name: `${chalk.green('Node')} ${chalk.blue('Typescript')} Recommended`,
-      modules: [
-        VscodeModule,
-        BranchNameLintModule,
-        CommitLintModule,
-        EditorConfigModule,
-        {
-          useClass: EslintModule,
-          modules: [
-            EslintNodeModule,
-            EslintTypescriptModule,
-            EslintTypescriptImportsModule,
-            EslintSmileStyleModule,
-          ],
-        },
-        {
-          useClass: PrettierModule,
-          modules: [PrettierEslintModule],
-        },
-        HuskyModule,
-        LintStagedModule,
-        SmileTrackModule,
-      ],
-    },
-    {
-      useClass: DefaultConfigModule,
+      useClass: FrontendConfigModule,
       type: ChoiceType.REACT_TYPESCRIPT_EXPERIMENTAL,
       name: `${chalk.cyan('React')} ${chalk.blue(
         'Typescript'
@@ -224,7 +174,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
         CommitLintModule,
         EditorConfigModule,
         {
-          useClass: EslintModule,
+          useClass: EslintFrontendModule,
           modules: [
             EslintReactModule,
             EslintTypescriptModule,
@@ -243,7 +193,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
       ],
     },
     {
-      useClass: DefaultConfigModule,
+      useClass: FrontendConfigModule,
       type: ChoiceType.VUE_TYPESCRIPT_EXPERIMENTAL,
       name: `${chalk.greenBright('Vue')} ${chalk.blue(
         'Typescript'
@@ -254,7 +204,7 @@ export class DefaultConfigModule implements AbstractConfigModule {
         CommitLintModule,
         EditorConfigModule,
         {
-          useClass: EslintModule,
+          useClass: EslintFrontendModule,
           modules: [
             EslintVueTypescriptModule,
             EslintTypescriptModule,
@@ -271,29 +221,8 @@ export class DefaultConfigModule implements AbstractConfigModule {
         SmileTrackModule,
       ],
     },
-    // {
-    //   useClass: DefaultConfigModule,
-    //   type: ChoiceType.NODE_MA_RECOMMENDED,
-    //   name: `${chalk.green('Node')} ${chalk.yellow(
-    //     'Masters Academy'
-    //   )} Recommended`,
-    //   modules: [
-    //     VscodeModule,
-    //     EditorConfigModule,
-    //     {
-    //       useClass: EslintModule,
-    //       modules: [EslintNodeModule],
-    //     },
-    //     {
-    //       useClass: PrettierModule,
-    //       modules: [PrettierEslintModule],
-    //     },
-    //     HuskyModule,
-    //     LintStagedModule,
-    //   ],
-    // },
     {
-      useClass: DefaultConfigModule,
+      useClass: FrontendConfigModule,
       type: ChoiceType.CUSTOM,
       name: 'Custom',
       modules: [],
