@@ -18,6 +18,8 @@ import type {
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-var-requires
 registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
+// eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-var-requires
+registerPrompt('checkbox-plus', require('inquirer-checkbox-plus-prompt'));
 
 interface Option<T> {
   value: T;
@@ -35,6 +37,13 @@ const useAutocomplete =
           localConfig?.name?.toLowerCase().includes(input.toLowerCase())
         )
       : values;
+
+const usePromiseAutocomplete =
+  (values: (Option<any> | unknown)[]) =>
+  async (autocomplete, input: string): Promise<unknown> =>
+    new Promise((resolve, reject) => {
+      resolve(useAutocomplete(values)(autocomplete, input));
+    });
 
 (async () => {
   /**
@@ -113,11 +122,16 @@ const useAutocomplete =
   ];
 
   const modules = await prompt({
-    type: 'checkbox',
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    type: 'checkbox-plus',
     name: 'modules',
     message: '📌 Select modules you want to use:',
-    choices: modulesChoices,
+    default: modulesChoices,
+    highlight: true,
     pageSize: 10,
+    source: usePromiseAutocomplete(modulesChoices),
+    searchable: true,
   }).then((result) => result.modules as Newable<AbstractConfigItemModule>[]);
 
   const newModules: ChoiceModule[] = [];

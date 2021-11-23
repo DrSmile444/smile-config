@@ -76,6 +76,7 @@
     "deepmerge": "^4.2.2",
     "inquirer": "^8.1.5",
     "inquirer-autocomplete-prompt": "^1.4.0",
+    "inquirer-checkbox-plus-prompt": "^1.0.1",
     "p-queue": "^7.1.0",
     "queue": "^6.0.2",
     "slash": "^3.0.0",
