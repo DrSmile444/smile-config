@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import * as chalk from 'chalk';
-import { prompt, Separator } from 'inquirer';
+import { prompt, registerPrompt, Separator } from 'inquirer';
 import * as inquirer from 'inquirer';
 
 import { builtInConfigs } from '../src';
@@ -16,6 +16,26 @@ import type {
   Newable,
 } from '../src/interfaces';
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-var-requires
+registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'));
+
+interface Option<T> {
+  value: T;
+  name: string;
+}
+
+const useAutocomplete =
+  (values: (Option<any> | unknown)[]) =>
+  (autocomplete, input: string): (Option<any> | unknown)[] =>
+    input
+      ? values.filter((localConfig) =>
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+          localConfig?.name?.toLowerCase().includes(input.toLowerCase())
+        )
+      : values;
+
 (async () => {
   /**
    * Start
@@ -28,14 +48,19 @@ import type {
   let config: AbstractConfigModule = builtInConfigs[FIRST_INDEX];
 
   if (builtInConfigs.length > MORE_THAN_ONE) {
+    const configChoices = builtInConfigs.map((choiceConfig) => ({
+      name: `${choiceConfig.title} - ${chalk.gray(choiceConfig.description)}`,
+      value: choiceConfig as AbstractConfigModule,
+    }));
+
     config = await prompt({
-      type: 'list',
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      type: 'autocomplete',
       name: 'config',
       message: '📝 Which style guide do you want to follow?',
-      choices: builtInConfigs.map((choiceConfig) => ({
-        name: `${choiceConfig.title} - ${chalk.gray(choiceConfig.description)}`,
-        value: choiceConfig as AbstractConfigModule,
-      })),
+      choices: configChoices,
+      source: useAutocomplete(configChoices),
     }).then((result) => result.config as AbstractConfigModule);
   }
 
@@ -54,10 +79,13 @@ import type {
 
   if (config.choices.length > MORE_THAN_ONE) {
     choice = await prompt({
-      type: 'list',
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      type: 'autocomplete',
       name: 'choice',
       message: '🔧 Select one of the built-in configs:',
       choices: choicesChoices,
+      source: useAutocomplete(choicesChoices),
     }).then((result) => result.choice as ChoiceConfig<AbstractConfigModule>);
   }
 
