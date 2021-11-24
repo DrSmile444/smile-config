@@ -93,7 +93,7 @@
         "no-underscore-dangle": "off",
         "no-unused-expressions": "error",
         "no-unused-labels": "error",
-        "no-use-before-define": "error",
+        "no-use-before-define": ["error", { "functions": false }],
         "no-var": "error",
         "object-shorthand": "error",
         "prefer-arrow-callback": "error",
