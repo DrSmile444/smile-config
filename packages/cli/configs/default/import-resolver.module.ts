@@ -1,6 +1,10 @@
 import type { AbstractConfigModule, ChoiceConfig } from '../../src/interfaces';
 import { ChoiceType } from '../../src/interfaces';
-import { EslintAliasAutoResolverModule } from './modules';
+import {
+  EslintAliasAutoResolverModule,
+  EslintAliasJsconfigResolverModule,
+} from './modules';
+import { EslintAliasResolverModule } from './modules/eslint/eslint-alias-resolver.module';
 
 export class ImportResolverModule implements AbstractConfigModule {
   title = 'Import Alias Resolver for ESLint';
@@ -13,12 +17,23 @@ export class ImportResolverModule implements AbstractConfigModule {
   choices: ChoiceConfig<ImportResolverModule>[] = [
     {
       useClass: ImportResolverModule,
-      type: ChoiceType.NODE_RECOMMENDED,
+      type: ChoiceType.ALIAS_AUTO,
       name: 'Auto Config - Resolves everything but itself',
       modules: [
         {
-          useClass: EslintAliasAutoResolverModule,
+          useClass: EslintAliasResolverModule,
           modules: [EslintAliasAutoResolverModule],
+        },
+      ],
+    },
+    {
+      useClass: ImportResolverModule,
+      type: ChoiceType.ALIAS_JSCONFIG,
+      name: 'Auto Config - Resolves everything but itself',
+      modules: [
+        {
+          useClass: EslintAliasResolverModule,
+          modules: [EslintAliasJsconfigResolverModule],
         },
       ],
     },

@@ -1,0 +1,5 @@
+{
+  "extends": [
+    "./.eslint/alias-jsconfig-resolver.eslintrc.js"
+  ]
+}

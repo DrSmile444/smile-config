@@ -1,15 +1,9 @@
-import type {
-  AbstractConfigItemModule,
-  LintItem,
-} from '@smile-config/cli/interfaces';
+import type { AbstractConfigItemModule } from '@smile-config/cli/interfaces';
 
 import { BaseConfigItemModule } from '../../../../src/base';
 import {
   EslintAliasAutoResolverModule,
-  EslintNodeModule,
-  EslintSmileStyleModule,
-  EslintTypescriptImportsModule,
-  EslintTypescriptModule,
+  EslintAliasJsconfigResolverModule,
 } from './addons';
 
 export class EslintAliasResolverModule
@@ -18,7 +12,7 @@ export class EslintAliasResolverModule
 {
   title = 'ESLint';
   description = 'Alias Auto Resolver';
-  addons = [EslintAliasAutoResolverModule];
+  addons = [EslintAliasAutoResolverModule, EslintAliasJsconfigResolverModule];
 
   constructor() {
     super(__dirname);
