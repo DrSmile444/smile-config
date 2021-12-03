@@ -1,0 +1,5 @@
+{
+  "extends": [
+    "./.eslint/alias-auto-resolver.eslintrc.js"
+  ]
+}
