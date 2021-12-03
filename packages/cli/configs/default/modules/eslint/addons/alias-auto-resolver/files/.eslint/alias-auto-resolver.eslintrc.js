@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved,import/no-extraneous-dependencies,import/order,import/no-self-import */
+/* eslint-disable import/no-unresolved,import/no-extraneous-dependencies,import/order,import/no-self-import,import/extensions,import/no-useless-path-segments */
 const fs = require('fs');
 
 /**
@@ -15,29 +15,7 @@ const fs = require('fs');
  * @kind standalone - could be used separately
  * @requires https://www.npmjs.com/package/eslint-import-resolver-jsconfig
  * */
-const jsconfigModule = {
-  settings: {
-    'import/resolver': {
-      jsconfig: {
-        config: 'jsconfig.json',
-        extensions: [
-          '.css',
-          '.jpeg',
-          '.jpg',
-          '.js',
-          '.json',
-          '.jsx',
-          '.png',
-          '.scss',
-          '.svg',
-          '.ts',
-          '.tsx',
-          '.vue',
-        ],
-      },
-    },
-  },
-};
+const jsconfigModule = require('./alias-jsconfig-resolver.eslintrc.json');
 
 /**
  * Manually add aliases from alias field.
@@ -45,30 +23,27 @@ const jsconfigModule = {
  * @kind standalone - could be used separately
  * @requires https://www.npmjs.com/package/eslint-import-resolver-alias
  * */
-const importResolverModule = {
-  settings: {
-    'import/resolver': {
-      alias: {
-        map: [['@', './src']],
-      },
-    },
-  },
+const importResolverModule = require('./alias-manual-resolver.eslintrc.json');
+
+const log = (...lines) => {
+  console.info('***');
+  lines.forEach((line) => {
+    console.info(`*** ${line}`);
+  });
+  console.info('***');
 };
 
 module.exports = (() => {
   if (fs.existsSync('./jsconfig.json')) {
-    console.info('***');
-    console.info(
-      '*** SUCCESS: alias-auto-resolver.eslintrc: jsconfig, resolve alises for ESLint...'
+    log(
+      'SUCCESS: alias-auto-resolver.eslintrc: jsconfig, resolve alises for ESLint...'
     );
-    console.info('***');
     return jsconfigModule;
   }
-  console.info('***');
-  console.info(
-    '*** ERROR: alias-auto-resolver.eslintrc: Cannot find `jsconfig.json` file'
+
+  log(
+    'ERROR: alias-auto-resolver.eslintrc: Cannot find `jsconfig.json` file',
+    '** Fallback to default import/resolver'
   );
-  console.info('***** Fallback to default import/resolver');
-  console.info('***');
   return importResolverModule;
 })();
