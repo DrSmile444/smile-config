@@ -18,7 +18,7 @@ export class ImportResolverModule implements AbstractConfigModule {
     {
       useClass: ImportResolverModule,
       type: ChoiceType.ALIAS_AUTO,
-      name: 'Auto Config - Resolves everything but itself',
+      name: 'Auto Config - Tries to find the correct resolver itself',
       modules: [
         {
           useClass: EslintAliasResolverModule,
@@ -29,7 +29,7 @@ export class ImportResolverModule implements AbstractConfigModule {
     {
       useClass: ImportResolverModule,
       type: ChoiceType.ALIAS_JSCONFIG,
-      name: 'Auto Config - Resolves everything but itself',
+      name: 'JSConfig - Resolves aliases from jsconfig.json',
       modules: [
         {
           useClass: EslintAliasResolverModule,
