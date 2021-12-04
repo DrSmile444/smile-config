@@ -3,6 +3,7 @@ import { ChoiceType } from '../../src/interfaces';
 import {
   EslintAliasAutoResolverModule,
   EslintAliasJsconfigResolverModule,
+  EslintAliasManualResolverModule,
 } from './modules';
 import { EslintAliasResolverModule } from './modules/eslint/eslint-alias-resolver.module';
 
@@ -18,7 +19,7 @@ export class ImportResolverModule implements AbstractConfigModule {
     {
       useClass: ImportResolverModule,
       type: ChoiceType.ALIAS_AUTO,
-      name: 'Auto Config - Tries to find the correct resolver itself',
+      name: 'Auto Resolver - Tries to find the correct resolver itself',
       modules: [
         {
           useClass: EslintAliasResolverModule,
@@ -29,11 +30,22 @@ export class ImportResolverModule implements AbstractConfigModule {
     {
       useClass: ImportResolverModule,
       type: ChoiceType.ALIAS_JSCONFIG,
-      name: 'JSConfig - Resolves aliases from jsconfig.json',
+      name: 'JSConfig Resolver - Resolves aliases from jsconfig.json',
       modules: [
         {
           useClass: EslintAliasResolverModule,
           modules: [EslintAliasJsconfigResolverModule],
+        },
+      ],
+    },
+    {
+      useClass: ImportResolverModule,
+      type: ChoiceType.ALIAS_MANUAL,
+      name: 'Import Resolver - Manual enter aliases in ESLint',
+      modules: [
+        {
+          useClass: EslintAliasResolverModule,
+          modules: [EslintAliasManualResolverModule],
         },
       ],
     },
