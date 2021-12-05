@@ -1,6 +1,3 @@
-import { BackendConfigModule, FrontendConfigModule } from '../configs/default';
+import { defaultConfigs } from '../configs/default';
 
-export const builtInConfigs = [
-  new FrontendConfigModule(),
-  new BackendConfigModule(),
-];
+export const builtInConfigs = [...defaultConfigs];

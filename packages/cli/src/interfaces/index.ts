@@ -17,6 +17,9 @@ export interface ConditionLintItem extends BaseLintItem {
 export type LintItem = BaseLintItem | ConditionLintItem;
 
 export enum ChoiceType {
+  ALIAS_AUTO = 'Alias:Auto',
+  ALIAS_JSCONFIG = 'Alias:Jsconfig',
+  ALIAS_MANUAL = 'Alias:Manual',
   RECOMMENDED = 'Recommended',
   FRONT_RECOMMENDED = 'Front:Recommended',
   NODE_RECOMMENDED = 'Node:Recommended',

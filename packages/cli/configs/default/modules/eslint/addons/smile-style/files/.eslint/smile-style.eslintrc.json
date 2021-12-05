@@ -9,7 +9,19 @@
       "rules": {
         "class-methods-use-this": "off",
         "import/prefer-default-export": "off",
-        "import/extensions": ["error", "never", { "json": "always" }],
+        "import/extensions": [
+          "error",
+          "never",
+          {
+            "json": "always",
+            "vue": "always",
+            "svg": "always",
+            "jpg": "always",
+            "png": "always",
+            "css": "always",
+            "scss": "always"
+          }
+        ],
         "quotes": [
           "error",
           "single"

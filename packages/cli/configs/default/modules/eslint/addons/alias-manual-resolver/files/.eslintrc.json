@@ -1,0 +1,5 @@
+{
+  "extends": [
+    "./.eslint/alias-manual-resolver.eslintrc.json"
+  ]
+}

@@ -1,3 +1,6 @@
+export * from './alias-auto-resolver/alias-auto-resolver.module';
+export * from './alias-jsconfig-resolver/alias-jsconfig-resolver.module';
+export * from './alias-manual-resolver/alias-manual-resolver.module';
 export * from './angular/angular.module';
 export * from './node/node.module';
 export * from './react/react.module';

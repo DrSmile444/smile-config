@@ -60,52 +60,6 @@ export class FrontendConfigModule implements AbstractConfigModule {
     },
     {
       useClass: FrontendConfigModule,
-      type: ChoiceType.REACT_RECOMMENDED,
-      name: `${chalk.cyan('React')} Recommended`,
-      modules: [
-        VscodeModule,
-        BranchNameLintModule,
-        CommitLintModule,
-        EditorConfigModule,
-        {
-          useClass: EslintFrontendModule,
-          modules: [EslintReactModule, EslintSmileStyleModule],
-        },
-        StylelintModule,
-        {
-          useClass: PrettierModule,
-          modules: [PrettierEslintModule, PrettierStylelintModule],
-        },
-        HuskyModule,
-        LintStagedModule,
-        SmileTrackModule,
-      ],
-    },
-    {
-      useClass: FrontendConfigModule,
-      type: ChoiceType.VUE_RECOMMENDED,
-      name: `${chalk.greenBright('Vue')} Recommended`,
-      modules: [
-        VscodeModule,
-        BranchNameLintModule,
-        CommitLintModule,
-        EditorConfigModule,
-        {
-          useClass: EslintFrontendModule,
-          modules: [EslintVueModule, EslintSmileStyleModule],
-        },
-        StylelintModule,
-        {
-          useClass: PrettierModule,
-          modules: [PrettierEslintModule, PrettierStylelintModule],
-        },
-        HuskyModule,
-        LintStagedModule,
-        SmileTrackModule,
-      ],
-    },
-    {
-      useClass: FrontendConfigModule,
       type: ChoiceType.FRONT_TYPESCRIPT_RECOMMENDED,
       name: `Front ${chalk.blue('Typescript')} Recommended`,
       modules: [
@@ -133,8 +87,8 @@ export class FrontendConfigModule implements AbstractConfigModule {
     },
     {
       useClass: FrontendConfigModule,
-      type: ChoiceType.ANGULAR_TYPESCRIPT_RECOMMENDED,
-      name: `Angular ${chalk.blue('Typescript')} Recommended`,
+      type: ChoiceType.REACT_RECOMMENDED,
+      name: `${chalk.cyan('React')} Recommended`,
       modules: [
         VscodeModule,
         BranchNameLintModule,
@@ -142,17 +96,9 @@ export class FrontendConfigModule implements AbstractConfigModule {
         EditorConfigModule,
         {
           useClass: EslintFrontendModule,
-          modules: [
-            EslintTypescriptModule,
-            EslintTypescriptImportsModule,
-            EslintSmileStyleModule,
-            EslintAngularModule,
-          ],
+          modules: [EslintReactModule, EslintSmileStyleModule],
         },
-        {
-          useClass: StylelintModule,
-          modules: [StylelintAngularModule],
-        },
+        StylelintModule,
         {
           useClass: PrettierModule,
           modules: [PrettierEslintModule, PrettierStylelintModule],
@@ -194,6 +140,29 @@ export class FrontendConfigModule implements AbstractConfigModule {
     },
     {
       useClass: FrontendConfigModule,
+      type: ChoiceType.VUE_RECOMMENDED,
+      name: `${chalk.greenBright('Vue')} Recommended`,
+      modules: [
+        VscodeModule,
+        BranchNameLintModule,
+        CommitLintModule,
+        EditorConfigModule,
+        {
+          useClass: EslintFrontendModule,
+          modules: [EslintVueModule, EslintSmileStyleModule],
+        },
+        StylelintModule,
+        {
+          useClass: PrettierModule,
+          modules: [PrettierEslintModule, PrettierStylelintModule],
+        },
+        HuskyModule,
+        LintStagedModule,
+        SmileTrackModule,
+      ],
+    },
+    {
+      useClass: FrontendConfigModule,
       type: ChoiceType.VUE_TYPESCRIPT_EXPERIMENTAL,
       name: `${chalk.greenBright('Vue')} ${chalk.blue(
         'Typescript'
@@ -212,6 +181,37 @@ export class FrontendConfigModule implements AbstractConfigModule {
           ],
         },
         StylelintModule,
+        {
+          useClass: PrettierModule,
+          modules: [PrettierEslintModule, PrettierStylelintModule],
+        },
+        HuskyModule,
+        LintStagedModule,
+        SmileTrackModule,
+      ],
+    },
+    {
+      useClass: FrontendConfigModule,
+      type: ChoiceType.ANGULAR_TYPESCRIPT_RECOMMENDED,
+      name: `Angular ${chalk.blue('Typescript')} Recommended`,
+      modules: [
+        VscodeModule,
+        BranchNameLintModule,
+        CommitLintModule,
+        EditorConfigModule,
+        {
+          useClass: EslintFrontendModule,
+          modules: [
+            EslintTypescriptModule,
+            EslintTypescriptImportsModule,
+            EslintSmileStyleModule,
+            EslintAngularModule,
+          ],
+        },
+        {
+          useClass: StylelintModule,
+          modules: [StylelintAngularModule],
+        },
         {
           useClass: PrettierModule,
           modules: [PrettierEslintModule, PrettierStylelintModule],

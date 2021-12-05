@@ -1,0 +1,23 @@
+{
+  "settings": {
+    "import/resolver": {
+      "jsconfig": {
+        "config": "jsconfig.json",
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".vue",
+          ".ts",
+          ".tsx",
+          ".css",
+          ".scss",
+          ".json",
+          ".svg",
+          ".jpg",
+          ".jpeg",
+          ".png"
+        ]
+      }
+    }
+  }
+}

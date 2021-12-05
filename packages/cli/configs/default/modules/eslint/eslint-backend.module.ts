@@ -5,14 +5,11 @@ import type {
 
 import { BaseConfigItemModule } from '../../../../src/base';
 import {
-  EslintAngularModule,
+  EslintAliasAutoResolverModule,
   EslintNodeModule,
-  EslintReactModule,
   EslintSmileStyleModule,
   EslintTypescriptImportsModule,
   EslintTypescriptModule,
-  EslintVueModule,
-  EslintVueTypescriptModule,
 } from './addons';
 
 export class EslintBackendModule
@@ -22,6 +19,7 @@ export class EslintBackendModule
   title = 'ESLint';
   description = 'Enforce JS code style, best practices';
   addons = [
+    EslintAliasAutoResolverModule,
     EslintNodeModule,
     EslintTypescriptModule,
     EslintTypescriptImportsModule,
